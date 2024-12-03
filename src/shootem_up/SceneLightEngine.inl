@@ -1,8 +1,8 @@
 	#pragma once
 
-#include "Scene.h"
-#include "GameManager.h"
-#include "Entity.h"
+#include "SceneLightEngine.h"
+#include "GameManagerLightEngine.h"
+#include "EntityLightEngine.h"
 
 template<typename T>
 T* Scene::CreateEntity(float radius, const sf::Color& color)

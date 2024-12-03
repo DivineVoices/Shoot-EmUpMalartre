@@ -2,7 +2,7 @@
 
 #include "Debug.h"
 
-#include "GameManager.h"
+#include "GameManagerLightEngine.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

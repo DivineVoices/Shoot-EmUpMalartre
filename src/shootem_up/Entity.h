@@ -1,75 +1,57 @@
 #pragma once
 
-#include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+class Entity {
 
-namespace sf 
-{
-	class Shape;
-    class Color;
-}
-
-class Scene;
-
-class Entity
-{
-    struct Target 
-    {
+	struct Target
+	{
 		sf::Vector2i position;
-        float distance;
+		float distance;
 		bool isSet;
-    };
-
-protected:
-    sf::CircleShape mShape;
-    sf::Vector2f mDirection;
-	Target mTarget;
-    float mSpeed;
-    bool mToDestroy;
-    int mTag;
+	};
 
 public:
-	bool GoToDirection(int x, int y, float speed = -1.f);
-    bool GoToPosition(int x, int y, float speed = -1.f);
-    void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f);
-	void SetDirection(float x, float y, float speed = -1.f);
-	void SetSpeed(float speed) { mSpeed = speed; }
-	void SetTag(int tag) { mTag = tag; }
-	float GetRadius() const { return mShape.getRadius(); }
+	virtual bool GoToDirection(int x, int y, float speed = -1.f) = 0;
+	virtual bool GoToPosition(int x, int y, float speed = -1.f) = 0;
+	virtual void SetPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f) = 0;
+	virtual void SetDirection(float x, float y, float speed = -1.f) = 0;
+	virtual void SetSpeed(float speed) = 0;
+	virtual void SetTag(int tag) = 0;
+	virtual float GetRadius() const = 0;
 
-    sf::Vector2f GetPosition(float ratioX = 0.5f, float ratioY = 0.5f) const;
-	sf::Shape* GetShape() { return &mShape; }
+	virtual bool IsColliding(Entity* other) = 0;
 
-	bool IsTag(int tag) const { return mTag == tag; }
-    bool IsColliding(Entity* other) const;
-	bool IsInside(float x, float y) const;
+public:
+	virtual sf::Vector2f GetPosition(float ratioX = 0.5f, float ratioY = 0.5f) const = 0;
+	virtual sf::Shape* GetShape() = 0;
 
-	void Destroy() { mToDestroy = true; }
-	bool ToDestroy() const { return mToDestroy; }
-	
-	template<typename T>
-	T* GetScene() const;
+	virtual bool IsTag(int tag) const = 0;
+	virtual bool IsInside(float x, float y) const = 0;
 
-    Scene* GetScene() const;
-	float GetDeltaTime() const;
+	virtual void Destroy() = 0;
+	virtual bool ToDestroy() const = 0;
 
-    template<typename T>
-    T* CreateEntity(float radius, const sf::Color& color);
+	virtual float GetDeltaTime() const = 0;
 
 protected:
-    Entity() = default;
-    ~Entity() = default;
+	Entity() = default;
+	~Entity() = default;
 
-    virtual void OnUpdate() {};
-    virtual void OnCollision(Entity* collidedWith) {};
+	virtual void OnUpdate() {};
+	virtual void OnCollision(Entity* collidedWith) {};
 	virtual void OnInitialize() {};
-	
+
+protected:
+	sf::CircleShape mShape;
+	sf::Vector2f mDirection;
+	Target mTarget;
+	float mSpeed;
+	bool mToDestroy;
+	int mTag;
+
 private:
-    void Update();
-	void Initialize(float radius, const sf::Color& color);
+	virtual void Update() = 0;
+	virtual void Initialize(float radius, const sf::Color& color) = 0;
 
-    friend class GameManager;
-    friend Scene;
+	friend class GameManager;
+	friend Scene;
 };
-
-#include "Entity.inl"

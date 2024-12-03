@@ -1,5 +1,5 @@
 #pragma once
-#include "Entity.h"
+#include "EntityLightEngine.h"
 
 class DummyEntity : public Entity
 {

@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "GameManager.h"
+#include "GameManagerLightEngine.h"
 #include "SampleScene.h"
 
 #include <cstdlib>
