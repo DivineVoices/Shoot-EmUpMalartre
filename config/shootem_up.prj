@@ -1,12 +1,11 @@
 {
     "name": "shootem_up",
-    "folder": "shootem_up\\",
+    "folder": "shootem_up/",
     "vc_project_version": "17.0",
     "root_namespace": "shootem_up",
     "windows_target_platform_version": "10.0",
     "use_vcpkg": "true",
     "use_vcpkg_manifest": "true",
-    "dependencies": [],
     "configuration": [
         {
             "additional_dependencies": "%(AdditionalDependencies)",
