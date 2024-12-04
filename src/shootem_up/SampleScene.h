@@ -6,6 +6,8 @@
 
 class DummyEntity;
 
+class BulletEntity;
+
 struct AABB
 {
 	int xMin;
@@ -17,7 +19,7 @@ struct AABB
 class SampleScene : public Scene
 {
 	DummyEntity* pEntity1;
-	DummyEntity* pEntity2;
+	BulletEntity* pProjectile[500];
 	DummyEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
@@ -34,6 +36,14 @@ public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
+
+	enum Tag
+	{
+		ENNEMIES,
+		BOSS,
+		PLAYER,
+		BULLET
+	};
 
 	AABB mAreas[0];
 };

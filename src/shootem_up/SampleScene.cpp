@@ -4,6 +4,8 @@
 
 #include "DummyEntity.h"
 
+#include "Bullet.h"
+
 #include "Debug.h"
 
 void SampleScene::OnInitialize()
@@ -11,10 +13,7 @@ void SampleScene::OnInitialize()
 	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red);
 	pEntity1->SetPosition(100, 100);
 
-	pEntity2 = CreateEntity<DummyEntity>(50, sf::Color::Green);
-	pEntity2->SetPosition(500, 500);
-
-	pPlayer = CreateEntity<DummyEntity>(50, sf::Color::White);
+	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
 
 	x = pPlayer->GetPosition().x;
@@ -41,7 +40,6 @@ void SampleScene::OnEvent(const sf::Event& event)
 		if (event.mouseButton.button == sf::Mouse::Button::Right)
 		{
 			TrySetSelectedEntity(pEntity1, event.mouseButton.x, event.mouseButton.y);
-			TrySetSelectedEntity(pEntity2, event.mouseButton.x, event.mouseButton.y);
 		}
 	}
 
@@ -69,6 +67,23 @@ void SampleScene::OnEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::Z || event.key.code == sf::Keyboard::Up ||
 			event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
 			direction.y = 0;
+		}
+	}
+
+	//Projectiles
+	int pPx;
+	int pPy;
+	if (event.type == sf::Event::KeyPressed) {
+		pPx = pPlayer->GetPosition().x + 35;
+		pPy = pPlayer->GetPosition().y;
+		if (event.key.code == sf::Keyboard::Space) {
+			for (int i = 0; i < 500; ++i) {
+				if (pProjectile[i] == nullptr) {
+					pProjectile[i] = CreateEntity<BulletEntity>(10, sf::Color::Yellow);
+					pProjectile[i]->SetPosition(pPx, pPy);
+					break;
+				}
+			}
 		}
 	}
 }
