@@ -22,7 +22,7 @@ void Entity::Initialize(float radius, const sf::Color& color)
 	mTarget.isSet = false;
 }
 
-bool Entity::IsColliding(Entity* other) const
+bool Entity::IsCollidingCircleCircle(Entity* other) const
 {
 	sf::Vector2f distance = GetPosition(0.5f, 0.5f) - other->GetPosition(0.5f, 0.5f);
 
@@ -34,6 +34,30 @@ bool Entity::IsColliding(Entity* other) const
 	float sqrRadius = (radius1 + radius2) * (radius1 + radius2);
 
 	return sqrLength < sqrRadius;
+}
+
+bool Entity::IsCollidingRectRect(Entity* other) const
+{
+	sf::Vector2f pos1 = GetPosition();
+	sf::Vector2f size1(mShape.getRadius(), mShape.getRadius());
+	/*sf::Vector2f size1(mShape.getGlobalBounds().width, mShape.getGlobalBounds().height);*/
+	sf::Vector2f pos2 = other->GetPosition();
+	sf::Vector2f size2(other->mShape.getRadius(), other->mShape.getRadius());
+	/*sf::Vector2f size2(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);*/
+
+	if (!(pos1.y - size1.y > pos2.y + size2.y) &&
+		!(pos1.y + size1.y < pos2.y - size2.y) &&
+		!(pos1.x - size1.x > pos2.x + size2.x) &&
+		!(pos1.x + size1.x < pos2.x - size2.x))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool Entity::IsCollidingCircleRect(Entity* other) const
+{
+	return false;
 }
 
 bool Entity::IsInside(float x, float y) const

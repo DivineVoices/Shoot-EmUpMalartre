@@ -110,6 +110,12 @@ void GameManager::Update()
         it = mEntities.erase(it);
     }
 
+	/*mAccunu1atedDt += mDeltaTime;
+	if (mAccunu1atedDt >= FIXED_DT) {
+		FixedUpdate();
+		mAccunu1atedDt -= FIXED_DT;
+	}*/
+
     //Collision
     for (auto it1 = mEntities.begin(); it1 != mEntities.end(); ++it1)
     {
@@ -120,11 +126,23 @@ void GameManager::Update()
             Entity* entity = *it1;
             Entity* otherEntity = *it2;
 
-            if (entity->IsColliding(otherEntity))
+            if (entity->IsCollidingCircleCircle(otherEntity))
             {
-                entity->OnCollision(otherEntity);
-                otherEntity->OnCollision(entity);
+                entity->OnCollisionCircleCircle(otherEntity);
+                otherEntity->OnCollisionCircleCircle(entity);
             }
+
+			if (entity->IsCollidingRectRect(otherEntity))
+			{
+				entity->OnCollisionRectRect(otherEntity);
+				otherEntity->OnCollisionRectRect(entity);
+			}
+
+			if (entity->IsCollidingCircleRect(otherEntity))
+			{
+				entity->OnCollisionCircleRect(otherEntity);
+				otherEntity->OnCollisionCircleRect(entity);
+			}
         }
     }
 
@@ -141,6 +159,14 @@ void GameManager::Update()
 	}
 
 	mEntitiesToAdd.clear();
+}
+
+void GameManager::FixedUpdate()
+{
+	/*for (Entity* entity : mEntities) {
+		entity->Update();
+	}*/
+
 }
 
 void GameManager::Draw()

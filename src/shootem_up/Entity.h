@@ -3,6 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 
+
 namespace sf 
 {
 	class Shape;
@@ -10,6 +11,7 @@ namespace sf
 }
 
 class Scene;
+class Collider;
 
 class Entity
 {
@@ -23,6 +25,7 @@ class Entity
 protected:
     sf::CircleShape mShape;
     sf::Vector2f mDirection;
+    Collider* mCollider;
 	Target mTarget;
     float mSpeed;
     bool mToDestroy;
@@ -41,7 +44,9 @@ public:
 	sf::Shape* GetShape() { return &mShape; }
 
 	bool IsTag(int tag) const { return mTag == tag; }
-    bool IsColliding(Entity* other) const;
+    bool IsCollidingCircleCircle(Entity* other) const;
+    bool IsCollidingRectRect(Entity* other) const;
+    bool IsCollidingCircleRect(Entity* other) const;
 	bool IsInside(float x, float y) const;
 
 	void Destroy() { mToDestroy = true; }
@@ -61,7 +66,9 @@ protected:
     ~Entity() = default;
 
     virtual void OnUpdate() {};
-    virtual void OnCollision(Entity* collidedWith) {};
+    virtual void OnCollisionCircleCircle(Entity* collidedWith) {};
+    virtual void OnCollisionRectRect(Entity* collidedWith) {};
+    virtual void OnCollisionCircleRect(Entity* collidedWith) {};
 	virtual void OnInitialize() {};
 	
 private:

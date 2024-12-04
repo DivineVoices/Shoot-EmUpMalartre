@@ -4,7 +4,17 @@
 
 #include <iostream>
 
-void DummyEntity::OnCollision(Entity* other)
+void DummyEntity::OnCollisionCircleCircle(Entity* other)
 {
-	std::cout << "DummyEntity::OnCollision" << std::endl;
+	std::cout << "DummyEntity::OnCollisionCircleCircle" << std::endl;
+}
+
+void DummyEntity::OnCollisionRectRect(Entity* other)
+{
+	std::cout << "DummyEntity::OnCollisionRectRect" << std::endl;
+}
+
+void DummyEntity::OnCollisionCircleRect(Entity* other)
+{
+	std::cout << "DummyEntity::OnCollisionCircleRect" << std::endl;
 }
