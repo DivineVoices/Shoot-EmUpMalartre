@@ -5,15 +5,16 @@
 #include "EntityLightEngine.h"
 
 template<typename T>
-T* Scene::CreateEntity(float radius, const sf::Color& color)
+T* SceneLightEngine::CreateEntity(float radius, const sf::Color& color)
 {
-	static_assert(std::is_base_of<Entity, T>::value, "T must be derived from Entity");
+	static_assert(std::is_base_of<EntityLightEngine, T>::value, "T must be derived from Entity");
 
 	T* newEntity = new T();
 
-	Entity* entity = newEntity;
+	EntityLightEngine* entity = newEntity;
 	entity->Initialize(radius, color);
 	
+
 	mpGameManager->mEntitiesToAdd.push_back(newEntity);
 
 	return newEntity;

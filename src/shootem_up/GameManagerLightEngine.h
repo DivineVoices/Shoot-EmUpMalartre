@@ -5,6 +5,8 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include "GameManager.h"
+
 class EntityLightEngine;
 class SceneLightEngine;
 class Debug;
@@ -15,16 +17,16 @@ namespace sf
 	class Event;
 }
 
-class GameManagerLightEngine
+class GameManagerLightEngine : public GameManager
 {
-	std::list<Entity*> mEntities;
-	std::list<Entity*> mEntitiesToDestroy;
-	std::list<Entity*> mEntitiesToAdd;
+	std::list<EntityLightEngine*> mEntities;
+	std::list<EntityLightEngine*> mEntitiesToDestroy;
+	std::list<EntityLightEngine*> mEntitiesToAdd;
 
 	sf::RenderWindow* mpWindow;
 	sf::Font mFont;
 
-	Scene* mpScene;
+	SceneLightEngine* mpScene;
 
 	float mDeltaTime;
 
@@ -34,28 +36,28 @@ class GameManagerLightEngine
 private:
 	GameManagerLightEngine();
 
-	void Run();
+	void Run() override;
 	
-	void HandleInput();
-	void Update();
-	void Draw();
+	void HandleInput() override;
+	void Update() override;
+	void Draw() override;
 
-	void SetDeltaTime(float deltaTime) { mDeltaTime = deltaTime; }
+	void SetDeltaTime(float deltaTime) override { mDeltaTime = deltaTime; }
 
-	sf::RenderWindow* GetWindow() const { return mpWindow; }
+	sf::RenderWindow* GetWindow() const override { return mpWindow; }
 
 public:
 	~GameManagerLightEngine();
-	static GameManager* Get();
+	static GameManagerLightEngine* Get();
 
-	void CreateWindow(unsigned int width, unsigned int height, const char* title, int fpsLimit = 60);
+	void CreateWindow(unsigned int width, unsigned int height, const char* title, int fpsLimit = 60) override;
 
 	template<typename T>
 	void LaunchScene();
 
-	float GetDeltaTime() const { return mDeltaTime; }
-	Scene* GetScene() const { return mpScene; }
-	sf::Font& GetFont() { return mFont; };
+	float GetDeltaTime() const override { return mDeltaTime; }
+	SceneLightEngine* GetScene() const override { return mpScene; }
+	sf::Font& GetFont() override { return mFont; };
 
 	friend Debug;
 	friend Scene;

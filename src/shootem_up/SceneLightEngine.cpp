@@ -4,17 +4,17 @@
 
 #include "GameManagerLightEngine.h"
 
-int Scene::GetWindowWidth() const
+int SceneLightEngine::GetWindowWidth() const
 {
 	return mpGameManager->mWindowWidth;
 }
 
-int Scene::GetWindowHeight() const
+int SceneLightEngine::GetWindowHeight() const
 {
 	return mpGameManager->mWindowHeight;
 }
 
-float Scene::GetDeltaTime() const
+float SceneLightEngine::GetDeltaTime() const
 {
 	return mpGameManager->mDeltaTime;
 }

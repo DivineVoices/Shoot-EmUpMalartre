@@ -1,20 +1,20 @@
 #pragma once
 
-class GameManager;
+class GameManagerLightEngine;
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Color.hpp>
 
-class Scene
+class SceneLightEngine
 {
 private:
-	GameManager* mpGameManager;
+	GameManagerLightEngine* mpGameManager;
 
 private:
-	void SetGameManager(GameManager* pGameManager) { mpGameManager = pGameManager; }
+	void SetGameManager(GameManagerLightEngine* pGameManager) { mpGameManager = pGameManager; }
 	
 protected:
-	Scene() = default;
+	SceneLightEngine() = default;
 
 	virtual void OnInitialize() = 0;
 	virtual void OnEvent(const sf::Event& event) = 0;
@@ -29,7 +29,7 @@ public:
 	int GetWindowWidth() const;
 	int GetWindowHeight() const;
 
-	friend GameManager;
+	friend GameManagerLightEngine;
 };
 
 #include "SceneLightEngine.inl"

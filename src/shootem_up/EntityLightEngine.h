@@ -10,7 +10,7 @@ namespace sf
     class Color;
 }
 
-class Scene;
+class SceneLightEngine;
 
 class EntityLightEngine : public Entity
 {
@@ -69,8 +69,8 @@ private:
     void Update();
 	void Initialize(float radius, const sf::Color& color);
 
-    friend class GameManager;
-    friend Scene;
+    friend class GameManagerLightEngine;
+    friend SceneLightEngine;
 };
 
 #include "EntityLightEngine.inl"
