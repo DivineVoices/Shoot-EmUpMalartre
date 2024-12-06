@@ -34,6 +34,10 @@ private:
 
 	int x;
 	int y;
+
+	int pPx;
+	int pPy;
+
 	int speed;
 	sf::Vector2f direction;
 

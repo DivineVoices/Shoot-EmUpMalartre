@@ -46,8 +46,9 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 	}
 
-	// Mouvement
-	if (event.type == sf::Event::KeyPressed) {
+	if (event.type == sf::Event::KeyPressed) 
+	{
+		// Mouvement
 		if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
 			direction.x = 1;
 		}
@@ -60,9 +61,21 @@ void SampleScene::OnEvent(const sf::Event& event)
 		else if (event.key.code == sf::Keyboard::S || event.key.code == sf::Keyboard::Down) {
 			direction.y = 1;
 		}
+
+		//Missiles spéciaux
+		if (event.key.code == sf::Keyboard::E) {
+			pPy -= 25;
+			for (int i = 0; i < 4; i++) {
+				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
+				pHoming.back()->SetTarget(pEntity1);
+				pHoming.back()->SetPosition(pPx, pPy);
+				pPy += 15;
+			}	
+		}
 	}
 
-	if (event.type == sf::Event::KeyReleased) {
+	if (event.type == sf::Event::KeyReleased) 
+	{
 		if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right ||
 			event.key.code == sf::Keyboard::Q || event.key.code == sf::Keyboard::Left) {
 			direction.x = 0;
@@ -72,8 +85,6 @@ void SampleScene::OnEvent(const sf::Event& event)
 			direction.y = 0;
 		}
 	}
-
-	//Missiles spéciaux
 
 }
 
@@ -117,14 +128,11 @@ void SampleScene::OnUpdate()
 	}
 
 	//Creation des projectiles
-	int pPx = pPlayer->GetPosition().x + 35;
-	int pPy = pPlayer->GetPosition().y;
+	pPx = pPlayer->GetPosition().x + 35;
+	pPy = pPlayer->GetPosition().y;
 
 	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
 	pProjectiles.back()->SetPosition(pPx, pPy);
-
-	pHoming.push_back(CreateEntity<HomingBulletEntity>(5, sf::Color::Blue));
-	pHoming.back()->SetTarget(pEntity1);
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
