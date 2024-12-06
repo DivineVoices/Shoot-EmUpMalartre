@@ -4,6 +4,8 @@
 
 #include "iostream"
 
+#include <vector>
+
 class DummyEntity;
 
 class BulletEntity;
@@ -19,7 +21,7 @@ struct AABB
 class SampleScene : public Scene
 {
 	DummyEntity* pEntity1;
-	BulletEntity* pProjectile[500];
+	std::vector<BulletEntity*> pProjectiles;
 	DummyEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;

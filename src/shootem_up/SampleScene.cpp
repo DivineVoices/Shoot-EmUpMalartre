@@ -11,7 +11,7 @@
 void SampleScene::OnInitialize()
 {
 	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red);
-	pEntity1->SetPosition(100, 100);
+	pEntity1->SetPosition(1000, 100);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -69,23 +69,6 @@ void SampleScene::OnEvent(const sf::Event& event)
 			direction.y = 0;
 		}
 	}
-
-	//Projectiles
-	int pPx;
-	int pPy;
-	if (event.type == sf::Event::KeyPressed) {
-		pPx = pPlayer->GetPosition().x + 35;
-		pPy = pPlayer->GetPosition().y;
-		if (event.key.code == sf::Keyboard::Space) {
-			for (int i = 0; i < 500; ++i) {
-				if (pProjectile[i] == nullptr) {
-					pProjectile[i] = CreateEntity<BulletEntity>(10, sf::Color::Yellow);
-					pProjectile[i]->SetPosition(pPx, pPy);
-					break;
-				}
-			}
-		}
-	}
 }
 
 void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
@@ -104,12 +87,33 @@ void SampleScene::OnUpdate()
 		Debug::DrawCircle(position.x, position.y, 10, sf::Color::Blue);
 	}
 
+	//Zone pour le débug
 	for (int i = 0; i < 4; i++)
 	{
 		const AABB& aabb = mAreas[i];
 
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
 	}
+
+	//Projectile
+	//std::cout << "Projectiles remaining: " << pProjectiles.size() << std::endl;
+
+	for (auto it = pProjectiles.begin(); it != pProjectiles.end(); ) {
+		BulletEntity* pBullet = *it;
+		if (pBullet->GetPosition().x > 1280) {
+			//std::cout << "Deleting Bullet: " << pBullet << std::endl;
+			pBullet->Destroy();
+			it = pProjectiles.erase(it);
+		}
+		else {
+			++it;
+		}
+	}
+
+	int pPx = pPlayer->GetPosition().x + 35;
+	int pPy = pPlayer->GetPosition().y;
+	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+	pProjectiles.back()->SetPosition(pPx, pPy);
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);

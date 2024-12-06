@@ -9,4 +9,6 @@ public:
 protected:
 	void OnUpdate() override;
 	void OnCollision(Entity* pCollidedWith) override;
+
+	
 };
