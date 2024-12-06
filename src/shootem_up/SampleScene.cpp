@@ -6,12 +6,15 @@
 
 #include "Bullet.h"
 
+#include "HomingBullet.h"
+
 #include "Debug.h"
 
 void SampleScene::OnInitialize()
 {
 	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red);
 	pEntity1->SetPosition(1000, 100);
+	pEntity1->SetTag(Tag::ENNEMIES);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -69,6 +72,9 @@ void SampleScene::OnEvent(const sf::Event& event)
 			direction.y = 0;
 		}
 	}
+
+	//Missiles spéciaux
+
 }
 
 void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
@@ -110,10 +116,15 @@ void SampleScene::OnUpdate()
 		}
 	}
 
+	//Creation des projectiles
 	int pPx = pPlayer->GetPosition().x + 35;
 	int pPy = pPlayer->GetPosition().y;
+
 	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
 	pProjectiles.back()->SetPosition(pPx, pPy);
+
+	pHoming.push_back(CreateEntity<HomingBulletEntity>(5, sf::Color::Blue));
+	pHoming.back()->SetTarget(pEntity1);
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);

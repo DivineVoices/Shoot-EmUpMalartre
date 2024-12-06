@@ -10,6 +10,8 @@ class DummyEntity;
 
 class BulletEntity;
 
+class HomingBulletEntity;
+
 struct AABB
 {
 	int xMin;
@@ -22,6 +24,7 @@ class SampleScene : public Scene
 {
 	DummyEntity* pEntity1;
 	std::vector<BulletEntity*> pProjectiles;
+	std::vector<HomingBulletEntity*> pHoming;
 	DummyEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
