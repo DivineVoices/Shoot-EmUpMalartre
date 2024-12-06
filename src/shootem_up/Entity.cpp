@@ -5,10 +5,9 @@
 #include "GameManager.h"
 #include "Utils.h"
 
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics.hpp>
 
-void Entity::Initialize(float radius, const sf::Color& color)
+void Entity::Initialize(float radius, const sf::Color& color, int shape)
 {
 	mDirection = sf::Vector2f(0.0f, 0.0f);
 	mSpeed = 0.0f;
@@ -19,7 +18,7 @@ void Entity::Initialize(float radius, const sf::Color& color)
 	mShape.setRadius(radius);
 	mShape.setFillColor(color);
 	
-	mTarget.isSet = false;
+	mTarget.isSet = false;	
 }
 
 bool Entity::IsCollidingCircleCircle(Entity* other) const
@@ -57,8 +56,40 @@ bool Entity::IsCollidingRectRect(Entity* other) const
 
 bool Entity::IsCollidingCircleRect(Entity* other) const
 {
-	return false;
+	if (!other) return false;
+
+	// 1. Vérification rapide (rectangle englobant)
+	float radius = mShape.getRadius();
+	sf::Vector2f circlePos = GetPosition(0.5f, 0.5f); // Centre du cercle
+	sf::Vector2f circleBoundsPos(circlePos.x - radius, circlePos.y - radius); // Position du rectangle englobant
+	sf::Vector2f circleBoundsSize(radius * 2, radius * 2); // Taille du rectangle englobant
+
+	// Rectangle englobant du cercle
+	Entity circleBoundingBox;
+	circleBoundingBox.SetPosition(circleBoundsPos.x, circleBoundsPos.y);
+	circleBoundingBox.SetSize(circleBoundsSize.x, circleBoundsSize.y);
+
+	if (!circleBoundingBox.IsCollidingRectRect(other))
+	{
+		return false; // Pas d'intersection au niveau des rectangles englobants
+	}
+
+	// 2. Vérification précise (cercle-rectangle)
+	sf::Vector2f rectPos = other->GetPosition();
+	sf::Vector2f rectSize(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);
+
+	// Trouver le point le plus proche sur le rectangle
+	float closestX = std::clamp(circlePos.x, rectPos.x, rectPos.x + rectSize.x);
+	float closestY = std::clamp(circlePos.y, rectPos.y, rectPos.y + rectSize.y);
+
+	// Calculer la distance entre le centre du cercle et ce point
+	float distanceX = circlePos.x - closestX;
+	float distanceY = circlePos.y - closestY;
+	float distanceSquared = distanceX * distanceX + distanceY * distanceY;
+
+	return distanceSquared <= (radius * radius);
 }
+
 
 bool Entity::IsInside(float x, float y) const
 {
@@ -96,7 +127,7 @@ sf::Vector2f Entity::GetPosition(float ratioX, float ratioY) const
 bool Entity::GoToDirection(int x, int y, float speed)
 {
 	if(speed > 0)
-		mSpeed = speed;
+		mSpeed = speed+100;
 
 	sf::Vector2f position = GetPosition(0.5f, 0.5f);
 	sf::Vector2f direction = sf::Vector2f(x - position.x, y - position.y);
@@ -130,6 +161,26 @@ void Entity::SetDirection(float x, float y, float speed)
 		mSpeed = speed;
 
 	mDirection = sf::Vector2f(x, y);
+}
+
+void Entity::SetSize(float x, float y)
+{
+	// Création du vecteur
+	sf::Vector2f size(x, y);
+
+	// Si Entity = Rectangle
+	if (auto* rectShape = dynamic_cast<sf::RectangleShape*>(&mShape))
+	{
+		rectShape->setSize(size);
+	}
+
+	// Si Entity = Circle (diamètre = largeur = hauteur)
+	else if (auto* circleShape = dynamic_cast<sf::CircleShape*>(&mShape))
+	{
+		float diameter = std::min(x, y);
+		circleShape->setRadius(diameter / 2.0f);
+		circleShape->setOrigin(diameter / 2.0f, diameter / 2.0f);
+	}
 }
 
 void Entity::Update()

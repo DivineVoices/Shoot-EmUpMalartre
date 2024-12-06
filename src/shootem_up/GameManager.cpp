@@ -126,7 +126,7 @@ void GameManager::Update()
             Entity* entity = *it1;
             Entity* otherEntity = *it2;
 
-            if (entity->IsCollidingCircleCircle(otherEntity))
+            /*if (entity->IsCollidingCircleCircle(otherEntity))
             {
                 entity->OnCollisionCircleCircle(otherEntity);
                 otherEntity->OnCollisionCircleCircle(entity);
@@ -136,7 +136,7 @@ void GameManager::Update()
 			{
 				entity->OnCollisionRectRect(otherEntity);
 				otherEntity->OnCollisionRectRect(entity);
-			}
+			}*/
 
 			if (entity->IsCollidingCircleRect(otherEntity))
 			{

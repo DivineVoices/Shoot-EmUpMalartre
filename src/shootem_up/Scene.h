@@ -21,8 +21,16 @@ protected:
 	virtual void OnUpdate() = 0;
 
 public:
+	enum Shape
+	{
+		CIRCLE,
+		RECT,
+
+		COUNT
+	};
+
 	template<typename T>
-	T* CreateEntity(float radius, const sf::Color& color);
+	T* CreateEntity(float radius, const sf::Color& color, int shape);
 
 	float GetDeltaTime() const;
 
