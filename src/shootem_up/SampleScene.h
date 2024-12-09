@@ -12,6 +12,8 @@ class BulletEntity;
 
 class HomingBulletEntity;
 
+class RocketBulletEntity;
+
 struct AABB
 {
 	int xMin;
@@ -25,6 +27,7 @@ class SampleScene : public Scene
 	DummyEntity* pEntity1;
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
+	std::vector<RocketBulletEntity*> pRocket;
 	DummyEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
@@ -54,7 +57,7 @@ public:
 		BULLET
 	};
 
-	AABB mAreas[0];
+	AABB mAreas[4];
 };
 
 

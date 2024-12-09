@@ -8,6 +8,8 @@
 
 #include "HomingBullet.h"
 
+#include "RocketBullet.h"
+
 #include "Debug.h"
 
 void SampleScene::OnInitialize()
@@ -26,8 +28,13 @@ void SampleScene::OnInitialize()
 
 	pEntitySelected = nullptr;
 
-	mAreas[0] = { 0, 0, 1100, 720 };
-
+	int yMin = 720;
+	int yMax = 576;
+	for (int i = 0; i < 5; i++) {
+		mAreas[i] = { 0, yMin, 1280, yMax };
+		yMin -= 144;
+		yMax -= 144;
+	}
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
@@ -72,6 +79,11 @@ void SampleScene::OnEvent(const sf::Event& event)
 				pPy += 15;
 			}	
 		}
+
+		if (event.key.code == sf::Keyboard::R) {
+			pRocket.push_back(CreateEntity<RocketBulletEntity>(10, sf::Color::Green));
+			pRocket.back()->SetPosition(pPx, pPy);
+		}
 	}
 
 	if (event.type == sf::Event::KeyReleased) 
@@ -104,8 +116,8 @@ void SampleScene::OnUpdate()
 		Debug::DrawCircle(position.x, position.y, 10, sf::Color::Blue);
 	}
 
-	//Zone pour le débug
-	for (int i = 0; i < 4; i++)
+	//Lanes pour le débug
+	for (int i = 0; i < 5; i++)
 	{
 		const AABB& aabb = mAreas[i];
 
@@ -131,8 +143,8 @@ void SampleScene::OnUpdate()
 	pPx = pPlayer->GetPosition().x + 35;
 	pPy = pPlayer->GetPosition().y;
 
-	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
-	pProjectiles.back()->SetPosition(pPx, pPy);
+	/*pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+	pProjectiles.back()->SetPosition(pPx, pPy);*/
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
