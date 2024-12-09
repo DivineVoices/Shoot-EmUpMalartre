@@ -19,7 +19,7 @@ void RocketBulletEntity::OnCollision(Entity* pCollidedWith)
     if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES) || pCollidedWith->IsTag(SampleScene::Tag::BOSS))
     {
         Explode();
-        //Destroy();
+        Destroy();
     }
 }
 
@@ -35,25 +35,12 @@ void RocketBulletEntity::Explode()
     sf::Vector2f explosionPosition = GetPosition();
     std::cout << "[DEBUG] Position de l'explosion : (" << explosionPosition.x << ", " << explosionPosition.y << ")" << std::endl;
 
-    const int bulletCount = 8;
+    const int bulletCount = 1;
     const float speed = 5.0f;
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        float angleDegrees = i * (360.0f / bulletCount);
-        float angleRadians = angleDegrees * (M_PI / 180.0f);
-
-        // Utiliser des valeurs précalculées pour éviter des valeurs numériques imprécises
-        float cosVal = std::cos(angleRadians);
-        float sinVal = std::sin(angleRadians);
-
-        // Affichage précis pour le débogage
-        if (std::abs(cosVal) < 1e-6) cosVal = 0; // Ajustement numérique pour éviter des valeurs trop petites
-        if (std::abs(sinVal) < 1e-6) sinVal = 0;
-
-        sf::Vector2f velocity = { cosVal * speed, sinVal * speed };
-
-        BulletEntity* bullet = CreateEntity<BulletEntity>(5, sf::Color::Yellow);
+        BulletEntity* bullet = CreateEntity<BulletEntity>(200, sf::Color::Yellow);
 
         if (bullet == nullptr)
         {
@@ -62,9 +49,6 @@ void RocketBulletEntity::Explode()
         }
 
         bullet->SetPosition(explosionPosition.x, explosionPosition.y);
-        std::cout << "[DEBUG] Vélocité appliquée après normalisation : (" << velocity.x << ", " << velocity.y << ")" << std::endl;
-
-        bullet->SetDirection(velocity.x, velocity.y, speed);
     }
 }
 
