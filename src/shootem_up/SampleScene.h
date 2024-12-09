@@ -24,7 +24,7 @@ struct AABB
 
 class SampleScene : public Scene
 {
-	DummyEntity* pEntity1;
+	std::vector<DummyEntity*> pDummy;
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
 	std::vector<RocketBulletEntity*> pRocket;
@@ -33,7 +33,7 @@ class SampleScene : public Scene
 	DummyEntity* pEntitySelected;
 
 private:
-	void TrySetSelectedEntity(DummyEntity* pEntity, int x, int y);
+	void TrySetSelectedEntity(int x, int y);
 
 	int x;
 	int y;
@@ -57,7 +57,7 @@ public:
 		BULLET
 	};
 
-	AABB mAreas[4];
+	AABB mAreas[5];
 };
 
 

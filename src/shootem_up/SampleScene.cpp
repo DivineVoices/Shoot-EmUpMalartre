@@ -14,9 +14,13 @@
 
 void SampleScene::OnInitialize()
 {
-	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red);
-	pEntity1->SetPosition(1000, 100);
-	pEntity1->SetTag(Tag::ENNEMIES);
+	pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	pDummy.back()->SetPosition(1000, 100);
+	pDummy.back()->SetTag(Tag::ENNEMIES);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	pDummy.back()->SetPosition(1000, 300);
+	pDummy.back()->SetTag(Tag::ENNEMIES);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -49,7 +53,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 		if (event.mouseButton.button == sf::Mouse::Button::Right)
 		{
-			TrySetSelectedEntity(pEntity1, event.mouseButton.x, event.mouseButton.y);
+			TrySetSelectedEntity(event.mouseButton.x, event.mouseButton.y);
 		}
 	}
 
@@ -74,7 +78,12 @@ void SampleScene::OnEvent(const sf::Event& event)
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
 				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
-				pHoming.back()->SetTarget(pEntity1);
+				for (auto& enemy : pDummy) {
+					if (enemy->IsTag(SampleScene::Tag::ENNEMIES)) {
+						pHoming.back()->SetTarget(enemy);
+						break;
+					}
+				}
 				pHoming.back()->SetPosition(pPx, pPy);
 				pPy += 15;
 			}	
@@ -100,12 +109,15 @@ void SampleScene::OnEvent(const sf::Event& event)
 
 }
 
-void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
+void SampleScene::TrySetSelectedEntity(int x, int y)
 {
-	if (pEntity->IsInside(x, y) == false)
-		return;
-
-	pEntitySelected = pEntity;
+	for (auto& enemy : pDummy) {
+		if (enemy->IsInside(x, y)) {
+			pEntitySelected = enemy;
+			return; // Sort de la boucle dès qu'une entité est sélectionnée
+		}
+	}
+	pEntitySelected = nullptr;
 }
 
 void SampleScene::OnUpdate()
@@ -136,6 +148,19 @@ void SampleScene::OnUpdate()
 		}
 		else {
 			++it;
+		}
+	}
+
+	//Homing
+	for (size_t i = 0; i < pHoming.size(); ++i)
+	{
+		for (auto& enemy : pDummy)
+		{
+			if (enemy->IsTag(SampleScene::Tag::ENNEMIES))
+			{
+				pHoming[i]->SetTarget(enemy);
+				break;
+			}
 		}
 	}
 

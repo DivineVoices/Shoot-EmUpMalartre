@@ -47,5 +47,6 @@ void HomingBulletEntity::OnCollision(Entity* pCollidedWith)
     if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES))
     {
         Destroy();
+        pCollidedWith->Destroy();
     }
 }
