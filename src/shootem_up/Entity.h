@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics.hpp>
 
 
 namespace sf 
@@ -22,14 +22,28 @@ class Entity
 		bool isSet;
     };
 
+    enum class CollisionType
+    {
+        Circle,
+        AABB
+    };
+
 protected:
+    sf::Texture mTexture;
+    sf::Sprite mSprite;
     sf::CircleShape mShape;
     sf::Vector2f mDirection;
-    Collider* mCollider;
-	Target mTarget;
+    Target mTarget;
+    CollisionType mCollisionType;
     float mSpeed;
     bool mToDestroy;
     int mTag;
+    int mFrameWidth;
+    int mFrameHeight;
+    int mNumFrames;
+    float mFrameTime;
+    int mCurrentFrame;
+    float mElapsedTime;
 
 public:
 	bool GoToDirection(int x, int y, float speed = -1.f);
@@ -59,6 +73,15 @@ public:
     Scene* GetScene() const;
 	float GetDeltaTime() const;
 
+    void SetScale(float _scaleX, float _scaleY) { mSprite.setScale(_scaleX, _scaleY); }
+    void SetSizeWH(float _w, float _h) { SetScale(_w / GetTexture().getSize().x, _h / GetTexture().getSize().y); }
+    float SpriteGetWidth() const { return mSprite.getTexture()->getSize().x * mSprite.getScale().x; }
+    float SpriteGetHeight() const { return mSprite.getTexture()->getSize().y * mSprite.getScale().y; }
+    sf::Texture& GetTexture() { return mTexture; }
+    sf::Sprite& GetSprite() { return mSprite; }
+
+    void DrawCollision(sf::RenderWindow* window) const;
+
     template<typename T>
     T* CreateEntity(float radius, const sf::Color& color);
 
@@ -74,7 +97,7 @@ protected:
 	
 private:
     void Update();
-	void Initialize(float radius, const sf::Color& color);
+	void Initialize(float radius, const sf::Color& color, int shape);
 
     friend class GameManager;
     friend Scene;

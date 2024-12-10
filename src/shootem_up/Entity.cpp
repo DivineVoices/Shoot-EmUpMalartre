@@ -214,3 +214,25 @@ float Entity::GetDeltaTime() const
 {
 	return GameManager::Get()->GetDeltaTime();
 }
+
+void Entity::DrawCollision(sf::RenderWindow* window) const
+{
+	if (mCollisionType == CollisionType::Circle)
+	{
+		sf::CircleShape circle(GetRadius());
+		circle.setPosition(GetPosition(0.5f, 0.5f) - sf::Vector2f(GetRadius(), GetRadius()));
+		circle.setFillColor(sf::Color::Transparent);
+		circle.setOutlineColor(sf::Color::Red);
+		circle.setOutlineThickness(1.0f);
+		window->draw(circle);
+	}
+	else if (mCollisionType == CollisionType::AABB)
+	{
+		sf::RectangleShape rectangle(sf::Vector2f(SpriteGetWidth(), SpriteGetHeight()));
+		rectangle.setPosition(GetPosition(0.5f, 0.5f) - sf::Vector2f(SpriteGetWidth() / 2, SpriteGetHeight() / 2));
+		rectangle.setFillColor(sf::Color::Transparent);
+		rectangle.setOutlineColor(sf::Color::Red);
+		rectangle.setOutlineThickness(1.0f);
+		window->draw(rectangle);
+	}
+}
