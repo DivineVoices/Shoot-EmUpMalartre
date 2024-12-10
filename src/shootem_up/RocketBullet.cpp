@@ -16,7 +16,7 @@ void RocketBulletEntity::OnCollision(Entity* pCollidedWith)
 {
     if (pCollidedWith == nullptr) return;
 
-    if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES) || pCollidedWith->IsTag(SampleScene::Tag::BOSS))
+    if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES))
     {
         Explode();
         Destroy();

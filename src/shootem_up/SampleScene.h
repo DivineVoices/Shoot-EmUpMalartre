@@ -56,7 +56,6 @@ public:
 	enum Tag
 	{
 		ENNEMIES,
-		BOSS,
 		PLAYER,
 		BULLET
 	};
