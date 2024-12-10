@@ -6,6 +6,13 @@
 
 #include "Windows.h"
 
+#include "EnemyEntity.h"
+
+BulletEntity::BulletEntity()
+{
+    SetTag(SampleScene::Tag::BULLET);
+}
+
 void BulletEntity::OnUpdate()
 {
     GoToDirection(10000, GetPosition().y, 850);
@@ -28,10 +35,14 @@ void BulletEntity::OnUpdate()
 void BulletEntity::OnCollision(Entity* pCollidedWith)
 {
     if (pCollidedWith == nullptr) return;
-	if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES))
-	{
-		Destroy();
-        pCollidedWith->Destroy();
-	}
 
+    if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES))
+    {
+        EnemyEntity* enemy = dynamic_cast<EnemyEntity*>(pCollidedWith);
+        if (enemy != nullptr)
+        {
+            enemy->TakeDamage(1);
+        }
+        Destroy();
+    }
 }

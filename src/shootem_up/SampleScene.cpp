@@ -3,11 +3,11 @@
 #include "SampleScene.h"
 
 #include "DummyEntity.h"
+#include "EnemyEntity.h"
+#include "StalkerEntity.h"
 
 #include "Bullet.h"
-
 #include "HomingBullet.h"
-
 #include "RocketBullet.h"
 
 #include "Debug.h"
@@ -18,12 +18,19 @@ void SampleScene::OnInitialize()
 	pDummy.back()->SetPosition(1000, 100);
 	pDummy.back()->SetTag(Tag::ENNEMIES);
 
-	pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
-	pDummy.back()->SetPosition(1000, 300);
-	pDummy.back()->SetTag(Tag::ENNEMIES);
+	pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+	pEnemy.back()->SetPosition(1000, 300);
+	pEnemy.back()->SetTag(Tag::ENNEMIES);
+
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
+	pStalker.back()->SetTag(Tag::ENNEMIES);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
+
+	for (auto& stalker : pStalker) {
+		stalker->mPlayer = pPlayer;
+	}
 
 	x = pPlayer->GetPosition().x;
 	y = pPlayer->GetPosition().y;

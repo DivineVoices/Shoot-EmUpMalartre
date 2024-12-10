@@ -7,11 +7,11 @@
 #include <vector>
 
 class DummyEntity;
+class EnemyEntity;
+class StalkerEntity;
 
 class BulletEntity;
-
 class HomingBulletEntity;
-
 class RocketBulletEntity;
 
 struct AABB
@@ -25,9 +25,13 @@ struct AABB
 class SampleScene : public Scene
 {
 	std::vector<DummyEntity*> pDummy;
+	std::vector<EnemyEntity*> pEnemy;
+	std::vector<StalkerEntity*> pStalker;
+
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
 	std::vector<RocketBulletEntity*> pRocket;
+
 	DummyEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
@@ -58,6 +62,7 @@ public:
 	};
 
 	AABB mAreas[5];
+
 };
 
 
