@@ -6,11 +6,11 @@
 class StalkerEntity : public EnemyEntity
 {
 public:
-	void OnUpdate() override;
-
     StalkerEntity()
     {
         EnemyLife = 50;
     }
+	void OnUpdate() override;
+
     DummyEntity* mPlayer;
 };

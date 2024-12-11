@@ -6,6 +6,9 @@
 #include "EnemyEntity.h"
 #include "StalkerEntity.h"
 #include "KamikazeEntity.h"
+#include "ShooterEntity.h"
+
+#include "EnemyBullet.h"
 
 #include "Bullet.h"
 #include "HomingBullet.h"
@@ -26,10 +29,14 @@ void SampleScene::OnInitialize()
 	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
-	pKamikaze.push_back(CreateEntity<KamikazeEntity>(50, sf::Color::Red));
+	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
 	pKamikaze.back()->SetPosition(1000, 500);
 	pKamikaze.back()->SetTarget(pPlayer);
 	pKamikaze.back()->SetTag(Tag::ENNEMIES);
+
+	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
+	pShooter.back()->SetPosition(1000, 500);
+	pShooter.back()->SetTag(Tag::ENNEMIES);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -174,7 +181,6 @@ void SampleScene::OnUpdate()
 	}
 
 	//Ennemies
-
 	for (size_t i = 0; i < pKamikaze.size(); ++i)
 	{
 			if (pPlayer->IsTag(SampleScene::Tag::PLAYER))
@@ -201,8 +207,21 @@ void SampleScene::OnUpdate()
 	pPx = pPlayer->GetPosition().x + 35;
 	pPy = pPlayer->GetPosition().y;
 
-	/*pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
-	pProjectiles.back()->SetPosition(pPx, pPy);*/
+	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+	pProjectiles.back()->SetPosition(pPx, pPy);
+
+	for (auto& shooter : pShooter)
+	{
+		if (shooter->IsTag(Tag::ENNEMIES))
+		{
+			sf::Vector2f shooterPosition = shooter->GetPosition();
+			sf::Vector2f playerPosition = pPlayer->GetPosition();
+
+			pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(5, sf::Color::Red));
+			pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
+			pEnemyProjectiles.back()->SetTarget(pPlayer);
+		}
+	}
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);

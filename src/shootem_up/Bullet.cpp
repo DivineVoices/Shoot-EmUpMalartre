@@ -27,7 +27,6 @@ void BulletEntity::OnUpdate()
 
     if (position.x > 1280) {
         Destroy();
-        //std::cout << "Hakai" << std::endl;
     }
 }
 

@@ -10,6 +10,9 @@ class DummyEntity;
 class EnemyEntity;
 class StalkerEntity;
 class KamikazeEntity;
+class ShooterEntity;
+
+class EnemyBulletEntity;
 
 class BulletEntity;
 class HomingBulletEntity;
@@ -29,6 +32,9 @@ class SampleScene : public Scene
 	std::vector<EnemyEntity*> pEnemy;
 	std::vector<StalkerEntity*> pStalker;
 	std::vector<KamikazeEntity*> pKamikaze;
+	std::vector<ShooterEntity*> pShooter;
+
+	std::vector<EnemyBulletEntity*> pEnemyProjectiles;
 
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
@@ -59,7 +65,8 @@ public:
 	{
 		ENNEMIES,
 		PLAYER,
-		BULLET
+		BULLET,
+		ENEMYBULLET
 	};
 
 	AABB mAreas[5];
