@@ -6,16 +6,17 @@
 
 #include "Debug.h"
 
+#include "AssetManager.h"
+
 void SampleScene::OnInitialize()
 {
-	pEntity1 = CreateEntity<DummyEntity>(100, sf::Color::Red, Scene::CIRCLE);
-	pEntity1->SetPosition(100, 100);
+	AssetManager assetManager;
 
-	pEntity2 = CreateEntity<DummyEntity>(50, sf::Color::Green, Scene::CIRCLE);
-	pEntity2->SetPosition(500, 500);
+	pEntity1 = CreateEntity<DummyEntity>(100, "../../../res/Ball.png", assetManager);
+	pEntity1->SetPosition(500, 300);
 
-	pEntity2 = CreateEntity<DummyEntity>(50, sf::Color::Green, Scene::RECT);
-	pEntity2->SetPosition(500, 500);
+	pEntity2 = CreateEntity<DummyEntity>(100, 100, "../../../res/car.png", assetManager);
+	pEntity2->SetPosition(100, 100);
 
 	pEntitySelected = nullptr;
 }
@@ -50,6 +51,7 @@ void SampleScene::TrySetSelectedEntity(DummyEntity* pEntity, int x, int y)
 
 void SampleScene::OnUpdate()
 {
+	pEntity2->SetDirection(1.f, 0.f, 50.f);
 	if(pEntitySelected != nullptr)
 	{
 		sf::Vector2f position = pEntitySelected->GetPosition();

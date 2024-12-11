@@ -4,8 +4,6 @@
 class DummyEntity : public Entity
 {
 public:
-	void OnCollisionCircleCircle(Entity* other) override;
-	void OnCollisionRectRect(Entity* other) override;
-	void OnCollisionCircleRect(Entity* other) override;
+	void OnCollision(Entity* other) override;
 };
 

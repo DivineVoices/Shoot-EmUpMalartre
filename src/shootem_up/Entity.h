@@ -12,6 +12,7 @@ namespace sf
 
 class Scene;
 class Collider;
+class AssetManager;
 
 class Entity
 {
@@ -55,6 +56,8 @@ public:
 	void SetTag(int tag) { mTag = tag; }
 	float GetRadius() const { return mShape.getRadius(); }
 
+
+
     sf::Vector2f GetPosition(float ratioX = 0.5f, float ratioY = 0.5f) const;
 	sf::Shape* GetShape() { return &mShape; }
 
@@ -63,6 +66,7 @@ public:
     bool IsCollidingRectRect(Entity* other) const;
     bool IsCollidingCircleRect(Entity* other) const;
 	bool IsInside(float x, float y) const;
+    bool IsColliding(Entity* other) const;
 
 	void Destroy() { mToDestroy = true; }
 	bool ToDestroy() const { return mToDestroy; }
@@ -83,21 +87,23 @@ public:
     void DrawCollision(sf::RenderWindow* window) const;
 
     template<typename T>
-    T* CreateEntity(float radius, const sf::Color& color);
+    T* CreateEntity(float _w, const char* _path, AssetManager& assetManager);
+
+    template<typename T>
+    T* CreateEntity(float _w, float _h, const char* _path, AssetManager& assetManager);
 
 protected:
     Entity() = default;
     ~Entity() = default;
 
     virtual void OnUpdate() {};
-    virtual void OnCollisionCircleCircle(Entity* collidedWith) {};
-    virtual void OnCollisionRectRect(Entity* collidedWith) {};
-    virtual void OnCollisionCircleRect(Entity* collidedWith) {};
+    virtual void OnCollision(Entity* collidedWith) {};
 	virtual void OnInitialize() {};
 	
 private:
     void Update();
-	void Initialize(float radius, const sf::Color& color, int shape);
+    void Initialize(float _w, const char* _path, AssetManager& assetManager);
+    void Initialize(float _w, float _h, const char* _path, AssetManager& assetManager);
 
     friend class GameManager;
     friend Scene;

@@ -6,19 +6,53 @@
 #include "Utils.h"
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
-void Entity::Initialize(float radius, const sf::Color& color, int shape)
+void Entity::Initialize(float _w, const char* _path, AssetManager& assetManager)
 {
+	Texture* texture = assetManager.GetTexture(_path);
+	if (!texture) {
+		std::cout << "Failed to load texture: " << _path << std::endl;
+		return;
+	}
+
+	mTexture = *texture->GetTexture();
+	mTexture.setSmooth(true);
+	mSprite.setTexture(mTexture);
+	mSprite.setOrigin(0, 0);
+	float scale = _w / mSprite.getTexture()->getSize().x;
+	SetScale(scale, scale);
+
+	mCollisionType = CollisionType::Circle;
+
 	mDirection = sf::Vector2f(0.0f, 0.0f);
 	mSpeed = 0.0f;
 	mToDestroy = false;
 	mTag = -1;
+	mTarget.isSet = false;
+}
 
-	mShape.setOrigin(0.f, 0.f);
-	mShape.setRadius(radius);
-	mShape.setFillColor(color);
-	
-	mTarget.isSet = false;	
+void Entity::Initialize(float _w, float _h, const char* _path, AssetManager& assetManager)
+{
+	Texture* texture = assetManager.GetTexture(_path);
+	if (texture == nullptr) {
+		std::cout << "Failed to load texture: " << _path << std::endl;
+		return;
+	}
+
+	mTexture = *texture->GetTexture();
+	mTexture.setSmooth(true);
+	mSprite.setTexture(mTexture);
+	mSprite.setOrigin(0, 0);
+	SetSizeWH(_w, _h);
+
+	mCollisionType = CollisionType::AABB;
+
+	mDirection = sf::Vector2f(0.0f, 0.0f);
+	mSpeed = 0.0f;
+	mToDestroy = false;
+	mTag = -1;
+	mTarget.isSet = false;
 }
 
 bool Entity::IsCollidingCircleCircle(Entity* other) const
@@ -103,23 +137,47 @@ bool Entity::IsInside(float x, float y) const
 	return (dx * dx + dy * dy) < (radius * radius);
 }
 
+bool Entity::IsColliding(Entity* other) const
+{
+	switch (mCollisionType)
+	{
+	case CollisionType::Circle:
+		switch (other->mCollisionType)
+		{
+		case CollisionType::Circle:
+			return IsCollidingCircleCircle(other);
+		case CollisionType::AABB:
+			return IsCollidingCircleRect(other);
+		}
+	case CollisionType::AABB:
+		switch (other->mCollisionType)
+		{
+		case CollisionType::Circle:
+			return IsCollidingCircleRect(other);
+		case CollisionType::AABB:
+			return IsCollidingRectRect(other);
+		}
+	}
+}
+
 void Entity::SetPosition(float x, float y, float ratioX, float ratioY)
 {
-	float size = mShape.getRadius() * 2;
+	sf::Vector2f size(mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height);
 
-	x -= size * ratioX;
-	y -= size * ratioY;
+	x -= size.x * ratioX;
+	y -= size.y * ratioY;
 
+	mSprite.setPosition(x, y);
 	mShape.setPosition(x, y);
 }
 
 sf::Vector2f Entity::GetPosition(float ratioX, float ratioY) const
 {
-	float size = mShape.getRadius() * 2;
+	sf::Vector2f size(mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height);
 	sf::Vector2f position = mShape.getPosition();
 
-	position.x += size * ratioX;
-	position.y += size * ratioY;
+	position.x += size.x * ratioX;
+	position.y += size.y * ratioY;
 
 	return position;
 }
@@ -189,6 +247,7 @@ void Entity::Update()
 	float distance = dt * mSpeed;
 	sf::Vector2f translation = distance * mDirection;
 	mShape.move(translation);
+	mSprite.move(translation);
 
 	if (mTarget.isSet) 
 	{

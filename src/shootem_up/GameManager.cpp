@@ -117,34 +117,23 @@ void GameManager::Update()
 	}*/
 
     //Collision
-    for (auto it1 = mEntities.begin(); it1 != mEntities.end(); ++it1)
-    {
-        auto it2 = it1;
-        ++it2;
-        for (; it2 != mEntities.end(); ++it2)
-        {
-            Entity* entity = *it1;
-            Entity* otherEntity = *it2;
+	for (auto it1 = mEntities.begin(); it1 != mEntities.end(); ++it1)
+	{
+		auto it2 = it1;
+		++it2;
+		for (; it2 != mEntities.end(); ++it2)
+		{
+			Entity* entity = *it1;
+			Entity* otherEntity = *it2;
 
-            /*if (entity->IsCollidingCircleCircle(otherEntity))
-            {
-                entity->OnCollisionCircleCircle(otherEntity);
-                otherEntity->OnCollisionCircleCircle(entity);
-            }
-
-			if (entity->IsCollidingRectRect(otherEntity))
+			if (entity->IsColliding(otherEntity))
 			{
-				entity->OnCollisionRectRect(otherEntity);
-				otherEntity->OnCollisionRectRect(entity);
-			}*/
+				entity->OnCollision(otherEntity);
+				otherEntity->OnCollision(entity);
 
-			if (entity->IsCollidingCircleRect(otherEntity))
-			{
-				entity->OnCollisionCircleRect(otherEntity);
-				otherEntity->OnCollisionCircleRect(entity);
 			}
-        }
-    }
+		}
+	}
 
 	for (auto it = mEntitiesToDestroy.begin(); it != mEntitiesToDestroy.end(); ++it) 
 	{
@@ -167,17 +156,19 @@ void GameManager::FixedUpdate()
 		entity->Update();
 	}*/
 
+	
+
 }
 
 void GameManager::Draw()
 {
 	mpWindow->clear();
-	
+
 	for (Entity* entity : mEntities)
 	{
-		mpWindow->draw(*entity->GetShape());
+		mpWindow->draw(entity->GetSprite());
+		entity->DrawCollision(mpWindow);
 	}
-	
 	Debug::Get()->Draw(mpWindow);
 
 	mpWindow->display();

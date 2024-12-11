@@ -1,6 +1,7 @@
 #pragma once
 
 class GameManager;
+class AssetManager;
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -30,7 +31,10 @@ public:
 	};
 
 	template<typename T>
-	T* CreateEntity(float radius, const sf::Color& color, int shape);
+	T* CreateEntity(float _w, const char* _path, AssetManager& assetManager);
+
+	template<typename T>
+	T* CreateEntity(float _w, float _h, const char* _path, AssetManager& assetManager);
 
 	float GetDeltaTime() const;
 
