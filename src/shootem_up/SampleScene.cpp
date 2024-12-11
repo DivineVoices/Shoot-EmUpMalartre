@@ -15,21 +15,21 @@
 
 void SampleScene::OnInitialize()
 {
-	pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
-	pDummy.back()->SetPosition(1000, 100);
-	pDummy.back()->SetTag(Tag::ENNEMIES);
+	//pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	//pDummy.back()->SetPosition(1000, 100);
+	//pDummy.back()->SetTag(Tag::ENNEMIES);
 
-	pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
-	pEnemy.back()->SetPosition(1000, 300);
-	pEnemy.back()->SetTag(Tag::ENNEMIES);
+	//pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+	//pEnemy.back()->SetPosition(1000, 300);
+	//pEnemy.back()->SetTag(Tag::ENNEMIES);
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
-	pStalker.back()->SetTag(Tag::ENNEMIES);
+	//pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
+	//pStalker.back()->SetTag(Tag::ENNEMIES);
 
-	pKamikaze.push_back(CreateEntity<KamikazeEntity>(50, sf::Color::Red));
+/*	pKamikaze.push_back(CreateEntity<KamikazeEntity>(50, sf::Color::Red));
 	pKamikaze.back()->SetPosition(1000, 500);
 	pKamikaze.back()->SetTarget(pPlayer);
-	pKamikaze.back()->SetTag(Tag::ENNEMIES);
+	pKamikaze.back()->SetTag(Tag::ENNEMIES);*/ 
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -53,6 +53,21 @@ void SampleScene::OnInitialize()
 		yMin -= 144;
 		yMax -= 144;
 	}
+
+	std::ifstream inputFile("Level1.txt");
+
+	std::string line;
+
+
+	while (std::getline(inputFile, line)) {
+		if (!line.empty()) 
+		{
+			waves.push_back(line);
+		}
+	}
+
+	inputFile.close();
+
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
@@ -211,4 +226,67 @@ void SampleScene::OnUpdate()
 	y += velocity.y;
 
 	pPlayer->SetPosition(x, y);
+
+	Timer += dt;
+	if (Timer > 4) {
+		if (currentWaveIndex < waves.size()) {
+			ProcessWave(waves[currentWaveIndex]);
+			currentWaveIndex++; 
+		}
+		Timer = 0;
+	}
+}
+
+
+void SampleScene::ProcessWave(const std::string& wave) {
+
+	int index = 0; 
+	for (char c : wave) {
+		if (index <= 5) {
+			std::cout << c << std::endl;
+			++index;
+			if (c == '-') {
+				std::cout << "Nothing Summoned" << std::endl;
+				continue;
+			}
+
+			float xPosition = 1000.0f; 
+			float yPosition = (144.0f * index) - 72;
+
+			if (c == 'S') {
+				// Summon Ennemi Set Path
+				std::cout << "Summoned Set Path" << std::endl;
+				continue;
+			}
+			if (c == 'D') {
+				// Summon Ennemi Default
+				pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+				pEnemy.back()->SetPosition(xPosition, yPosition);
+				pEnemy.back()->SetTag(Tag::ENNEMIES);
+				std::cout << "Summoned Default" << std::endl;
+				continue;
+			}
+			if (c == 'K') {
+				// Summon Ennemi Kamikaze
+				std::cout << "Summoned Kamikaze" << std::endl;
+				continue;
+			}
+			if (c == 'C') {
+				// Summon Ennemi Chercheuse
+				std::cout << "Summoned Heat Seaking" << std::endl;
+				continue;
+			}
+			if (c == 'L') {
+				// Summon Ennemi Lazer
+				std::cout << "Summoned Lazer" << std::endl;
+				continue;
+			}
+			if (c == 'B') {
+				// Summon Ennemi Blocking
+				std::cout << "Summoned Blocking" << std::endl;
+				continue;
+			}
+			std::cout << "Summoning next wave" << std::endl;
+		}
+	}
 }

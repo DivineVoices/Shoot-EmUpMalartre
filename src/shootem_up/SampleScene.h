@@ -6,6 +6,11 @@
 
 #include <vector>
 
+#include <fstream>
+
+#include <string>
+
+
 class DummyEntity;
 class EnemyEntity;
 class StalkerEntity;
@@ -47,6 +52,10 @@ private:
 	int pPx;
 	int pPy;
 
+	float Timer;
+	std::vector<std::string> waves;
+	size_t currentWaveIndex = 0;
+
 	int speed;
 	sf::Vector2f direction;
 
@@ -54,6 +63,7 @@ public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
+	void ProcessWave(const std::string& wave);
 
 	enum Tag
 	{
