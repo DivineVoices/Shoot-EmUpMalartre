@@ -5,6 +5,7 @@
 #include "DummyEntity.h"
 #include "EnemyEntity.h"
 #include "StalkerEntity.h"
+#include "KamikazeEntity.h"
 
 #include "Bullet.h"
 #include "HomingBullet.h"
@@ -25,8 +26,14 @@ void SampleScene::OnInitialize()
 	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
+	pKamikaze.push_back(CreateEntity<KamikazeEntity>(50, sf::Color::Red));
+	pKamikaze.back()->SetPosition(1000, 500);
+	pKamikaze.back()->SetTarget(pPlayer);
+	pKamikaze.back()->SetTag(Tag::ENNEMIES);
+
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
+	pPlayer->SetTag(Tag::PLAYER);
 
 	for (auto& stalker : pStalker) {
 		stalker->mPlayer = pPlayer;
@@ -121,9 +128,17 @@ void SampleScene::TrySetSelectedEntity(int x, int y)
 	for (auto& enemy : pDummy) {
 		if (enemy->IsInside(x, y)) {
 			pEntitySelected = enemy;
-			return; // Sort de la boucle dès qu'une entité est sélectionnée
+			return;
 		}
 	}
+
+	for (auto& player : pDummy) {
+		if (player->IsInside(x, y)) {
+			pEntitySelected = player;
+			return;
+		}
+	}
+
 	pEntitySelected = nullptr;
 }
 
@@ -156,6 +171,17 @@ void SampleScene::OnUpdate()
 		else {
 			++it;
 		}
+	}
+
+	//Ennemies
+
+	for (size_t i = 0; i < pKamikaze.size(); ++i)
+	{
+			if (pPlayer->IsTag(SampleScene::Tag::PLAYER))
+			{
+				pKamikaze[i]->SetTarget(pPlayer);
+				break;
+			}
 	}
 
 	//Homing

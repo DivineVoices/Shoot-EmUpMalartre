@@ -9,6 +9,7 @@
 class DummyEntity;
 class EnemyEntity;
 class StalkerEntity;
+class KamikazeEntity;
 
 class BulletEntity;
 class HomingBulletEntity;
@@ -27,6 +28,7 @@ class SampleScene : public Scene
 	std::vector<DummyEntity*> pDummy;
 	std::vector<EnemyEntity*> pEnemy;
 	std::vector<StalkerEntity*> pStalker;
+	std::vector<KamikazeEntity*> pKamikaze;
 
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
