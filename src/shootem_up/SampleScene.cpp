@@ -54,7 +54,7 @@ void SampleScene::OnInitialize()
 		yMax -= 144;
 	}
 
-	std::ifstream inputFile("Level1.txt");
+	std::ifstream inputFile("../../../res/Level1.txt");
 
 	std::string line;
 
