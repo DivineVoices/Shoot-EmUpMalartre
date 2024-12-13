@@ -11,8 +11,10 @@ class EnemyEntity;
 class StalkerEntity;
 class KamikazeEntity;
 class ShooterEntity;
+class LanerEntity;
 
 class EnemyBulletEntity;
+class LanerBulletEntity;
 
 class BulletEntity;
 class HomingBulletEntity;
@@ -33,8 +35,10 @@ class SampleScene : public Scene
 	std::vector<StalkerEntity*> pStalker;
 	std::vector<KamikazeEntity*> pKamikaze;
 	std::vector<ShooterEntity*> pShooter;
+	std::vector<LanerEntity*> pLaner;
 
 	std::vector<EnemyBulletEntity*> pEnemyProjectiles;
+	std::vector<LanerBulletEntity*> pLanerProjectiles;
 
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;

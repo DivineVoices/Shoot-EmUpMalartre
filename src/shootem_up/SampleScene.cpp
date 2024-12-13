@@ -7,8 +7,10 @@
 #include "StalkerEntity.h"
 #include "KamikazeEntity.h"
 #include "ShooterEntity.h"
+#include "LanerEntity.h"
 
 #include "EnemyBullet.h"
+#include "LanerBullet.h"
 
 #include "Bullet.h"
 #include "HomingBullet.h"
@@ -37,6 +39,10 @@ void SampleScene::OnInitialize()
 	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
 	pShooter.back()->SetPosition(1000, 500);
 	pShooter.back()->SetTag(Tag::ENNEMIES);
+
+	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
+	pLaner.back()->SetPosition(1000, 600);
+	pLaner.back()->SetTag(Tag::ENNEMIES);
 
 	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
@@ -230,6 +236,16 @@ void SampleScene::OnUpdate()
 		++it;
 	}
 
+	for (auto& laner : pLaner)
+	{
+		if (laner->IsTag(Tag::ENNEMIES))
+		{
+			sf::Vector2f lanerPosition = laner->GetPosition();
+
+			pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, sf::Color::Red));
+			pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
+		}
+	}
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
