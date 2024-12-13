@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "AssetManager.h"
+#include "Texture.h"
 #include <iostream>
 
-Texture* AssetManager::LoadTexture(const char* path)
+Texture* AssetManager::LoadTexture(std::string path)
 {
 	Texture* texture = new Texture(path);
 	std::cout << "Loading texture: " << path << std::endl;
@@ -11,7 +12,7 @@ Texture* AssetManager::LoadTexture(const char* path)
 	return texture;
 }
 
-Texture* AssetManager::GetTexture(const char* path)
+Texture* AssetManager::GetTexture(std::string path)
 {
 	auto it = mTextures.find(path);
 
@@ -19,4 +20,11 @@ Texture* AssetManager::GetTexture(const char* path)
 		return LoadTexture(path);
 	else
 		return &it->second;
+}
+
+AssetManager* AssetManager::Get()
+{
+	static AssetManager mInstance;
+
+	return &mInstance;
 }

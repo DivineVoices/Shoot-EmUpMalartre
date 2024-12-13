@@ -29,6 +29,22 @@ class Entity
         AABB
     };
 
+    enum class AnimatedSpriteType
+    {
+
+        StaticSprite,
+        AnimatedSprite
+    };
+    
+    struct Animation {
+        int row = 1;
+        int col = 1;
+        int indexX;
+        int indexY;
+        float animationTime;
+        float progress;
+    };
+
 protected:
     sf::Texture mTexture;
     sf::Sprite mSprite;
@@ -45,6 +61,9 @@ protected:
     float mFrameTime;
     int mCurrentFrame;
     float mElapsedTime;
+
+    Animation mAnimation;
+    AnimatedSpriteType mAnimatedSpriteType;
 
 public:
 	bool GoToDirection(int x, int y, float speed = -1.f);
@@ -81,16 +100,31 @@ public:
     void SetSizeWH(float _w, float _h) { SetScale(_w / GetTexture().getSize().x, _h / GetTexture().getSize().y); }
     float SpriteGetWidth() const { return mSprite.getTexture()->getSize().x * mSprite.getScale().x; }
     float SpriteGetHeight() const { return mSprite.getTexture()->getSize().y * mSprite.getScale().y; }
+    int GetWidthTexture() const { return mSprite.getTexture()->getSize().x; }
+    int GetHeightTexture() const { return mSprite.getTexture()->getSize().y; }
+    void SetTextureRect(int x, int y, int w, int h) { mSprite.setTextureRect(sf::IntRect(x, y, w, h)); }
+
     sf::Texture& GetTexture() { return mTexture; }
     sf::Sprite& GetSprite() { return mSprite; }
+
+    Animation GetAnimation() const { return mAnimation; }
+    AnimatedSpriteType GetAnimatedSpriteType() const { return mAnimatedSpriteType; }
+
+    void SetCollisionType(CollisionType ColliType) { mCollisionType = ColliType; }
+    void SetAnimatedSpriteType(AnimatedSpriteType AniType) { mAnimatedSpriteType = AniType; }
+
+    void SetAnimationTime(float t) { mAnimation.animationTime = t; }
+
+    void Setsize(int x, int y) { mSprite.setScale(x, y); }
+    void SetSizeByX(int x);
+    void SetSizeByY(int y);
+
+    void UpdateAnimation(float deltatime);
 
     void DrawCollision(sf::RenderWindow* window) const;
 
     template<typename T>
-    T* CreateEntity(float _w, const char* _path, AssetManager& assetManager);
-
-    template<typename T>
-    T* CreateEntity(float _w, float _h, const char* _path, AssetManager& assetManager);
+    T* CreateEntity(float _w, float _h, std::string, int Row, int Col, float frameTime);
 
 protected:
     Entity() = default;
@@ -102,11 +136,11 @@ protected:
 	
 private:
     void Update();
-    void Initialize(float _w, const char* _path, AssetManager& assetManager);
-    void Initialize(float _w, float _h, const char* _path, AssetManager& assetManager);
+    void Initialize(float _w, float _h, std::string, int row, int col, float frameTime);
 
     friend class GameManager;
     friend Scene;
+    friend AssetManager;
 };
 
 #include "Entity.inl"

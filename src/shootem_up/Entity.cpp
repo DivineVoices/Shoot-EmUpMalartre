@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "Entity.h"
+#include "Texture.h"
 
 #include "GameManager.h"
 #include "Utils.h"
@@ -8,75 +9,57 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-void Entity::Initialize(float _w, const char* _path, AssetManager& assetManager)
+void Entity::Initialize(float _w, float _h, std::string _path, int row, int col, float frameTime)
 {
-	Texture* texture = assetManager.GetTexture(_path);
-	if (!texture) {
-		std::cout << "Failed to load texture: " << _path << std::endl;
-		return;
-	}
-
-	mTexture = *texture->GetTexture();
-	mTexture.setSmooth(true);
-	mSprite.setTexture(mTexture);
-	mSprite.setOrigin(0, 0);
-	float scale = _w / mSprite.getTexture()->getSize().x;
-	SetScale(scale, scale);
-
-	mCollisionType = CollisionType::Circle;
-
-	mDirection = sf::Vector2f(0.0f, 0.0f);
-	mSpeed = 0.0f;
-	mToDestroy = false;
-	mTag = -1;
-	mTarget.isSet = false;
-}
-
-void Entity::Initialize(float _w, float _h, const char* _path, AssetManager& assetManager)
-{
-	Texture* texture = assetManager.GetTexture(_path);
+	Texture* texture = AssetManager::Get()->GetTexture(_path); // Texture = sf::sprite
+	std::cout << "1";
 	if (texture == nullptr) {
 		std::cout << "Failed to load texture: " << _path << std::endl;
 		return;
 	}
-
 	mTexture = *texture->GetTexture();
 	mTexture.setSmooth(true);
+
 	mSprite.setTexture(mTexture);
 	mSprite.setOrigin(0, 0);
+
 	SetSizeWH(_w, _h);
-
-	mCollisionType = CollisionType::AABB;
-
 	mDirection = sf::Vector2f(0.0f, 0.0f);
 	mSpeed = 0.0f;
 	mToDestroy = false;
 	mTag = -1;
 	mTarget.isSet = false;
+
+	mAnimation.row = row;
+	mAnimation.col = col;
+	mAnimation.indexX = 0;
+	mAnimation.animationTime = frameTime;
+	mAnimation.indexY = 0;
+	mAnimation.progress = 0.f;
 }
+
 
 bool Entity::IsCollidingCircleCircle(Entity* other) const
 {
 	sf::Vector2f distance = GetPosition(0.5f, 0.5f) - other->GetPosition(0.5f, 0.5f);
-
 	float sqrLength = (distance.x * distance.x) + (distance.y * distance.y);
 
-	float radius1 = mShape.getRadius();
-	float radius2 = other->mShape.getRadius();
-
+	float radius1 = GetRadius();
+	float radius2 = other->GetRadius();
 	float sqrRadius = (radius1 + radius2) * (radius1 + radius2);
-
+	if (sqrLength < sqrRadius)
+	{
+		std::cout << "Collision Circle -> Circle" << std::endl;
+	}
 	return sqrLength < sqrRadius;
 }
 
 bool Entity::IsCollidingRectRect(Entity* other) const
 {
 	sf::Vector2f pos1 = GetPosition();
-	sf::Vector2f size1(mShape.getRadius(), mShape.getRadius());
-	/*sf::Vector2f size1(mShape.getGlobalBounds().width, mShape.getGlobalBounds().height);*/
+	sf::Vector2f size1(mShape.getGlobalBounds().width, mShape.getGlobalBounds().height);
 	sf::Vector2f pos2 = other->GetPosition();
-	sf::Vector2f size2(other->mShape.getRadius(), other->mShape.getRadius());
-	/*sf::Vector2f size2(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);*/
+	sf::Vector2f size2(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);
 
 	if (!(pos1.y - size1.y > pos2.y + size2.y) &&
 		!(pos1.y + size1.y < pos2.y - size2.y) &&
@@ -90,38 +73,29 @@ bool Entity::IsCollidingRectRect(Entity* other) const
 
 bool Entity::IsCollidingCircleRect(Entity* other) const
 {
-	if (!other) return false;
+	sf::Vector2f position1 = GetPosition(0.5f, 0.5f);
+	sf::Vector2f position2 = other->GetPosition(0.5f, 0.5f);
 
-	// 1. Vérification rapide (rectangle englobant)
-	float radius = mShape.getRadius();
-	sf::Vector2f circlePos = GetPosition(0.5f, 0.5f); // Centre du cercle
-	sf::Vector2f circleBoundsPos(circlePos.x - radius, circlePos.y - radius); // Position du rectangle englobant
-	sf::Vector2f circleBoundsSize(radius * 2, radius * 2); // Taille du rectangle englobant
+	float sizex = SpriteGetWidth();
+	float sizey = SpriteGetHeight();
 
-	// Rectangle englobant du cercle
-	Entity circleBoundingBox;
-	circleBoundingBox.SetPosition(circleBoundsPos.x, circleBoundsPos.y);
-	circleBoundingBox.SetSize(circleBoundsSize.x, circleBoundsSize.y);
+	float left = position2.x - sizex / 2;
+	float right = position2.x + sizex / 2;
+	float top = position2.y - sizey / 2;
+	float bottom = position2.y + sizey / 2;
 
-	if (!circleBoundingBox.IsCollidingRectRect(other))
+	float closestX = std::clamp(position1.x, left, right);
+	float closestY = std::clamp(position1.y, top, bottom);
+
+	sf::Vector2f distance = sf::Vector2f(position1.x - closestX, position1.y - closestY);
+	float sqrLength = (distance.x * distance.x) + (distance.y * distance.y);
+
+	float radius = GetRadius();
+	if (sqrLength < (radius * radius))
 	{
-		return false; // Pas d'intersection au niveau des rectangles englobants
+		std::cout << "Collision Circle -> Rect" << std::endl;
 	}
-
-	// 2. Vérification précise (cercle-rectangle)
-	sf::Vector2f rectPos = other->GetPosition();
-	sf::Vector2f rectSize(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);
-
-	// Trouver le point le plus proche sur le rectangle
-	float closestX = std::clamp(circlePos.x, rectPos.x, rectPos.x + rectSize.x);
-	float closestY = std::clamp(circlePos.y, rectPos.y, rectPos.y + rectSize.y);
-
-	// Calculer la distance entre le centre du cercle et ce point
-	float distanceX = circlePos.x - closestX;
-	float distanceY = circlePos.y - closestY;
-	float distanceSquared = distanceX * distanceX + distanceY * distanceY;
-
-	return distanceSquared <= (radius * radius);
+	return sqrLength < (radius * radius);
 }
 
 
@@ -132,8 +106,7 @@ bool Entity::IsInside(float x, float y) const
 	float dx = x - position.x;
 	float dy = y - position.y;
 
-	float radius = mShape.getRadius();
-
+	float radius = mSprite.getTexture()->getSize().x * mSprite.getScale().x / 2;
 	return (dx * dx + dy * dy) < (radius * radius);
 }
 
@@ -272,6 +245,38 @@ Scene* Entity::GetScene() const
 float Entity::GetDeltaTime() const
 {
 	return GameManager::Get()->GetDeltaTime();
+}
+
+void Entity::SetSizeByX(int sizeX)
+{
+	float ratio = static_cast<float>(sizeX) / mSprite.getTexture()->getSize().x * mAnimation.col;
+
+	SetScale(ratio, ratio);
+}
+
+void Entity::SetSizeByY(int sizeY)
+{
+	float ratio = static_cast<float>(sizeY) / mSprite.getTexture()->getSize().y * mAnimation.row;
+
+	SetScale(ratio, ratio);
+}
+
+void Entity::UpdateAnimation(float mDeltaTime)
+{
+	mAnimation.progress += mDeltaTime;
+
+
+	if (mAnimation.col != 0) {
+		mAnimation.indexX = (mAnimation.indexX + 1) % mAnimation.col;
+	}
+	else {
+		mAnimation.indexX = 0; // or any other appropriate value
+	}
+
+	mSprite.setTextureRect(sf::IntRect((GetWidthTexture() / mAnimation.col) * mAnimation.indexX, (GetHeightTexture() / mAnimation.row) * mAnimation.indexY, GetWidthTexture() / mAnimation.row, GetHeightTexture() / mAnimation.col));
+
+	//OnUpdate();
+
 }
 
 void Entity::DrawCollision(sf::RenderWindow* window) const

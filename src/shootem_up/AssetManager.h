@@ -1,13 +1,17 @@
 #pragma once
-#include "Texture.h"
+#include <map>
+#include <string>
+
+class Texture;
 
 class AssetManager
 {
-	std::map<const char*, Texture> mTextures;
-
-private:
-	Texture* LoadTexture(const char* path);
+	std::map<std::string, Texture> mTextures;
 
 public:
-	Texture* GetTexture(const char* path);
+	Texture* LoadTexture(std::string path);
+
+	static AssetManager* Get();
+
+	Texture* GetTexture(std::string path);
 };

@@ -5,7 +5,7 @@ class Texture {
     sf::Texture mTexture;
 public:
     Texture() = default;
-    Texture(const char* path);
+    Texture(std::string path);
     ~Texture();
     sf::Texture* GetTexture();
 };

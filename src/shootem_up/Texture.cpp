@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Texture.h"
 
-Texture::Texture(const char* path)
+Texture::Texture(std::string path)
 {
 	mTexture.loadFromFile(path);
 }
