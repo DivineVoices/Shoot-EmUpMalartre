@@ -157,6 +157,10 @@ void SampleScene::TrySetSelectedEntity(int x, int y)
 
 void SampleScene::OnUpdate()
 {
+	float playerShootCooldown = 0.1f;
+
+	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
+
 	if(pEntitySelected != nullptr)
 	{
 		sf::Vector2f position = pEntitySelected->GetPosition();
@@ -213,9 +217,12 @@ void SampleScene::OnUpdate()
 	pPx = pPlayer->GetPosition().x + 35;
 	pPy = pPlayer->GetPosition().y;
 
-	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
-	pProjectiles.back()->SetPosition(pPx, pPy);
+	if (timeSinceLastShot >= playerShootCooldown) {
+		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+		pProjectiles.back()->SetPosition(pPx, pPy);
 
+		timeSinceLastShot = 0.0f;
+	}
 	for (auto it = pShooter.begin(); it != pShooter.end(); ) {
 		ShooterEntity* shooter = *it;
 

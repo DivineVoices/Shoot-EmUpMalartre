@@ -8,7 +8,7 @@ class StalkerEntity : public EnemyEntity
 public:
     StalkerEntity()
     {
-        EnemyLife = 50;
+        EnemyLife = 8;
     }
 	void OnUpdate() override;
 

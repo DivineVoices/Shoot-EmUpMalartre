@@ -7,7 +7,7 @@ protected:
 public:
 	ShooterEntity()
 	{
-		EnemyLife = 25;
+		EnemyLife = 10;
 	}
 	void OnUpdate() override;
 	void Shoot();

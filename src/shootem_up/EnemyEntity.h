@@ -4,7 +4,7 @@
 class EnemyEntity : public Entity
 {
 protected:
-	int EnemyLife = 20;
+	int EnemyLife = 5;
 public:
 	void OnCollision(Entity* other) override;
 	virtual void TakeDamage(int dmg);

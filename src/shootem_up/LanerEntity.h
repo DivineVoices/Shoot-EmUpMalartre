@@ -7,7 +7,7 @@ protected:
 public:
 	LanerEntity()
 	{
-		EnemyLife = 30;
+		EnemyLife = 15;
 	}
 	void OnUpdate() override;
 	void Shoot();

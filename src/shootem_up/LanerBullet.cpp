@@ -15,7 +15,7 @@ LanerBulletEntity::LanerBulletEntity()
 
 void LanerBulletEntity::OnUpdate()
 {
-    GoToDirection(-10000, GetPosition().y, 850);
+    GoToDirection(-10000, GetPosition().y, 1000);
 
     if (ToDestroy()) return;
 
