@@ -60,6 +60,8 @@ private:
 	int speed;
 
 	float timeSinceLastShot = 0.0f;
+	float timeSinceLastEnemyShot = 0.0f;
+
 	sf::Vector2f direction;
 
 public:

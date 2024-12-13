@@ -28,7 +28,7 @@ void SampleScene::OnInitialize()
 	pEnemy.back()->SetPosition(1000, 300);
 	pEnemy.back()->SetTag(Tag::ENNEMIES);
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));;
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
 	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
@@ -73,7 +73,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.mouseButton.button == sf::Mouse::Button::Left)
 		{
-			if (pEntitySelected != nullptr) 
+			if (pEntitySelected != nullptr)
 			{
 				pEntitySelected->GoToPosition(event.mouseButton.x, event.mouseButton.y, 100.f);
 			}
@@ -84,7 +84,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 	}
 
-	if (event.type == sf::Event::KeyPressed) 
+	if (event.type == sf::Event::KeyPressed)
 	{
 		// Mouvement
 		if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right) {
@@ -113,7 +113,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 				}
 				pHoming.back()->SetPosition(pPx, pPy);
 				pPy += 15;
-			}	
+			}
 		}
 
 		if (event.key.code == sf::Keyboard::R) {
@@ -122,7 +122,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 	}
 
-	if (event.type == sf::Event::KeyReleased) 
+	if (event.type == sf::Event::KeyReleased)
 	{
 		if (event.key.code == sf::Keyboard::D || event.key.code == sf::Keyboard::Right ||
 			event.key.code == sf::Keyboard::Q || event.key.code == sf::Keyboard::Left) {
@@ -158,8 +158,10 @@ void SampleScene::TrySetSelectedEntity(int x, int y)
 void SampleScene::OnUpdate()
 {
 	float playerShootCooldown = 0.1f;
+	float shooterShootCooldown = 1;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
+	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -175,7 +177,8 @@ void SampleScene::OnUpdate()
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
 	}
 
-	//Projectile
+	//Supression et debug des Projectiles
+
 	//std::cout << "Projectiles remaining: " << pProjectiles.size() << std::endl;
 
 	for (auto it = pProjectiles.begin(); it != pProjectiles.end(); ) {
@@ -190,14 +193,18 @@ void SampleScene::OnUpdate()
 		}
 	}
 
-	//Ennemies
-	for (size_t i = 0; i < pKamikaze.size(); ++i)
+	//----------Creation des projectiles du joueur----------
+
+	pPx = pPlayer->GetPosition().x + 35;
+	pPy = pPlayer->GetPosition().y;
+
+	//Basique
+	if (timeSinceLastShot >= playerShootCooldown) 
 	{
-			if (pPlayer->IsTag(SampleScene::Tag::PLAYER))
-			{
-				pKamikaze[i]->SetTarget(pPlayer);
-				break;
-			}
+		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+		pProjectiles.back()->SetPosition(pPx, pPy);
+
+		timeSinceLastShot = 0.0f;
 	}
 
 	//Homing
@@ -213,36 +220,44 @@ void SampleScene::OnUpdate()
 		}
 	}
 
-	//Creation des projectiles
-	pPx = pPlayer->GetPosition().x + 35;
-	pPy = pPlayer->GetPosition().y;
+	//----------Création des projectiles des ennemies----------
 
-	if (timeSinceLastShot >= playerShootCooldown) {
-		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
-		pProjectiles.back()->SetPosition(pPx, pPy);
+	//Shooter
+	if (timeSinceLastEnemyShot >= shooterShootCooldown)
+	{
+		for (auto it = pShooter.begin(); it != pShooter.end(); )
+		{
+			ShooterEntity* shooter = *it;
 
-		timeSinceLastShot = 0.0f;
-	}
-	for (auto it = pShooter.begin(); it != pShooter.end(); ) {
-		ShooterEntity* shooter = *it;
+			if (shooter->ToDestroy()) {
+				it = pShooter.erase(it);
+				continue;
+			}
 
-		if (shooter->ToDestroy()) {
-			it = pShooter.erase(it);
-			continue;
+			if (shooter->IsTag(Tag::ENNEMIES)) {
+				sf::Vector2f shooterPosition = shooter->GetPosition();
+				sf::Vector2f playerPosition = pPlayer->GetPosition();
+
+				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, sf::Color::Red));
+				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
+				pEnemyProjectiles.back()->SetTarget(pPlayer);
+			}
+
+			++it;
 		}
-
-		if (shooter->IsTag(Tag::ENNEMIES)) {
-			sf::Vector2f shooterPosition = shooter->GetPosition();
-			sf::Vector2f playerPosition = pPlayer->GetPosition();
-
-			pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(5, sf::Color::Red));
-			pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
-			pEnemyProjectiles.back()->SetTarget(pPlayer);
-		}
-
-		++it;
+		timeSinceLastEnemyShot = 0.0f;
 	}
 
+	//Kamikase (c'est lui le missile :)
+	for (size_t i = 0; i < pKamikaze.size(); ++i)
+	{
+		if (pPlayer->IsTag(SampleScene::Tag::PLAYER))
+		{
+			pKamikaze[i]->SetTarget(pPlayer);
+			break;
+		}
+	}
+	//Laner
 	for (auto& laner : pLaner)
 	{
 		if (laner->IsTag(Tag::ENNEMIES))
@@ -253,7 +268,7 @@ void SampleScene::OnUpdate()
 			pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
 		}
 	}
-
+	//----------Déplacement----------
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
 
