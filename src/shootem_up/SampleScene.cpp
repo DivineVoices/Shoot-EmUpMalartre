@@ -210,10 +210,15 @@ void SampleScene::OnUpdate()
 	pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
 	pProjectiles.back()->SetPosition(pPx, pPy);
 
-	for (auto& shooter : pShooter)
-	{
-		if (shooter->IsTag(Tag::ENNEMIES))
-		{
+	for (auto it = pShooter.begin(); it != pShooter.end(); ) {
+		ShooterEntity* shooter = *it;
+
+		if (shooter->ToDestroy()) {
+			it = pShooter.erase(it);
+			continue;
+		}
+
+		if (shooter->IsTag(Tag::ENNEMIES)) {
 			sf::Vector2f shooterPosition = shooter->GetPosition();
 			sf::Vector2f playerPosition = pPlayer->GetPosition();
 
@@ -221,7 +226,10 @@ void SampleScene::OnUpdate()
 			pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
 			pEnemyProjectiles.back()->SetTarget(pPlayer);
 		}
+
+		++it;
 	}
+
 
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);

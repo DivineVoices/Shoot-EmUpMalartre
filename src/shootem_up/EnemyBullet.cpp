@@ -9,7 +9,7 @@
 #include "EnemyEntity.h"
 
 EnemyBulletEntity::EnemyBulletEntity()
-    : m_target(nullptr)
+    : m_target(nullptr), m_direction(0.f, 0.f)
 {
     SetTag(SampleScene::Tag::ENEMYBULLET);
 }
@@ -17,21 +17,31 @@ EnemyBulletEntity::EnemyBulletEntity()
 void EnemyBulletEntity::SetTarget(Entity* target)
 {
     m_target = target;
+
+    if (m_target) {
+        sf::Vector2f targetPosition = m_target->GetPosition();
+        sf::Vector2f currentPosition = GetPosition();
+        sf::Vector2f direction = targetPosition - currentPosition;
+
+        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        if (length > 0.f) {
+            m_direction = direction / length; // Normalisation
+        }
+    }
 }
 
 void EnemyBulletEntity::OnUpdate()
 {
-    GoToDirection(-10000, GetPosition().y, 850);
+    sf::Vector2f currentPosition = GetPosition();
+    GoToDirection(currentPosition.x + m_direction.x * 5, currentPosition.y + m_direction.y * 5, 250);
 
     if (ToDestroy()) return;
 
     Scene* scene = GetScene();
     if (scene == nullptr) return;
 
-    sf::Vector2f position = GetPosition(0.f, 0.f);
-    int width = scene->GetWindowWidth();
-
-    if (position.x > 1280) {
+    sf::Vector2f position = GetPosition();
+    if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {
         Destroy();
     }
 }
