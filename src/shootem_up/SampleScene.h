@@ -12,6 +12,7 @@ class StalkerEntity;
 class KamikazeEntity;
 class ShooterEntity;
 class LanerEntity;
+class PlayerEntity;
 
 class EnemyBulletEntity;
 class LanerBulletEntity;
@@ -44,7 +45,7 @@ class SampleScene : public Scene
 	std::vector<HomingBulletEntity*> pHoming;
 	std::vector<RocketBulletEntity*> pRocket;
 
-	DummyEntity* pPlayer;
+	PlayerEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
 

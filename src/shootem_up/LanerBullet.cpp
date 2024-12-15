@@ -2,6 +2,8 @@
 
 #include "LanerBullet.h"
 
+#include "PlayerEntity.h"
+
 #include "SampleScene.h"
 
 #include "Windows.h"
@@ -37,11 +39,13 @@ void LanerBulletEntity::OnCollision(Entity* pCollidedWith)
 
     if (pCollidedWith->IsTag(SampleScene::Tag::PLAYER))
     {
-        EnemyEntity* player = dynamic_cast<EnemyEntity*>(pCollidedWith);
+        std::cout << "Collision avec le joueur détectée !" << std::endl;
+
+        PlayerEntity* player = dynamic_cast<PlayerEntity*>(pCollidedWith);
         if (player != nullptr)
         {
             player->TakeDamage(1);
+            Destroy();
         }
-        Destroy();
     }
 }

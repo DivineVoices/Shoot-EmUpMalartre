@@ -8,6 +8,7 @@
 #include "KamikazeEntity.h"
 #include "ShooterEntity.h"
 #include "LanerEntity.h"
+#include "PlayerEntity.h"
 
 #include "EnemyBullet.h"
 #include "LanerBullet.h"
@@ -44,7 +45,7 @@ void SampleScene::OnInitialize()
 	pLaner.back()->SetPosition(1000, 600);
 	pLaner.back()->SetTag(Tag::ENNEMIES);
 
-	pPlayer = CreateEntity<DummyEntity>(25, sf::Color::White);
+	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
 	pPlayer->SetPosition(800, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
