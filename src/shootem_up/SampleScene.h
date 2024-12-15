@@ -13,6 +13,7 @@ class KamikazeEntity;
 class ShooterEntity;
 class LanerEntity;
 class PlayerEntity;
+class BossEntity;
 
 class EnemyBulletEntity;
 class LanerBulletEntity;
@@ -31,12 +32,15 @@ struct AABB
 
 class SampleScene : public Scene
 {
+	std::vector<Entity*> pAllEnemies;
+
 	std::vector<DummyEntity*> pDummy;
 	std::vector<EnemyEntity*> pEnemy;
 	std::vector<StalkerEntity*> pStalker;
 	std::vector<KamikazeEntity*> pKamikaze;
 	std::vector<ShooterEntity*> pShooter;
 	std::vector<LanerEntity*> pLaner;
+	std::vector<BossEntity*> pBoss;
 
 	std::vector<EnemyBulletEntity*> pEnemyProjectiles;
 	std::vector<LanerBulletEntity*> pLanerProjectiles;
@@ -62,6 +66,7 @@ private:
 
 	float timeSinceLastShot = 0.0f;
 	float timeSinceLastEnemyShot = 0.0f;
+	float timeSinceLastLanerShot = 0.0f;
 
 	sf::Vector2f direction;
 

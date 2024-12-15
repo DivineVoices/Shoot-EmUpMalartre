@@ -9,6 +9,7 @@
 #include "ShooterEntity.h"
 #include "LanerEntity.h"
 #include "PlayerEntity.h"
+#include "BossEntity.h"
 
 #include "EnemyBullet.h"
 #include "LanerBullet.h"
@@ -21,13 +22,13 @@
 
 void SampleScene::OnInitialize()
 {
-	pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	/*pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
 	pDummy.back()->SetPosition(1000, 100);
-	pDummy.back()->SetTag(Tag::ENNEMIES);
+	pDummy.back()->SetTag(Tag::ENNEMIES);*/
 
-	pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+	/*pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
 	pEnemy.back()->SetPosition(1000, 300);
-	pEnemy.back()->SetTag(Tag::ENNEMIES);
+	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
 
 	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
@@ -45,9 +46,36 @@ void SampleScene::OnInitialize()
 	pLaner.back()->SetPosition(1000, 600);
 	pLaner.back()->SetTag(Tag::ENNEMIES);
 
+	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+	pBoss.back()->SetPosition(1000, 350);
+	pBoss.back()->SetTag(Tag::ENNEMIES);
+
 	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
-	pPlayer->SetPosition(800, 350);
+	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
+
+	// Ajouter toutes les entités ennemies dans pAllEnemies
+	for (auto& dummy : pDummy) {
+		pAllEnemies.push_back(dummy);
+	}
+	for (auto& enemy : pEnemy) {
+		pAllEnemies.push_back(enemy);
+	}
+	for (auto& stalker : pStalker) {
+		pAllEnemies.push_back(stalker);
+	}
+	for (auto& kamikaze : pKamikaze) {
+		pAllEnemies.push_back(kamikaze);
+	}
+	for (auto& shooter : pShooter) {
+		pAllEnemies.push_back(shooter);
+	}
+	for (auto& laner : pLaner) {
+		pAllEnemies.push_back(laner);
+	}
+	for (auto& boss : pBoss) {
+		pAllEnemies.push_back(boss);
+	}
 
 	for (auto& stalker : pStalker) {
 		stalker->mPlayer = pPlayer;
@@ -106,7 +134,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
 				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
-				for (auto& enemy : pDummy) {
+				for (auto& enemy : pAllEnemies) {
 					if (enemy->IsTag(SampleScene::Tag::ENNEMIES)) {
 						pHoming.back()->SetTarget(enemy);
 						break;
@@ -160,9 +188,11 @@ void SampleScene::OnUpdate()
 {
 	float playerShootCooldown = 0.1f;
 	float shooterShootCooldown = 1;
+	float lanerShootCooldown = 6;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
+	timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -211,7 +241,7 @@ void SampleScene::OnUpdate()
 	//Homing
 	for (size_t i = 0; i < pHoming.size(); ++i)
 	{
-		for (auto& enemy : pDummy)
+		for (auto& enemy : pAllEnemies)
 		{
 			if (enemy->IsTag(SampleScene::Tag::ENNEMIES))
 			{
@@ -259,14 +289,17 @@ void SampleScene::OnUpdate()
 		}
 	}
 	//Laner
-	for (auto& laner : pLaner)
+	if (timeSinceLastLanerShot >= lanerShootCooldown)
 	{
-		if (laner->IsTag(Tag::ENNEMIES))
+		for (auto& laner : pLaner)
 		{
-			sf::Vector2f lanerPosition = laner->GetPosition();
+			if (laner->IsTag(Tag::ENNEMIES))
+			{
+				sf::Vector2f lanerPosition = laner->GetPosition();
 
-			pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, sf::Color::Red));
-			pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
+				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, sf::Color::Red));
+				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
+			}
 		}
 	}
 	//----------Déplacement----------

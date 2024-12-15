@@ -26,7 +26,6 @@ void ShooterEntity::Shoot()
     std::cout << "[DEBUG] Position de l'ennemie shooter : (" << shooterPosition.x << ", " << shooterPosition.y << ")" << std::endl;
 
     const int bulletCount = 1;
-    const float speed = 5.0f;
 
     for (int i = 0; i < bulletCount; ++i)
     {

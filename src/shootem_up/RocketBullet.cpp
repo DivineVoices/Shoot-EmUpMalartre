@@ -4,7 +4,7 @@
 
 #include "SampleScene.h"
 
-#include "Bullet.h"
+#include "Explosion.h"
 
 #include "Windows.h"
 
@@ -40,7 +40,7 @@ void RocketBulletEntity::Explode()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        BulletEntity* bullet = CreateEntity<BulletEntity>(200, sf::Color::Yellow);
+        ExplosiontEntity* bullet = CreateEntity<ExplosiontEntity>(200, sf::Color::Red);
 
         if (bullet == nullptr)
         {
