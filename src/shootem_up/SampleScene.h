@@ -15,6 +15,13 @@ class DummyEntity;
 class EnemyEntity;
 class StalkerEntity;
 class KamikazeEntity;
+class ShooterEntity;
+class LanerEntity;
+class PlayerEntity;
+class BossEntity;
+
+class EnemyBulletEntity;
+class LanerBulletEntity;
 
 class BulletEntity;
 class HomingBulletEntity;
@@ -30,16 +37,24 @@ struct AABB
 
 class SampleScene : public Scene
 {
+	std::vector<Entity*> pAllEnemies;
+
 	std::vector<DummyEntity*> pDummy;
 	std::vector<EnemyEntity*> pEnemy;
 	std::vector<StalkerEntity*> pStalker;
 	std::vector<KamikazeEntity*> pKamikaze;
+	std::vector<ShooterEntity*> pShooter;
+	std::vector<LanerEntity*> pLaner;
+	std::vector<BossEntity*> pBoss;
+
+	std::vector<EnemyBulletEntity*> pEnemyProjectiles;
+	std::vector<LanerBulletEntity*> pLanerProjectiles;
 
 	std::vector<BulletEntity*> pProjectiles;
 	std::vector<HomingBulletEntity*> pHoming;
 	std::vector<RocketBulletEntity*> pRocket;
 
-	DummyEntity* pPlayer;
+	PlayerEntity* pPlayer;
 
 	DummyEntity* pEntitySelected;
 
@@ -57,6 +72,12 @@ private:
 	size_t currentWaveIndex = 0;
 
 	int speed;
+
+	float timeSinceLastShot = 0.0f;
+	float timeSinceLastEnemyShot = 0.0f;
+	float timeSinceLastLanerShot = 0.0f;
+	float timeSinceLastBossShot = 0.0f;
+
 	sf::Vector2f direction;
 
 public:
@@ -69,7 +90,8 @@ public:
 	{
 		ENNEMIES,
 		PLAYER,
-		BULLET
+		BULLET,
+		ENEMYBULLET
 	};
 
 	AABB mAreas[5];

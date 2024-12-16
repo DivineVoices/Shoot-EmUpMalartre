@@ -1,11 +1,12 @@
 #pragma once
 #include "Entity.h"
 
-class EnemyEntity : public Entity
+class PlayerEntity : public Entity
 {
-protected:
-	int EnemyLife = 5;
+	int PlayerLife = 3;
 public:
 	void OnCollision(Entity* other) override;
+	void OnUpdate() override;
 	virtual void TakeDamage(int dmg);
 };
+

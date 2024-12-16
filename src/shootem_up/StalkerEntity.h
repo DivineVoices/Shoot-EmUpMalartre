@@ -1,16 +1,16 @@
 #pragma once
 
 #include "EnemyEntity.h"
-#include "DummyEntity.h"
+#include "PlayerEntity.h"
 
 class StalkerEntity : public EnemyEntity
 {
 public:
-	void OnUpdate() override;
-
     StalkerEntity()
     {
-        EnemyLife = 50;
+        EnemyLife = 8;
     }
-    DummyEntity* mPlayer;
+	void OnUpdate() override;
+
+    PlayerEntity* mPlayer;
 };

@@ -6,6 +6,8 @@
 
 #include "Windows.h"
 
+#include "EnemyEntity.h"
+
 HomingBulletEntity::HomingBulletEntity()
     : m_target(nullptr) {}
 
@@ -33,10 +35,8 @@ void HomingBulletEntity::OnUpdate()
     Scene* scene = GetScene();
     if (scene == nullptr) return;
 
-    sf::Vector2f position = GetPosition(0.f, 0.f);
-    int width = scene->GetWindowWidth();
-
-    if (position.x > 1280) {
+    sf::Vector2f position = GetPosition();
+    if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {
         Destroy();
     }
 }
@@ -44,9 +44,14 @@ void HomingBulletEntity::OnUpdate()
 void HomingBulletEntity::OnCollision(Entity* pCollidedWith)
 {
     if (pCollidedWith == nullptr) return;
+
     if (pCollidedWith->IsTag(SampleScene::Tag::ENNEMIES))
     {
+        EnemyEntity* enemy = dynamic_cast<EnemyEntity*>(pCollidedWith);
+        if (enemy != nullptr)
+        {
+            enemy->TakeDamage(10);
+        }
         Destroy();
-        pCollidedWith->Destroy();
     }
 }

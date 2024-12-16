@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "Bullet.h"
+#include "Explosion.h"
 
 #include "SampleScene.h"
 
@@ -8,12 +8,12 @@
 
 #include "EnemyEntity.h"
 
-BulletEntity::BulletEntity()
+ExplosiontEntity::ExplosiontEntity()
 {
     SetTag(SampleScene::Tag::BULLET);
 }
 
-void BulletEntity::OnUpdate()
+void ExplosiontEntity::OnUpdate()
 {
     GoToDirection(10000, GetPosition().y, 850);
 
@@ -22,16 +22,14 @@ void BulletEntity::OnUpdate()
     Scene* scene = GetScene();
     if (scene == nullptr) return;
 
-    sf::Vector2f position = GetPosition(0.f, 0.f);
-    int width = scene->GetWindowWidth();
-
-    if (position.x > 1280) {
+    sf::Vector2f position = GetPosition();
+    if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {
         Destroy();
     }
 }
 
 
-void BulletEntity::OnCollision(Entity* pCollidedWith)
+void ExplosiontEntity::OnCollision(Entity* pCollidedWith)
 {
     if (pCollidedWith == nullptr) return;
 
@@ -40,7 +38,7 @@ void BulletEntity::OnCollision(Entity* pCollidedWith)
         EnemyEntity* enemy = dynamic_cast<EnemyEntity*>(pCollidedWith);
         if (enemy != nullptr)
         {
-            enemy->TakeDamage(1);
+            enemy->TakeDamage(80);
         }
         Destroy();
     }
