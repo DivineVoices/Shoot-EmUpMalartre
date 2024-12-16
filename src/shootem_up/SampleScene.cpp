@@ -200,7 +200,7 @@ void SampleScene::OnUpdate()
 	float playerShootCooldown = 0.1f;
 	float shooterShootCooldown = 1;
 	float lanerShootCooldown = 6;
-	float bossShootCooldown = 6;
+	float bossShootCooldown = 0.5;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
@@ -302,6 +302,7 @@ void SampleScene::OnUpdate()
 			laner->Shoot();
 		}
 	}
+
 	//----------Déplacement----------
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
