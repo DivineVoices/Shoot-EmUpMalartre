@@ -7,7 +7,7 @@ Texture* AssetManager::LoadTexture(std::string path)
 {
 	Texture* texture = new Texture(path);
 	std::cout << "Loading texture: " << path << std::endl;
-	mTextures[path] = *texture;
+	mTextures[path] = texture;
 
 	return texture;
 }
@@ -19,7 +19,7 @@ Texture* AssetManager::GetTexture(std::string path)
 	if (it == mTextures.end())
 		return LoadTexture(path);
 	else
-		return &it->second;
+		return it->second;
 }
 
 AssetManager* AssetManager::Get()

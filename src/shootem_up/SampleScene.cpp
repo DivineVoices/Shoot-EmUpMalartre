@@ -12,11 +12,13 @@ void SampleScene::OnInitialize()
 {
 	AssetManager assetManager;
 
-	pEntity1 = CreateEntity<DummyEntity>(100, "../../../res/Ball.png", assetManager);
-	pEntity1->SetPosition(500, 300);
+	pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	pEntity1->SetAnimatedSpriteType(Entity::AnimatedSpriteType::AnimatedSprite);
+	pEntity1->GetTexture();
+	pEntity1->SetPosition(500, 100);
 
-	pEntity2 = CreateEntity<DummyEntity>(100, 100, "../../../res/car.png", assetManager);
-	pEntity2->SetPosition(100, 100);
+	pEntity2 = CreateEntity<DummyEntity>(100, 100, "../../../res/car.png", 1, 1, 1.0f);
+	pEntity2->SetPosition(500, 300);
 
 	pEntitySelected = nullptr;
 }

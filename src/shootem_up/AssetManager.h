@@ -6,7 +6,7 @@ class Texture;
 
 class AssetManager
 {
-	std::map<std::string, Texture> mTextures;
+	std::map<std::string, Texture* > mTextures;
 
 public:
 	Texture* LoadTexture(std::string path);

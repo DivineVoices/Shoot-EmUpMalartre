@@ -22,7 +22,17 @@ class Entity
         float distance;
 		bool isSet;
     };
+    
+    struct Animation {
+        int row = 1;
+        int col = 1;
+        int indexX;
+        int indexY;
+        float animationTime;
+        float progress;
+    };
 
+public:
     enum class CollisionType
     {
         Circle,
@@ -34,15 +44,6 @@ class Entity
 
         StaticSprite,
         AnimatedSprite
-    };
-    
-    struct Animation {
-        int row = 1;
-        int col = 1;
-        int indexX;
-        int indexY;
-        float animationTime;
-        float progress;
     };
 
 protected:

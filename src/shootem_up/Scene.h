@@ -31,10 +31,7 @@ public:
 	};
 
 	template<typename T>
-	T* CreateEntity(float _w, const char* _path, AssetManager& assetManager);
-
-	template<typename T>
-	T* CreateEntity(float _w, float _h, const char* _path, AssetManager& assetManager);
+	T* CreateEntity(float _w, float _h, std::string _path, int row, int col, float frameTime);
 
 	float GetDeltaTime() const;
 
