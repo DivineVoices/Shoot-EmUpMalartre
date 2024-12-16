@@ -20,8 +20,20 @@
 
 #include "Debug.h"
 
+#include "AssetManager.h"
+
 void SampleScene::OnInitialize()
 {
+	AssetManager assetManager;
+
+	pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	pEntity1->SetAnimatedSpriteType(Entity::AnimatedSpriteType::AnimatedSprite);
+	pEntity1->GetTexture();
+	pEntity1->SetPosition(500, 100);
+
+	pEntity2 = CreateEntity<DummyEntity>(100, 100, "../../../res/car.png", 1, 1, 1.0f);
+	pEntity2->SetPosition(500, 300);
+  
 	/*pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
 	pDummy.back()->SetPosition(1000, 100);
 	pDummy.back()->SetTag(Tag::ENNEMIES);*/
@@ -54,7 +66,7 @@ void SampleScene::OnInitialize()
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
-	// Ajouter toutes les entités ennemies dans pAllEnemies
+	// Ajouter toutes les entitÃ©s ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
 		pAllEnemies.push_back(dummy);
 	}
@@ -129,7 +141,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 			direction.y = 1;
 		}
 
-		//Missiles spéciaux
+		//Missiles spÃ©ciaux
 		if (event.key.code == sf::Keyboard::E) {
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
@@ -200,7 +212,7 @@ void SampleScene::OnUpdate()
 		Debug::DrawCircle(position.x, position.y, 10, sf::Color::Blue);
 	}
 
-	//Lanes pour le débug
+	//Lanes pour le dÃ©bug
 	for (int i = 0; i < 5; i++)
 	{
 		const AABB& aabb = mAreas[i];
@@ -251,7 +263,7 @@ void SampleScene::OnUpdate()
 		}
 	}
 
-	//----------Création des projectiles des ennemies----------
+	//----------CrÃ©ation des projectiles des ennemies----------
 
 	//Shooter
 	if (timeSinceLastEnemyShot >= shooterShootCooldown)
@@ -302,7 +314,7 @@ void SampleScene::OnUpdate()
 			}
 		}
 	}
-	//----------Déplacement----------
+	//----------DÃ©placement----------
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
 
