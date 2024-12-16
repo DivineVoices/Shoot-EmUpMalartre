@@ -35,10 +35,8 @@ void HomingBulletEntity::OnUpdate()
     Scene* scene = GetScene();
     if (scene == nullptr) return;
 
-    sf::Vector2f position = GetPosition(0.f, 0.f);
-    int width = scene->GetWindowWidth();
-
-    if (position.x > 1280) {
+    sf::Vector2f position = GetPosition();
+    if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {
         Destroy();
     }
 }
