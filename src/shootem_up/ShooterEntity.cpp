@@ -38,6 +38,7 @@ void ShooterEntity::Shoot()
         }
 
         badbullet->SetPosition(shooterPosition.x, shooterPosition.y);
+        badbullet->SetTarget(mPlayer);
     }
     sf::Vector2f position = GetPosition();
     if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {

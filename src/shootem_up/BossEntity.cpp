@@ -22,8 +22,8 @@ void BossEntity::Shoot()
         return;
     }
 
-    sf::Vector2f bossPosition = GetPosition();
-    std::cout << "[DEBUG] Position de l'ennemie shooter : (" << bossPosition.x << ", " << bossPosition.y << ")" << std::endl;
+    sf::Vector2f shooterPosition = GetPosition();
+    std::cout << "[DEBUG] Position de l'ennemie shooter : (" << shooterPosition.x << ", " << shooterPosition.y << ")" << std::endl;
 
     const int bulletCount = 1;
 
@@ -37,6 +37,11 @@ void BossEntity::Shoot()
             continue;
         }
 
-        badbullet->SetPosition(bossPosition.x, bossPosition.y);
+        badbullet->SetPosition(shooterPosition.x, shooterPosition.y);
+        badbullet->SetTarget(mPlayer);
+    }
+    sf::Vector2f position = GetPosition();
+    if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {
+        Destroy();
     }
 }

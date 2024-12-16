@@ -30,6 +30,10 @@ void SampleScene::OnInitialize()
 	pEnemy.back()->SetPosition(1000, 300);
 	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
 
+	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
+	pPlayer->SetPosition(500, 350);
+	pPlayer->SetTag(Tag::PLAYER);
+
 	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
@@ -40,6 +44,7 @@ void SampleScene::OnInitialize()
 
 	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
 	pShooter.back()->SetPosition(1000, 500);
+	pShooter.back()->SetTarget(pPlayer);
 	pShooter.back()->SetTag(Tag::ENNEMIES);
 
 	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
@@ -48,11 +53,10 @@ void SampleScene::OnInitialize()
 
 	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
 	pBoss.back()->SetPosition(1000, 350);
+	pBoss.back()->SetTarget(pPlayer);
 	pBoss.back()->SetTag(Tag::ENNEMIES);
 
-	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
-	pPlayer->SetPosition(500, 350);
-	pPlayer->SetTag(Tag::PLAYER);
+	
 
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
@@ -189,10 +193,12 @@ void SampleScene::OnUpdate()
 	float playerShootCooldown = 0.1f;
 	float shooterShootCooldown = 1;
 	float lanerShootCooldown = 6;
+	float bossShootCooldown = 6;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
+	timeSinceLastBossShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -265,14 +271,7 @@ void SampleScene::OnUpdate()
 				continue;
 			}
 
-			if (shooter->IsTag(Tag::ENNEMIES)) {
-				sf::Vector2f shooterPosition = shooter->GetPosition();
-				sf::Vector2f playerPosition = pPlayer->GetPosition();
-
-				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, sf::Color::Red));
-				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
-				pEnemyProjectiles.back()->SetTarget(pPlayer);
-			}
+			shooter->Shoot();
 
 			++it;
 		}
@@ -293,13 +292,7 @@ void SampleScene::OnUpdate()
 	{
 		for (auto& laner : pLaner)
 		{
-			if (laner->IsTag(Tag::ENNEMIES))
-			{
-				sf::Vector2f lanerPosition = laner->GetPosition();
-
-				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, sf::Color::Red));
-				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
-			}
+			laner->Shoot();
 		}
 	}
 	//----------Déplacement----------

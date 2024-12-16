@@ -29,7 +29,7 @@ void LanerEntity::Shoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(10, sf::Color::Red);
+        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(20, sf::Color::Red);
 
         if (badbullet == nullptr)
         {
