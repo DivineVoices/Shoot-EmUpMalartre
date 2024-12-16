@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <assert.h>
 
 void Entity::Initialize(float _w, float _h, std::string _path, int row, int col, float frameTime)
 {
@@ -15,6 +16,7 @@ void Entity::Initialize(float _w, float _h, std::string _path, int row, int col,
 	std::cout << "1";
 	if (texture == nullptr) {
 		std::cout << "Failed to load texture: " << _path << std::endl;
+		assert(texture != nullptr);
 		return;
 	}
 	mTexture = *texture->GetTexture();

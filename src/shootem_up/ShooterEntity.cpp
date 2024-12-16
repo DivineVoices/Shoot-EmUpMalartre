@@ -29,7 +29,7 @@ void ShooterEntity::Shoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(5, sf::Color::Red);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(5, 5, "../../../res/car.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {

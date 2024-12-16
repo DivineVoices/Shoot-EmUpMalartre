@@ -26,13 +26,10 @@ void SampleScene::OnInitialize()
 {
 	AssetManager assetManager;
 
-	pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	/*pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
 	pEntity1->SetAnimatedSpriteType(Entity::AnimatedSpriteType::AnimatedSprite);
 	pEntity1->GetTexture();
-	pEntity1->SetPosition(500, 100);
-
-	pEntity2 = CreateEntity<DummyEntity>(100, 100, "../../../res/car.png", 1, 1, 1.0f);
-	pEntity2->SetPosition(500, 300);
+	pEntity1->SetPosition(500, 100);*/
   
 	/*pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
 	pDummy.back()->SetPosition(1000, 100);
@@ -42,27 +39,27 @@ void SampleScene::OnInitialize()
 	pEnemy.back()->SetPosition(1000, 300);
 	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
-	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
+	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
 	pKamikaze.back()->SetPosition(1000, 500);
 	pKamikaze.back()->SetTarget(pPlayer);
 	pKamikaze.back()->SetTag(Tag::ENNEMIES);
 
-	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
+	pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
 	pShooter.back()->SetPosition(1000, 500);
 	pShooter.back()->SetTag(Tag::ENNEMIES);
 
-	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
+	pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
 	pLaner.back()->SetPosition(1000, 600);
 	pLaner.back()->SetTag(Tag::ENNEMIES);
 
-	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+	pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
 	pBoss.back()->SetPosition(1000, 350);
 	pBoss.back()->SetTag(Tag::ENNEMIES);
 
-	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
+	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
@@ -145,7 +142,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::E) {
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
-				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
+				pHoming.push_back(CreateEntity<HomingBulletEntity>(20, 20, "../../../res/homing.png", 1, 1, 1.0f));
 				for (auto& enemy : pAllEnemies) {
 					if (enemy->IsTag(SampleScene::Tag::ENNEMIES)) {
 						pHoming.back()->SetTarget(enemy);
@@ -158,7 +155,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 
 		if (event.key.code == sf::Keyboard::R) {
-			pRocket.push_back(CreateEntity<RocketBulletEntity>(10, sf::Color::Green));
+			pRocket.push_back(CreateEntity<RocketBulletEntity>(20, 20, "../../../res/rocket.png", 1, 1, 1.0f));
 			pRocket.back()->SetPosition(pPx, pPy);
 		}
 	}
@@ -244,7 +241,7 @@ void SampleScene::OnUpdate()
 	//Basique
 	if (timeSinceLastShot >= playerShootCooldown) 
 	{
-		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+		pProjectiles.push_back(CreateEntity<BulletEntity>(10, 10, "../../../res/bullet.png", 1, 1, 1.0f));
 		pProjectiles.back()->SetPosition(pPx, pPy);
 
 		timeSinceLastShot = 0.0f;
@@ -281,7 +278,7 @@ void SampleScene::OnUpdate()
 				sf::Vector2f shooterPosition = shooter->GetPosition();
 				sf::Vector2f playerPosition = pPlayer->GetPosition();
 
-				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, sf::Color::Red));
+				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, 10, "../../../res/ennemybullet.png", 1, 1, 1.0f));
 				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
 				pEnemyProjectiles.back()->SetTarget(pPlayer);
 			}
@@ -309,7 +306,7 @@ void SampleScene::OnUpdate()
 			{
 				sf::Vector2f lanerPosition = laner->GetPosition();
 
-				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, sf::Color::Red));
+				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, 20, "../../../res/lanerbullet.png", 1, 1, 1.0f));
 				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
 			}
 		}
