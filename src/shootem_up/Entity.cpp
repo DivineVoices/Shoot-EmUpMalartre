@@ -32,6 +32,7 @@ void Entity::Initialize(float _w, float _h, std::string _path, int row, int col,
 	mTag = -1;
 	mTarget.isSet = false;
 
+
 	mAnimation.row = row;
 	mAnimation.col = col;
 	mAnimation.indexX = 0;
@@ -58,19 +59,29 @@ bool Entity::IsCollidingCircleCircle(Entity* other) const
 
 bool Entity::IsCollidingRectRect(Entity* other) const
 {
-	sf::Vector2f pos1 = GetPosition();
-	sf::Vector2f size1(mShape.getGlobalBounds().width, mShape.getGlobalBounds().height);
-	sf::Vector2f pos2 = other->GetPosition();
-	sf::Vector2f size2(other->mShape.getGlobalBounds().width, other->mShape.getGlobalBounds().height);
+	sf::Vector2f position1 = GetPosition(0.5f, 0.5f);
+	sf::Vector2f position2 = other->GetPosition(0.5f, 0.5f);
 
-	if (!(pos1.y - size1.y > pos2.y + size2.y) &&
-		!(pos1.y + size1.y < pos2.y - size2.y) &&
-		!(pos1.x - size1.x > pos2.x + size2.x) &&
-		!(pos1.x + size1.x < pos2.x - size2.x))
+	float sizex1 = SpriteGetWidth();
+	float sizey1 = SpriteGetHeight();
+
+	float sizex2 = other->SpriteGetWidth();
+	float sizey2 = other->SpriteGetHeight();
+
+	float left1 = position1.x - sizex1 / 2;
+	float right1 = position1.x + sizex1 / 2;
+	float top1 = position1.y - sizey1 / 2;
+	float bottom1 = position1.y + sizey1 / 2;
+
+	float left2 = position2.x - sizex2 / 2;
+	float right2 = position2.x + sizex2 / 2;
+	float top2 = position2.y - sizey2 / 2;
+	float bottom2 = position2.y + sizey2 / 2;
+	if (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2)
 	{
-		return true;
+		std::cout << "Collision Rect -> Rect" << std::endl;
 	}
-	return false;
+	return (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2);
 }
 
 bool Entity::IsCollidingCircleRect(Entity* other) const
@@ -218,13 +229,14 @@ void Entity::SetSize(float x, float y)
 
 void Entity::Update()
 {
+	//Utils::Normalize(mDirection);
+
 	float dt = GetDeltaTime();
 	float distance = dt * mSpeed;
 	sf::Vector2f translation = distance * mDirection;
-	mShape.move(translation);
 	mSprite.move(translation);
 
-	if (mTarget.isSet) 
+	if (mTarget.isSet)
 	{
 		mTarget.distance -= distance;
 
@@ -235,7 +247,10 @@ void Entity::Update()
 			mTarget.isSet = false;
 		}
 	}
-
+	if (mAnimatedSpriteType == AnimatedSpriteType::AnimatedSprite)
+	{
+		UpdateAnimation(dt);
+	}
 	OnUpdate();
 }
 
