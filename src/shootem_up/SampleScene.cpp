@@ -32,7 +32,7 @@ void SampleScene::OnInitialize()
 	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
 	pKamikaze.back()->SetPosition(1000, 500);
 	pKamikaze.back()->SetTarget(pPlayer);
-	pKamikaze.back()->SetTag(Tag::ENNEMIES);*/ 
+	pKamikaze.back()->SetTag(Tag::ENNEMIES);
 
 	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
 	pShooter.back()->SetPosition(1000, 500);
