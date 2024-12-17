@@ -11,6 +11,7 @@ protected:
 public:
 	void SetTarget(Entity* player) { mPlayer = player; }
 	void BasicShoot();
+	void WallShoot();
 	void EventailShoot();
 	BossEntity()
 	{

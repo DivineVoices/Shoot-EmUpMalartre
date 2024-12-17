@@ -63,7 +63,7 @@ void BossEntity::BasicShoot()
     }
 }
 
-void BossEntity::EventailShoot()
+void BossEntity::WallShoot()
 {
     Scene* scene = GetScene();
     if (scene == nullptr)
@@ -73,48 +73,32 @@ void BossEntity::EventailShoot()
     }
 
     sf::Vector2f bossPosition = GetPosition();
-    sf::Vector2f playerPosition = mPlayer->GetPosition();  // Récupérer la position du joueur
-    std::cout << "[DEBUG] Position du joueur : (" << playerPosition.x << ", " << playerPosition.y << ")" << std::endl;
+    std::cout << "[DEBUG] Position du Boss pour EventailShoot : (" << bossPosition.x << ", " << bossPosition.y << ")" << std::endl;
 
-    const int bulletCount = 10; // Nombre de projectiles
-    const float spreadAngle = 45.f; // Angle de dispersion (en degrés)
-    const float bulletSpeed = 5.f;  // Vitesse des projectiles
-
-    // Calculer l'angle entre chaque projectile
-    float angleStep = spreadAngle / (bulletCount - 1); // Espacement entre les projectiles
+    const int bulletCount = 5;
+    const float spacing = 60.0f;
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        // Calculer l'angle de dispersion pour ce projectile
-        float angle = -spreadAngle / 2.f + i * angleStep;
+        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(10, sf::Color::Red);
 
-        // Convertir l'angle en radians
-        float angleRad = angle * 3.14159f / 180.f;
-
-        // Calculer la direction vers le joueur
-        sf::Vector2f direction = playerPosition - bossPosition;
-        float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-        if (length > 0.f)
+        if (bullet == nullptr)
         {
-            direction /= length; // Normalisation pour obtenir une direction unitaire
-        }
-
-        // Appliquer la dispersion en ajustant la direction
-        sf::Vector2f dispersedDirection(
-            direction.x * cos(angleRad) - direction.y * sin(angleRad),
-            direction.x * sin(angleRad) + direction.y * cos(angleRad)
-        );
-
-        // Créer un nouveau projectile
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(10, sf::Color::Red);
-
-        if (badbullet == nullptr)
-        {
-            std::cout << "[DEBUG] Échec de la création de la balle !" << std::endl;
+            std::cout << "[DEBUG] Échec de la création d'une balle !" << std::endl;
             continue;
         }
 
-        badbullet->SetPosition(bossPosition.x, bossPosition.y);
-        badbullet->GoToDirection(bossPosition.x + dispersedDirection.x * bulletSpeed, bossPosition.y + dispersedDirection.y * bulletSpeed, bulletSpeed);
+        float posInBoss = (i - bulletCount / 2) * spacing;
+        bullet->SetPosition(bossPosition.x, bossPosition.y + posInBoss);
+
+        sf::Vector2f bulletTarget = sf::Vector2f(bossPosition.x + posInBoss +20, 720.0f);
+
+        bullet->SetTarget(mPlayer);
     }
 }
+
+void BossEntity::EventailShoot()
+{
+}
+
+
