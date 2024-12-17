@@ -8,17 +8,29 @@ protected:
 	void Phase1();
 	void Phase2();
 	void Phase3();
+	void PhaseGestion();
 public:
 	void SetTarget(Entity* player) { mPlayer = player; }
 	void BasicShoot();
 	void WallShoot();
-	void EventailShoot();
+	void CanonShoot();
+	void RoundShoot();
+	void LaserShoot();
 	BossEntity()
 	{
 		EnemyLife = 900;
 	}
 private:
 	Entity* mPlayer = nullptr;
-	float timeSinceLastBossShot = 0.0f;
+
+	bool lanerSpawn = false;
+	bool lanerHasSpaw = false;
+
+	float timeSinceLastBasicBossShot = 0.0f;
+	float timeSinceLastWallBossShot = 0.0f;
+	float timeSinceLastBossCanonShot = 0.0f;
+	float timeSinceLastBossRoundShot = 0.0f;
+	float timeSinceLastBossLaserShot = 0.0f;
+
 	float timer = 0.0f;
 };

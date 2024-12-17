@@ -26,7 +26,7 @@ void SampleScene::OnInitialize()
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+	/*pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
 	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
@@ -41,7 +41,7 @@ void SampleScene::OnInitialize()
 
 	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
 	pLaner.back()->SetPosition(1000, 600);
-	pLaner.back()->SetTag(Tag::ENNEMIES);
+	pLaner.back()->SetTag(Tag::ENNEMIES);*/
 
 	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
 	pBoss.back()->SetPosition(1000, 350);
@@ -123,7 +123,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 			TrySetSelectedEntity(event.mouseButton.x, event.mouseButton.y);
 		}
 	}
-
+	pPx = pPlayer->GetPosition().x;
+	pPx = pPlayer->GetPosition().x;
 	if (event.type == sf::Event::KeyPressed)
 	{
 		// Mouvement

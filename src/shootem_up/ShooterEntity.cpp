@@ -38,6 +38,7 @@ void ShooterEntity::Shoot()
         }
 
         badbullet->SetPosition(shooterPosition.x, shooterPosition.y);
+        badbullet->SetSpeed(250.0f);
         badbullet->SetTarget(mPlayer);
     }
     sf::Vector2f position = GetPosition();
