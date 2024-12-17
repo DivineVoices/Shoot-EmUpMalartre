@@ -82,6 +82,8 @@ bool Entity::IsCollidingRectRect(Entity* other) const
 		std::cout << "Collision Rect -> Rect" << std::endl;
 	}
 	return (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2);
+
+	/*return IsCollidingCircleCircle(other) && IsCollidingRectRect(other);*/
 }
 
 bool Entity::IsCollidingCircleRect(Entity* other) const
@@ -227,6 +229,13 @@ void Entity::SetSize(float x, float y)
 	}
 }
 
+float Entity::GetRadius() const
+{
+	if (SpriteGetWidth() > SpriteGetHeight())
+		return SpriteGetWidth() / 2;
+	return SpriteGetHeight() / 2;
+}
+
 void Entity::Update()
 {
 	//Utils::Normalize(mDirection);
@@ -235,6 +244,7 @@ void Entity::Update()
 	float distance = dt * mSpeed;
 	sf::Vector2f translation = distance * mDirection;
 	mSprite.move(translation);
+	mShape.move(translation);
 
 	if (mTarget.isSet)
 	{
@@ -300,8 +310,19 @@ void Entity::DrawCollision(sf::RenderWindow* window) const
 {
 	if (mCollisionType == CollisionType::Circle)
 	{
-		sf::CircleShape circle(GetRadius());
-		circle.setPosition(GetPosition(0.5f, 0.5f) - sf::Vector2f(GetRadius(), GetRadius()));
+		float width = SpriteGetWidth();
+		float height = SpriteGetHeight();
+		float high;
+
+		if (width < height) {
+			high = height;
+		}
+		else {
+			high = width;
+		}
+
+		sf::CircleShape circle(high / 2);
+		circle.setPosition(GetPosition(0.5f, 0.5f) - sf::Vector2f(SpriteGetWidth() / 2, SpriteGetHeight() / 2));
 		circle.setFillColor(sf::Color::Transparent);
 		circle.setOutlineColor(sf::Color::Red);
 		circle.setOutlineThickness(1.0f);

@@ -16,7 +16,7 @@ int main()
 
 	pInstance->CreateWindow(1280, 720, "SampleScene");
 	
-	pInstance->LaunchScene<TestScene>();
+	pInstance->LaunchScene<SampleScene>();
 
 	return 0;
 }

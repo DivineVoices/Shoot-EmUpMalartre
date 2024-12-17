@@ -74,7 +74,7 @@ public:
     void SetSize(float x, float y);
 	void SetSpeed(float speed) { mSpeed = speed; }
 	void SetTag(int tag) { mTag = tag; }
-	float GetRadius() const { return mShape.getRadius(); }
+    float GetRadius() const;
 
 
 
