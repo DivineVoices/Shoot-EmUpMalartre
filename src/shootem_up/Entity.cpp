@@ -39,6 +39,8 @@ void Entity::Initialize(float _w, float _h, std::string _path, int row, int col,
 	mAnimation.animationTime = frameTime;
 	mAnimation.indexY = 0;
 	mAnimation.progress = 0.f;
+
+	mCollisionType = CollisionType::Circle;
 }
 
 
@@ -80,8 +82,10 @@ bool Entity::IsCollidingRectRect(Entity* other) const
 	if (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2)
 	{
 		std::cout << "Collision Rect -> Rect" << std::endl;
+		return true;
 	}
-	return (left1 < right2 && right1 > left2 && top1 < bottom2 && bottom1 > top2);
+
+	return false;
 
 	/*return IsCollidingCircleCircle(other) && IsCollidingRectRect(other);*/
 }
@@ -137,6 +141,8 @@ bool Entity::IsColliding(Entity* other) const
 		case CollisionType::AABB:
 			return IsCollidingCircleRect(other);
 		}
+		break;
+
 	case CollisionType::AABB:
 		switch (other->mCollisionType)
 		{
@@ -145,7 +151,10 @@ bool Entity::IsColliding(Entity* other) const
 		case CollisionType::AABB:
 			return IsCollidingRectRect(other);
 		}
+		break;
 	}
+
+	int i = 0;
 }
 
 void Entity::SetPosition(float x, float y, float ratioX, float ratioY)

@@ -18,6 +18,7 @@ void ShooterEntity::OnUpdate()
     if (timeSinceLastEnemyShot >= shooterShootCooldown)
     {
         Shoot();
+        timeSinceLastEnemyShot = 0;
     }
 }
 
@@ -45,9 +46,10 @@ void ShooterEntity::Shoot()
             continue;
         }
 
-        badbullet->SetPosition(shooterPosition.x, shooterPosition.y);
-        badbullet->SetSpeed(250.0f);
+        badbullet->SetPosition(shooterPosition.x - 30, shooterPosition.y);
+        badbullet->SetSpeed(250);
         badbullet->SetTarget(mPlayer);
+        badbullet->SetCollisionType(Entity::CollisionType::AABB);
     }
     sf::Vector2f position = GetPosition();
     if (position.x > 1280 || position.x < 0 || position.y > 720 || position.y < 0) {

@@ -507,6 +507,7 @@ void SampleScene::ProcessWave(const std::string& wave) {
 				// Summon Ennemi Kamikaze
 				pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
 				pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
+				pKamikaze.back()->SetPosition(xPosition, yPosition);
 				pKamikaze.back()->SetTarget(pPlayer);
 				pKamikaze.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Kamikaze" << std::endl;

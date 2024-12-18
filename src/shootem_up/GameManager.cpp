@@ -138,7 +138,10 @@ void GameManager::Update()
 			Entity* entity = *it1;
 			Entity* otherEntity = *it2;
 
-			if (!entity->IsTag(2)) {
+			if (entity->IsTag(2)) {
+				continue;
+			}
+			else {
 				if (entity->IsColliding(otherEntity))
 				{
 					entity->OnCollision(otherEntity);
@@ -146,6 +149,7 @@ void GameManager::Update()
 
 				}
 			}
+				
 		}
 	}
 
@@ -226,7 +230,7 @@ void GameManager::Draw()
 	for (Entity* entity : mEntities)
 	{
 		mpWindow->draw(entity->GetSprite());
-		//entity->DrawCollision(mpWindow);
+		entity->DrawCollision(mpWindow);
 	}
 	Debug::Get()->Draw(mpWindow);
 

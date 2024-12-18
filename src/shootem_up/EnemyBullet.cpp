@@ -63,6 +63,9 @@ void EnemyBulletEntity::OnCollision(Entity* pCollidedWith)
 {
     if (pCollidedWith == nullptr) return;
 
+    sf::Vector2f tempPos = GetPosition();
+    sf::Vector2f collTempPos = pCollidedWith->GetPosition();
+
     if (pCollidedWith->IsTag(SampleScene::Tag::PLAYER))
     {
         std::cout << "Collision avec le joueur détectée !" << std::endl;
