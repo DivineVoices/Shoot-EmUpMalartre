@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "SampleScene.h"
-#include <SFML/Graphics.hpp>
 
 #include "DummyEntity.h"
 #include "EnemyEntity.h"
@@ -21,35 +20,54 @@
 
 #include "Debug.h"
 
+#include "AssetManager.h"
+
 void SampleScene::OnInitialize()
 {
-	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
-	pPlayer->SetPosition(500, 350);
-	pPlayer->SetTag(Tag::PLAYER);
+	AssetManager assetManager;
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+	/*pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	pEntity1->SetAnimatedSpriteType(Entity::AnimatedSpriteType::AnimatedSprite);
+	pEntity1->GetTexture();
+	pEntity1->SetPosition(500, 100);*/
+  
+	/*pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	pDummy.back()->SetPosition(1000, 100);
+	pDummy.back()->SetTag(Tag::ENNEMIES);*/
+
+	/*pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+	pEnemy.back()->SetPosition(1000, 300);
+	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
+
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
+	pStalker.back()->SetCollisionType(Entity::CollisionType::AABB);
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
-	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
+	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
+	pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
 	pKamikaze.back()->SetPosition(1000, 500);
 	pKamikaze.back()->SetTarget(pPlayer);
 	pKamikaze.back()->SetTag(Tag::ENNEMIES);
 
-	pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
+	pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
+	pShooter.back()->SetCollisionType(Entity::CollisionType::AABB);
 	pShooter.back()->SetPosition(1000, 500);
-	pShooter.back()->SetTarget(pPlayer);
 	pShooter.back()->SetTag(Tag::ENNEMIES);
 
-	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
+	pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
+	pLaner.back()->SetCollisionType(Entity::CollisionType::AABB);
 	pLaner.back()->SetPosition(1000, 600);
 	pLaner.back()->SetTag(Tag::ENNEMIES);
 
-	/*pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+	pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
+	pBoss.back()->SetCollisionType(Entity::CollisionType::AABB);
 	pBoss.back()->SetPosition(1000, 350);
-	pBoss.back()->SetTarget(pPlayer);
-	pBoss.back()->SetTag(Tag::ENNEMIES);*/
+	pBoss.back()->SetTag(Tag::ENNEMIES);
 
-	
+	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
+	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
+	pPlayer->SetPosition(500, 350);
+	pPlayer->SetTag(Tag::PLAYER);
 
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
@@ -92,21 +110,6 @@ void SampleScene::OnInitialize()
 		yMin -= 144;
 		yMax -= 144;
 	}
-
-	std::ifstream inputFile("../../../res/Level1.txt");
-
-	std::string line;
-
-
-	while (std::getline(inputFile, line)) {
-		if (!line.empty()) 
-		{
-			waves.push_back(line);
-		}
-	}
-
-	inputFile.close();
-
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
@@ -124,8 +127,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 			TrySetSelectedEntity(event.mouseButton.x, event.mouseButton.y);
 		}
 	}
-	pPx = pPlayer->GetPosition().x;
-	pPx = pPlayer->GetPosition().x;
+
 	if (event.type == sf::Event::KeyPressed)
 	{
 		// Mouvement
@@ -146,7 +148,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::E) {
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
-				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
+				pHoming.push_back(CreateEntity<HomingBulletEntity>(20, 20, "../../../res/homing.png", 1, 1, 1.0f));
+				pHoming.back()->SetCollisionType(Entity::CollisionType::AABB);
 				for (auto& enemy : pAllEnemies) {
 					if (enemy->IsTag(SampleScene::Tag::ENNEMIES)) {
 						pHoming.back()->SetTarget(enemy);
@@ -159,7 +162,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 
 		if (event.key.code == sf::Keyboard::R) {
-			pRocket.push_back(CreateEntity<RocketBulletEntity>(10, sf::Color::Green));
+			pRocket.push_back(CreateEntity<RocketBulletEntity>(20, 20, "../../../res/rocket.png", 1, 1, 1.0f));
+			pRocket.back()->SetCollisionType(Entity::CollisionType::AABB);
 			pRocket.back()->SetPosition(pPx, pPy);
 		}
 	}
@@ -202,12 +206,10 @@ void SampleScene::OnUpdate()
 	float playerShootCooldown = 0.1f;
 	float shooterShootCooldown = 1;
 	float lanerShootCooldown = 6;
-	float bossShootCooldown = 0.5;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
-	timeSinceLastBossShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -223,22 +225,6 @@ void SampleScene::OnUpdate()
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
 	}
 
-	//Supression et debug des Projectiles
-
-	//std::cout << "Projectiles remaining: " << pProjectiles.size() << std::endl;
-
-	for (auto it = pProjectiles.begin(); it != pProjectiles.end(); ) {
-		BulletEntity* pBullet = *it;
-		if (pBullet->GetPosition().x > 1280) {
-			//std::cout << "Deleting Bullet: " << pBullet << std::endl;
-			pBullet->Destroy();
-			it = pProjectiles.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-
 	//----------Creation des projectiles du joueur----------
 
 	pPx = pPlayer->GetPosition().x + 35;
@@ -247,7 +233,8 @@ void SampleScene::OnUpdate()
 	//Basique
 	if (timeSinceLastShot >= playerShootCooldown) 
 	{
-		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+		pProjectiles.push_back(CreateEntity<BulletEntity>(10, 10, "../../../res/bullet.png", 1, 1, 1.0f));
+		pProjectiles.back()->SetCollisionType(Entity::CollisionType::Circle);
 		pProjectiles.back()->SetPosition(pPx, pPy);
 
 		timeSinceLastShot = 0.0f;
@@ -280,7 +267,15 @@ void SampleScene::OnUpdate()
 				continue;
 			}
 
-			shooter->Shoot();
+			if (shooter->IsTag(Tag::ENNEMIES)) {
+				sf::Vector2f shooterPosition = shooter->GetPosition();
+				sf::Vector2f playerPosition = pPlayer->GetPosition();
+
+				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, 10, "../../../res/ennemybullet.png", 1, 1, 1.0f));
+				pEnemyProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
+				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
+				pEnemyProjectiles.back()->SetTarget(pPlayer);
+			}
 
 			++it;
 		}
@@ -301,10 +296,16 @@ void SampleScene::OnUpdate()
 	{
 		for (auto& laner : pLaner)
 		{
-			laner->Shoot();
+			if (laner->IsTag(Tag::ENNEMIES))
+			{
+				sf::Vector2f lanerPosition = laner->GetPosition();
+
+				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, 20, "../../../res/lanerbullet.png", 1, 1, 1.0f));
+				pLanerProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
+				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
+			}
 		}
 	}
-
 	//----------Déplacement----------
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
@@ -313,79 +314,4 @@ void SampleScene::OnUpdate()
 	y += velocity.y;
 
 	pPlayer->SetPosition(x, y);
-
-	//----------Arrivée des vagues d'ennemies----------
-	Timer += dt;
-	if (Timer > 4) {
-		if (currentWaveIndex < waves.size()) {
-			ProcessWave(waves[currentWaveIndex]);
-			currentWaveIndex++; 
-		}
-		Timer = 0;
-	}
-
-	//----------Ecran game over et de victoire----------
-	if (pPlayer->GetLife() <= 0)
-	{
-
-	}
-
-	if (pBoss.back()->GetLife() <= 0)
-	{
-
-	}
-}
-
-
-void SampleScene::ProcessWave(const std::string& wave) {
-
-	int index = 0; 
-	for (char c : wave) {
-		if (index <= 5) {
-			std::cout << c << std::endl;
-			++index;
-			if (c == '-') {
-				std::cout << "Nothing Summoned" << std::endl;
-				continue;
-			}
-
-			float xPosition = 1000.0f; 
-			float yPosition = (144.0f * index) - 72;
-
-			if (c == 'S') {
-				// Summon Ennemi Set Path
-				std::cout << "Summoned Set Path" << std::endl;
-				continue;
-			}
-			if (c == 'D') {
-				// Summon Ennemi Default
-				pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
-				pEnemy.back()->SetPosition(xPosition, yPosition);
-				pEnemy.back()->SetTag(Tag::ENNEMIES);
-				std::cout << "Summoned Default" << std::endl;
-				continue;
-			}
-			if (c == 'K') {
-				// Summon Ennemi Kamikaze
-				std::cout << "Summoned Kamikaze" << std::endl;
-				continue;
-			}
-			if (c == 'C') {
-				// Summon Ennemi Chercheuse
-				std::cout << "Summoned Heat Seaking" << std::endl;
-				continue;
-			}
-			if (c == 'L') {
-				// Summon Ennemi Lazer
-				std::cout << "Summoned Lazer" << std::endl;
-				continue;
-			}
-			if (c == 'B') {
-				// Summon Ennemi Blocking
-				std::cout << "Summoned Blocking" << std::endl;
-				continue;
-			}
-			std::cout << "Summoning next wave" << std::endl;
-		}
-	}
 }

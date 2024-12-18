@@ -1,6 +1,7 @@
 #pragma once
 
 class GameManager;
+class AssetManager;
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -21,8 +22,16 @@ protected:
 	virtual void OnUpdate() = 0;
 
 public:
+	enum Shape
+	{
+		CIRCLE,
+		RECT,
+
+		COUNT
+	};
+
 	template<typename T>
-	T* CreateEntity(float radius, const sf::Color& color);
+	T* CreateEntity(float _w, float _h, std::string _path, int row, int col, float frameTime);
 
 	float GetDeltaTime() const;
 

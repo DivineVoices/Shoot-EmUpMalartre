@@ -40,7 +40,7 @@ void RocketBulletEntity::Explode()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        ExplosiontEntity* bullet = CreateEntity<ExplosiontEntity>(200, sf::Color::Red);
+        ExplosiontEntity* bullet = CreateEntity<ExplosiontEntity>(200, 200, "../../../res/explosion.png", 1, 1, 1.0f);
 
         if (bullet == nullptr)
         {
