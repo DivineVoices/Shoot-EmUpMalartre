@@ -226,7 +226,7 @@ void GameManager::Draw()
 	for (Entity* entity : mEntities)
 	{
 		mpWindow->draw(entity->GetSprite());
-		entity->DrawCollision(mpWindow);
+		//entity->DrawCollision(mpWindow);
 	}
 	Debug::Get()->Draw(mpWindow);
 

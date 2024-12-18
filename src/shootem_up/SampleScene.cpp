@@ -240,12 +240,12 @@ void SampleScene::OnUpdate()
 	}
 
 	//Lanes pour le débug
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 		const AABB& aabb = mAreas[i];
 
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
-	}
+	}*/
 
 	//----------Creation des projectiles du joueur----------
 
@@ -275,7 +275,9 @@ void SampleScene::OnUpdate()
 		}
 	}
 
-	//----------Enlever du vecteur les ennemies----------
+	//----------Vider les vecteurs si Destroy----------
+
+	//Ennemies
 
 	//Shooter
 	for (auto it = pShooter.begin(); it != pShooter.end(); )
@@ -332,6 +334,44 @@ void SampleScene::OnUpdate()
 
 		if (enemy->ToDestroy()) {
 			it = pEnemy.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Bullet
+
+	//Homing
+	for (auto it = pHoming.begin(); it != pHoming.end(); )
+	{
+		HomingBulletEntity* homing = *it;
+
+		if (homing->ToDestroy()) {
+			it = pHoming.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Projectiles enemies basique
+	for (auto it = pEnemyProjectiles.begin(); it != pEnemyProjectiles.end(); )
+	{
+		EnemyBulletEntity* badbullet = *it;
+
+		if (badbullet->ToDestroy()) {
+			it = pEnemyProjectiles.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Projectiles enemies laner
+	for (auto it = pLanerProjectiles.begin(); it != pLanerProjectiles.end(); )
+	{
+		LanerBulletEntity* badlanerbullet = *it;
+
+		if (badlanerbullet->ToDestroy()) {
+			it = pLanerProjectiles.erase(it);
 			continue;
 		}
 		++it;
