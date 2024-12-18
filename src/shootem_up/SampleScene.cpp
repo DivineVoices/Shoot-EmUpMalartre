@@ -267,15 +267,7 @@ void SampleScene::OnUpdate()
 				continue;
 			}
 
-			if (shooter->IsTag(Tag::ENNEMIES)) {
-				sf::Vector2f shooterPosition = shooter->GetPosition();
-				sf::Vector2f playerPosition = pPlayer->GetPosition();
-
-				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, 10, "../../../res/ennemybullet.png", 1, 1, 1.0f));
-				pEnemyProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
-				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
-				pEnemyProjectiles.back()->SetTarget(pPlayer);
-			}
+			shooter->Shoot();
 
 			++it;
 		}
@@ -296,14 +288,7 @@ void SampleScene::OnUpdate()
 	{
 		for (auto& laner : pLaner)
 		{
-			if (laner->IsTag(Tag::ENNEMIES))
-			{
-				sf::Vector2f lanerPosition = laner->GetPosition();
-
-				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, 20, "../../../res/lanerbullet.png", 1, 1, 1.0f));
-				pLanerProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
-				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
-			}
+			laner->Shoot();
 		}
 	}
 	//----------Déplacement----------

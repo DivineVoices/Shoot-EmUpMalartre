@@ -135,7 +135,7 @@ void BossEntity::BasicShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(13, sf::Color::Red);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(13, 13, "../../../res/ennemybullet.png", 1, 1, 1.0f);;
 
         if (badbullet == nullptr)
         {
@@ -163,7 +163,7 @@ void BossEntity::WallShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, sf::Color::Red);
+        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, 15, "../../../res/ennemybullet.png", 1, 1, 1.0f);;
 
         if (bullet == nullptr)
         {
@@ -194,7 +194,7 @@ void BossEntity::CanonShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(20, sf::Color::Red);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(20, 20, "../../../res/bullet.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {
@@ -222,7 +222,7 @@ void BossEntity::RoundShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, sf::Color::Red);
+        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, 15, "../../../res/ennemybullet.png", 1, 1, 1.0f);;
 
         if (bullet == nullptr)
         {
@@ -254,7 +254,7 @@ void BossEntity::LaserShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(80, 80, "../../../res/lanerbullet.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {
