@@ -8,5 +8,6 @@ public:
 	void OnCollision(Entity* other) override;
 	void OnUpdate() override;
 	virtual void TakeDamage(int dmg);
+	int GetLife() const { return PlayerLife; }
 };
 

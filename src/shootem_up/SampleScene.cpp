@@ -11,6 +11,8 @@
 #include "PlayerEntity.h"
 #include "BossEntity.h"
 
+#include "Coin.h"
+
 #include "EnemyBullet.h"
 #include "LanerBullet.h"
 
@@ -69,6 +71,30 @@ void SampleScene::OnInitialize()
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
+	pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
+	pCoin.back()->SetPosition(1000, 350);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 0);
+	pDummy[0]->GoToPosition(-1400, 0, 128);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 0);
+	pDummy[1]->GoToPosition(-1400, 0, 128);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 240);
+	pDummy[2]->GoToPosition(-1400, 0, 16);
+	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 240);
+	pDummy[3]->GoToPosition(-1400, 0, 16);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 648);
+	pDummy[4]->GoToPosition(-1400, 648, 1024);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 648);
+	pDummy[5]->GoToPosition(-1400, 648, 1024);
+
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
 		pAllEnemies.push_back(dummy);
@@ -110,6 +136,21 @@ void SampleScene::OnInitialize()
 		yMin -= 144;
 		yMax -= 144;
 	}
+
+	std::ifstream inputFile("../../../res/Level1.txt");
+
+	std::string line;
+
+
+	while (std::getline(inputFile, line)) {
+		if (!line.empty()) 
+		{
+			waves.push_back(line);
+		}
+	}
+
+	inputFile.close();
+
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
@@ -127,7 +168,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 			TrySetSelectedEntity(event.mouseButton.x, event.mouseButton.y);
 		}
 	}
-
+	pPx = pPlayer->GetPosition().x;
+	pPx = pPlayer->GetPosition().x;
 	if (event.type == sf::Event::KeyPressed)
 	{
 		// Mouvement
@@ -206,10 +248,12 @@ void SampleScene::OnUpdate()
 	float playerShootCooldown = 0.1f;
 	float shooterShootCooldown = 1;
 	float lanerShootCooldown = 6;
+	float bossShootCooldown = 0.5;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
 	timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
+	timeSinceLastBossShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -267,15 +311,7 @@ void SampleScene::OnUpdate()
 				continue;
 			}
 
-			if (shooter->IsTag(Tag::ENNEMIES)) {
-				sf::Vector2f shooterPosition = shooter->GetPosition();
-				sf::Vector2f playerPosition = pPlayer->GetPosition();
-
-				pEnemyProjectiles.push_back(CreateEntity<EnemyBulletEntity>(10, 10, "../../../res/ennemybullet.png", 1, 1, 1.0f));
-				pEnemyProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
-				pEnemyProjectiles.back()->SetPosition(shooterPosition.x, shooterPosition.y);
-				pEnemyProjectiles.back()->SetTarget(pPlayer);
-			}
+			shooter->Shoot();
 
 			++it;
 		}
@@ -296,16 +332,10 @@ void SampleScene::OnUpdate()
 	{
 		for (auto& laner : pLaner)
 		{
-			if (laner->IsTag(Tag::ENNEMIES))
-			{
-				sf::Vector2f lanerPosition = laner->GetPosition();
-
-				pLanerProjectiles.push_back(CreateEntity<LanerBulletEntity>(20, 20, "../../../res/lanerbullet.png", 1, 1, 1.0f));
-				pLanerProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
-				pLanerProjectiles.back()->SetPosition(lanerPosition.x, lanerPosition.y);
-			}
+      laner->Shoot();
 		}
 	}
+
 	//----------Déplacement----------
 	float dt = GameManager::Get()->GetDeltaTime();
 	sf::Vector2f velocity = direction * (speed * dt);
@@ -314,4 +344,143 @@ void SampleScene::OnUpdate()
 	y += velocity.y;
 
 	pPlayer->SetPosition(x, y);
+
+	//----------Arrivée des vagues d'ennemies----------
+	Timer += dt;
+	if (Timer > 4) {
+		if (currentWaveIndex < waves.size()) {
+			ProcessWave(waves[currentWaveIndex]);
+			currentWaveIndex++; 
+		}
+		Timer = 0;
+	}
+
+	//----------Ecran game over et de victoire----------
+	if (pPlayer->GetLife() <= 0)
+	{
+
+	}
+
+	/*
+	if (pBoss.back()->GetLife() <= 0)
+	{
+		for (auto& coin : pCoin) {
+			if (coin) {
+				coinNumber = coin->GetCoinNumber();
+				std::cout << "Coins collected: " << coinNumber << std::endl;
+			}
+		}
+
+		if (coinNumber == 5)
+		{
+
+		}
+	}
+	*/
+
+	//----------FX/UI----------
+	if (pDummy[0]->GetPosition().x <= -1390)
+	{
+		pDummy[0]->SetPosition(2660, 0);
+		pDummy[0]->GoToPosition(-1400, 0, 128);
+	}
+	if (pDummy[1]->GetPosition().x <= -1390)
+	{
+		pDummy[1]->SetPosition(2660, 0);
+		pDummy[1]->GoToPosition(-1400, 0, 128);
+	}
+	if (pDummy[2]->GetPosition().x <= -1390)
+	{
+		pDummy[2]->SetPosition(2660, 240);
+		pDummy[2]->GoToPosition(-1400, 100, 16);
+	}
+	if (pDummy[3]->GetPosition().x <= -1390)
+	{
+		pDummy[3]->SetPosition(2660, 240);
+		pDummy[3]->GoToPosition(-1400, 100, 16);
+	}
+	if (pDummy[4]->GetPosition().x <= -1390)
+	{
+		pDummy[4]->SetPosition(2660, 648);
+		pDummy[4]->GoToPosition(-1400, 648, 1024);
+	}
+	if (pDummy[5]->GetPosition().x <= -1390)
+	{
+		pDummy[5]->SetPosition(2660, 648);
+		pDummy[5]->GoToPosition(-1400, 648, 1024);
+	}
+}
+
+
+void SampleScene::ProcessWave(const std::string& wave) {
+
+	int index = 0; 
+	for (char c : wave) {
+		if (index <= 5) {
+			std::cout << c << std::endl;
+			++index;
+			if (c == '-') {
+				std::cout << "Nothing Summoned" << std::endl;
+				continue;
+			}
+
+			float xPosition = 1000.0f; 
+			float yPosition = (144.0f * index) - 72;
+
+			if (c == 'S') {
+				// Summon Ennemi Set Path
+				std::cout << "Summoned Set Path" << std::endl;
+				continue;
+			}
+			if (c == 'D') {
+				// Summon Ennemi Default
+				pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
+				pShooter.back()->SetPosition(xPosition, yPosition);
+				pShooter.back()->SetTarget(pPlayer);
+				pShooter.back()->SetTag(Tag::ENNEMIES);
+				std::cout << "Summoned Default" << std::endl;
+				continue;
+			}
+			if (c == 'K') {
+				// Summon Ennemi Kamikaze
+				pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
+				pKamikaze.back()->SetPosition(xPosition, yPosition);
+				pKamikaze.back()->SetTarget(pPlayer);
+				pKamikaze.back()->SetTag(Tag::ENNEMIES);
+				std::cout << "Summoned Kamikaze" << std::endl;
+				continue;
+			}
+			if (c == 'C') {
+				// Summon Ennemi Chercheuse
+				std::cout << "Summoned Heat Seaking" << std::endl;
+				continue;
+			}
+			if (c == 'L') {
+				// Summon Ennemi Lazer
+				pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
+				pLaner.back()->SetPosition(xPosition, yPosition);
+				pLaner.back()->SetTag(Tag::ENNEMIES); 
+				std::cout << "Summoned Lazer" << std::endl;
+				continue;
+			}
+			if (c == 'B') {
+				// Summon Ennemi Blocking
+				pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+				pStalker.back()->SetPosition(xPosition, yPosition);
+				pStalker.back()->SetTag(Tag::ENNEMIES);
+				std::cout << "Summoned Blocking" << std::endl;
+				continue;
+			}
+			if (c == 'F') {
+				// Summon Ennemi Boss Final
+				pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+				pBoss.back()->SetPosition(xPosition, 350);
+				pBoss.back()->SetTarget(pPlayer);
+				pBoss.back()->SetTag(Tag::ENNEMIES);
+				std::cout << "Summoned Boss Final" << std::endl;
+				continue;
+			}
+			std::cout << "Summoning next wave" << std::endl;
+		}
+	}
 }

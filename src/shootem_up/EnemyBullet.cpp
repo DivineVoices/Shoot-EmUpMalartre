@@ -27,15 +27,25 @@ void EnemyBulletEntity::SetTarget(Entity* target)
 
         float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
         if (length > 0.f) {
-            m_direction = direction / length; // Normalisation
+            m_direction = direction / length;
         }
     }
+}
+
+void EnemyBulletEntity::SetSpeed(float speed)
+{
+    m_speed = speed;
+}
+
+float EnemyBulletEntity::GetSpeed() const
+{
+    return 0.0f;
 }
 
 void EnemyBulletEntity::OnUpdate()
 {
     sf::Vector2f currentPosition = GetPosition();
-    GoToDirection(currentPosition.x + m_direction.x * 5, currentPosition.y + m_direction.y * 5, 250);
+    GoToDirection(currentPosition.x + m_direction.x * 5, currentPosition.y + m_direction.y * 5, m_speed);
 
     if (ToDestroy()) return;
 

@@ -5,10 +5,36 @@ class BossEntity : public EnemyEntity
 {
 protected:
 	void OnUpdate() override;
-	void Shoot();
+	void Phase1();
+	void Phase2();
+	void Phase3();
+	void PhaseGestion();
 public:
+	void SetTarget(Entity* player) { mPlayer = player; }
+	void BasicShoot();
+	void WallShoot();
+	void CanonShoot();
+	void RoundShoot();
+	void LaserShoot();
+	void FeatherShoot();
 	BossEntity()
 	{
 		EnemyLife = 900;
 	}
+
+	int GetLife() const { return EnemyLife; }
+private:
+	Entity* mPlayer = nullptr;
+
+	bool FaetherSpawn = false;
+	bool FaetherTopDown = true;
+
+	float timeSinceLastBasicBossShot = 0.0f;
+	float timeSinceLastWallBossShot = 0.0f;
+	float timeSinceLastBossCanonShot = 0.0f;
+	float timeSinceLastBossRoundShot = 0.0f;
+	float timeSinceLastBossLaserShot = 0.0f;
+	float timeSinceLastBossFaetherShot = 0.0f;
+
+	float timer = 0.0f;
 };

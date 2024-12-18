@@ -18,7 +18,7 @@ void LanerEntity::Shoot()
     Scene* scene = GetScene();
     if (scene == nullptr)
     {
-        std::cout << "[DEBUG] La scène est nulle, tir annulé." << std::endl;
+        std::cout << "[DEBUG] La scÃ¨ne est nulle, tir annulÃ©." << std::endl;
         return;
     }
 
@@ -33,7 +33,7 @@ void LanerEntity::Shoot()
 
         if (badbullet == nullptr)
         {
-            std::cout << "[DEBUG] Échec de la création de la balle !" << std::endl;
+            std::cout << "[DEBUG] Ã‰chec de la crÃ©ation de la balle !" << std::endl;
             continue;
         }
 

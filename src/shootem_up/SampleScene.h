@@ -6,6 +6,11 @@
 
 #include <vector>
 
+#include <fstream>
+
+#include <string>
+
+
 class DummyEntity;
 class EnemyEntity;
 class StalkerEntity;
@@ -14,6 +19,8 @@ class ShooterEntity;
 class LanerEntity;
 class PlayerEntity;
 class BossEntity;
+
+class CoinEntity;
 
 class EnemyBulletEntity;
 class LanerBulletEntity;
@@ -42,6 +49,8 @@ class SampleScene : public Scene
 	std::vector<LanerEntity*> pLaner;
 	std::vector<BossEntity*> pBoss;
 
+	std::vector<CoinEntity*> pCoin;
+
 	std::vector<EnemyBulletEntity*> pEnemyProjectiles;
 	std::vector<LanerBulletEntity*> pLanerProjectiles;
 
@@ -62,11 +71,17 @@ private:
 	int pPx;
 	int pPy;
 
+	float Timer;
+	std::vector<std::string> waves;
+	size_t currentWaveIndex = 0;
+
 	int speed;
+	int coinNumber;
 
 	float timeSinceLastShot = 0.0f;
 	float timeSinceLastEnemyShot = 0.0f;
 	float timeSinceLastLanerShot = 0.0f;
+	float timeSinceLastBossShot = 0.0f;
 
 	sf::Vector2f direction;
 
@@ -74,6 +89,7 @@ public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
+	void ProcessWave(const std::string& wave);
 
 	enum Tag
 	{
