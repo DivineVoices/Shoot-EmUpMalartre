@@ -22,9 +22,52 @@
 
 #include "Debug.h"
 
+#include "AssetManager.h"
+
 void SampleScene::OnInitialize()
 {
-	pPlayer = CreateEntity<PlayerEntity>(25, sf::Color::White);
+	AssetManager assetManager;
+
+	/*pEntity1 = CreateEntity<DummyEntity>(100, 100, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	pEntity1->SetAnimatedSpriteType(Entity::AnimatedSpriteType::AnimatedSprite);
+	pEntity1->GetTexture();
+	pEntity1->SetPosition(500, 100);*/
+  
+	/*pDummy.push_back(CreateEntity<DummyEntity>(100, sf::Color::Red));
+	pDummy.back()->SetPosition(1000, 100);
+	pDummy.back()->SetTag(Tag::ENNEMIES);*/
+
+	/*pEnemy.push_back(CreateEntity<EnemyEntity>(100, sf::Color::Red));
+	pEnemy.back()->SetPosition(1000, 300);
+	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
+
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
+	pStalker.back()->SetCollisionType(Entity::CollisionType::AABB);
+	pStalker.back()->SetTag(Tag::ENNEMIES);
+
+	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
+	pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
+	pKamikaze.back()->SetPosition(1000, 500);
+	pKamikaze.back()->SetTarget(pPlayer);
+	pKamikaze.back()->SetTag(Tag::ENNEMIES);
+
+	pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
+	pShooter.back()->SetCollisionType(Entity::CollisionType::AABB);
+	pShooter.back()->SetPosition(1000, 500);
+	pShooter.back()->SetTag(Tag::ENNEMIES);
+
+	pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
+	pLaner.back()->SetCollisionType(Entity::CollisionType::AABB);
+	pLaner.back()->SetPosition(1000, 600);
+	pLaner.back()->SetTag(Tag::ENNEMIES);
+
+	pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
+	pBoss.back()->SetCollisionType(Entity::CollisionType::AABB);
+	pBoss.back()->SetPosition(1000, 350);
+	pBoss.back()->SetTag(Tag::ENNEMIES);
+
+	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
+	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
@@ -51,7 +94,6 @@ void SampleScene::OnInitialize()
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(2660, 648);
 	pDummy[5]->GoToPosition(-1400, 648, 1024);
-
 
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
@@ -148,7 +190,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::E) {
 			pPy -= 25;
 			for (int i = 0; i < 4; i++) {
-				pHoming.push_back(CreateEntity<HomingBulletEntity>(10, sf::Color::Blue));
+				pHoming.push_back(CreateEntity<HomingBulletEntity>(20, 20, "../../../res/homing.png", 1, 1, 1.0f));
+				pHoming.back()->SetCollisionType(Entity::CollisionType::AABB);
 				for (auto& enemy : pAllEnemies) {
 					if (enemy->IsTag(SampleScene::Tag::ENNEMIES)) {
 						pHoming.back()->SetTarget(enemy);
@@ -161,7 +204,8 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 
 		if (event.key.code == sf::Keyboard::R) {
-			pRocket.push_back(CreateEntity<RocketBulletEntity>(10, sf::Color::Green));
+			pRocket.push_back(CreateEntity<RocketBulletEntity>(20, 20, "../../../res/rocket.png", 1, 1, 1.0f));
+			pRocket.back()->SetCollisionType(Entity::CollisionType::AABB);
 			pRocket.back()->SetPosition(pPx, pPy);
 		}
 	}
@@ -225,22 +269,6 @@ void SampleScene::OnUpdate()
 		Debug::DrawRectangle(aabb.xMin, aabb.yMin, aabb.xMax - aabb.xMin, aabb.yMax - aabb.yMin, sf::Color::White);
 	}
 
-	//Supression et debug des Projectiles
-
-	//std::cout << "Projectiles remaining: " << pProjectiles.size() << std::endl;
-
-	for (auto it = pProjectiles.begin(); it != pProjectiles.end(); ) {
-		BulletEntity* pBullet = *it;
-		if (pBullet->GetPosition().x > 1280) {
-			//std::cout << "Deleting Bullet: " << pBullet << std::endl;
-			pBullet->Destroy();
-			it = pProjectiles.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-
 	//----------Creation des projectiles du joueur----------
 
 	pPx = pPlayer->GetPosition().x + 35;
@@ -249,7 +277,8 @@ void SampleScene::OnUpdate()
 	//Basique
 	if (timeSinceLastShot >= playerShootCooldown) 
 	{
-		pProjectiles.push_back(CreateEntity<BulletEntity>(5, sf::Color::Yellow));
+		pProjectiles.push_back(CreateEntity<BulletEntity>(10, 10, "../../../res/bullet.png", 1, 1, 1.0f));
+		pProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
 		pProjectiles.back()->SetPosition(pPx, pPy);
 
 		timeSinceLastShot = 0.0f;
@@ -303,7 +332,7 @@ void SampleScene::OnUpdate()
 	{
 		for (auto& laner : pLaner)
 		{
-			laner->Shoot();
+      laner->Shoot();
 		}
 	}
 

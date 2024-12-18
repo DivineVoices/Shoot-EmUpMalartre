@@ -143,7 +143,7 @@ void BossEntity::BasicShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(13, sf::Color::Red);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(10, 10, "../../../res/ennemybullet.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {

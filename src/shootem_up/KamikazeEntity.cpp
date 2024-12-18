@@ -17,7 +17,7 @@ void KamikazeEntity::OnUpdate()
     if (length > 0.f)
     {
         direction /= length;
-        GoToDirection(currentPosition.x + direction.x * 5, currentPosition.y + direction.y * 5, 250);
+        GoToDirection(currentPosition.x + direction.x * 5, currentPosition.y + direction.y * 5, 150);
     }
 
     if (ToDestroy()) return;

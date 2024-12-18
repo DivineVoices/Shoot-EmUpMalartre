@@ -17,3 +17,17 @@ void GameManager::LaunchScene()
 
 	Run();
 }
+
+template<typename T>
+void GameManager::LaunchAnotherScene()
+{
+	static_assert(std::is_base_of<Scene, T>::value, "T must be derived from Scene");
+	ChangeScene();
+	_ASSERT(mpScene == nullptr);
+
+	T* newScene = new T();
+	mpScene = newScene;
+
+	mpScene->SetGameManager(this);
+	mpScene->OnInitialize();
+}
