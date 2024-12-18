@@ -79,9 +79,6 @@ private:
 	int coinNumber;
 
 	float timeSinceLastShot = 0.0f;
-	float timeSinceLastEnemyShot = 0.0f;
-	float timeSinceLastLanerShot = 0.0f;
-	float timeSinceLastBossShot = 0.0f;
 
 	sf::Vector2f direction;
 

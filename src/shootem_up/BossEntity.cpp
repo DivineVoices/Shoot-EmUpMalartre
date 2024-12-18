@@ -38,7 +38,7 @@ void BossEntity::Phase1()
         timeSinceLastBasicBossShot = 0.0f;
     }
 
-    if (timeSinceLastWallBossShot >= bossWallShootCooldown)
+    /*if (timeSinceLastWallBossShot >= bossWallShootCooldown)
     {
         WallShoot();
         timeSinceLastWallBossShot = 0.0f;
@@ -48,7 +48,7 @@ void BossEntity::Phase1()
     {
         FeatherShoot();
         timeSinceLastBossFaetherShot = 0.0f;
-    }
+    }*/
 }
 
 void BossEntity::Phase2()

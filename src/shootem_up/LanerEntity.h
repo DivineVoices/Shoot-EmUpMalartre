@@ -11,4 +11,6 @@ public:
 	}
 	void OnUpdate() override;
 	void Shoot();
+private:
+	float timeSinceLastLanerShot = 0.0f;
 };
