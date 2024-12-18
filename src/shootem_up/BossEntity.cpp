@@ -279,31 +279,26 @@ void BossEntity::FeatherShoot()
 {
     Scene* scene = GetScene();
 
-   if (scene == nullptr)
-   {
-       return;
-   }
-   ShooterEntity* FaetherTop = nullptr;
-   ShooterEntity* FaetherDown = nullptr;
-
-  // if (FaetherSpawn) {
-       if (FaetherTopDown)
-       { 
-       FaetherTop = CreateEntity<ShooterEntity>(100, sf::Color::Red);
-      // if (FaetherTop) {
-           FaetherTop->SetPosition(1200, 144);
-           FaetherTopDown = false;
-           std::cout << "JS LA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-     //  }
-       if (FaetherTopDown = false)
-       {
-           FaetherDown = CreateEntity<ShooterEntity>(100, sf::Color::Red);
-         //  if (FaetherDown) {
-               FaetherDown->SetPosition(1200, 516);
-               FaetherDown->SetSpeed(100);
-               FaetherTopDown = true;
-               std::cout << "JS LA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-         //  }
-       }
+    if (scene == nullptr)
+    {
+        return;
     }
-}
+    LanerBulletEntity* FaetherTop = nullptr;
+    LanerBulletEntity* FaetherDown = nullptr;
+
+    if (FaetherTopDown)
+    { 
+        FaetherTop = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+        FaetherTop->SetPosition(1200, 144);
+        FaetherTop->SetSpeed(1000);
+        FaetherTopDown = false;
+    }
+    else if (FaetherTopDown == false)
+    {
+    FaetherDown = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+        FaetherDown->SetPosition(1200, 516);
+        FaetherDown->SetSpeed(1000);
+        FaetherTopDown = true; 
+    }
+ }
+
