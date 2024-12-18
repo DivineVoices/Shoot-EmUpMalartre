@@ -310,6 +310,7 @@ void SampleScene::OnUpdate()
 
 	}
 
+	/*
 	if (pBoss.back()->GetLife() <= 0)
 	{
 		for (auto& coin : pCoin) {
@@ -324,6 +325,7 @@ void SampleScene::OnUpdate()
 
 		}
 	}
+	*/
 }
 
 
@@ -350,7 +352,7 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			if (c == 'D') {
 				// Summon Ennemi Default
 				pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
-				pShooter.back()->SetPosition(1000, 500);
+				pShooter.back()->SetPosition(xPosition, yPosition);
 				pShooter.back()->SetTarget(pPlayer);
 				pShooter.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Default" << std::endl;
@@ -359,7 +361,7 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			if (c == 'K') {
 				// Summon Ennemi Kamikaze
 				pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
-				pKamikaze.back()->SetPosition(1000, 500);
+				pKamikaze.back()->SetPosition(xPosition, yPosition);
 				pKamikaze.back()->SetTarget(pPlayer);
 				pKamikaze.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Kamikaze" << std::endl;
@@ -373,7 +375,7 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			if (c == 'L') {
 				// Summon Ennemi Lazer
 				pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
-				pLaner.back()->SetPosition(1000, 600);
+				pLaner.back()->SetPosition(xPosition, yPosition);
 				pLaner.back()->SetTag(Tag::ENNEMIES); 
 				std::cout << "Summoned Lazer" << std::endl;
 				continue;
@@ -381,16 +383,17 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			if (c == 'B') {
 				// Summon Ennemi Blocking
 				pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+				pStalker.back()->SetPosition(xPosition, yPosition);
 				pStalker.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Blocking" << std::endl;
 				continue;
 			}
 			if (c == 'F') {
 				// Summon Ennemi Boss Final
-				/*pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
-				pBoss.back()->SetPosition(1000, 350);
+				pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+				pBoss.back()->SetPosition(xPosition, 350);
 				pBoss.back()->SetTarget(pPlayer);
-				pBoss.back()->SetTag(Tag::ENNEMIES);*/
+				pBoss.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Boss Final" << std::endl;
 				continue;
 			}
