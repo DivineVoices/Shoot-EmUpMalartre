@@ -284,14 +284,14 @@ void BossEntity::FeatherShoot()
     LanerBulletEntity* FaetherTop = nullptr;
     LanerBulletEntity* FaetherDown = nullptr;
 
-    if (FaetherTopDown)
+    if (mPlayer->GetPosition().y < 240)
     { 
         FaetherTop = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
         FaetherTop->SetPosition(1200, 144);
         FaetherTop->SetSpeed(1000);
         FaetherTopDown = false;
     }
-    else if (FaetherTopDown == false)
+    else if (mPlayer->GetPosition().y > 480)
     {
     FaetherDown = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
         FaetherDown->SetPosition(1200, 516);
