@@ -71,24 +71,31 @@ void SampleScene::OnInitialize()
 
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(100, 0);
-	pDummy[0]->GoToPosition(-1400, 0, 128);
+	pDummy[0]->GoToPosition(-1400, 0, 8);
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(2660, 0);
-	pDummy[1]->GoToPosition(-1400, 0, 128);
+	pDummy[1]->GoToPosition(-1400, 0, 8);
 
 	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(100, 240);
-	pDummy[2]->GoToPosition(-1400, 0, 16);
+	pDummy.back()->SetPosition(100, 100);
+	pDummy[2]->GoToPosition(-1400, 100, 16);
 	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(2660, 240);
-	pDummy[3]->GoToPosition(-1400, 0, 16);
+	pDummy.back()->SetPosition(2660, 100);
+	pDummy[3]->GoToPosition(-1400, 100, 16);
 
-	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(100, 648);
-	pDummy[4]->GoToPosition(-1400, 648, 1024);
-	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(2660, 648);
-	pDummy[5]->GoToPosition(-1400, 648, 1024);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 540, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(200, 550);
+	pDummy[4]->GoToPosition(-1400, 550, 512);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 540, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 550);
+	pDummy[5]->GoToPosition(-1400, 550, 512);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 152);
+	pDummy[6]->GoToPosition(-1400, 152, 256);
+	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(1540, 152);
+	pDummy[7]->GoToPosition(-1400, 152, 256);
 
 	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
 	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
@@ -386,32 +393,42 @@ void SampleScene::OnUpdate()
 	if (pDummy[0]->GetPosition().x <= -1390)
 	{
 		pDummy[0]->SetPosition(2660, 0);
-		pDummy[0]->GoToPosition(-1400, 0, 128);
+		pDummy[0]->GoToPosition(-1400, 0, 8);
 	}
 	if (pDummy[1]->GetPosition().x <= -1390)
 	{
 		pDummy[1]->SetPosition(2660, 0);
-		pDummy[1]->GoToPosition(-1400, 0, 128);
+		pDummy[1]->GoToPosition(-1400, 0, 8);
 	}
 	if (pDummy[2]->GetPosition().x <= -1390)
 	{
-		pDummy[2]->SetPosition(2660, 240);
+		pDummy[2]->SetPosition(2660, 100);
 		pDummy[2]->GoToPosition(-1400, 100, 16);
 	}
 	if (pDummy[3]->GetPosition().x <= -1390)
 	{
-		pDummy[3]->SetPosition(2660, 240);
+		pDummy[3]->SetPosition(2660, 100);
 		pDummy[3]->GoToPosition(-1400, 100, 16);
 	}
 	if (pDummy[4]->GetPosition().x <= -1390)
 	{
-		pDummy[4]->SetPosition(2660, 648);
-		pDummy[4]->GoToPosition(-1400, 648, 1024);
+		pDummy[4]->SetPosition(2660, 550);
+		pDummy[4]->GoToPosition(-1400, 550, 512);
 	}
 	if (pDummy[5]->GetPosition().x <= -1390)
 	{
-		pDummy[5]->SetPosition(2660, 648);
-		pDummy[5]->GoToPosition(-1400, 648, 1024);
+		pDummy[5]->SetPosition(2660, 550);
+		pDummy[5]->GoToPosition(-1400, 550, 512);
+	}
+	if (pDummy[6]->GetPosition().x <= -890)
+	{
+		pDummy[6]->SetPosition(2000, 152);
+		pDummy[6]->GoToPosition(-1400, 152, 256);
+	}
+	if (pDummy[7]->GetPosition().x <= -890)
+	{
+		pDummy[7]->SetPosition(2000, 152);
+		pDummy[7]->GoToPosition(-1400, 152, 256);
 	}
 }
 
