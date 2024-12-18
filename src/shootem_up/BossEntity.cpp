@@ -10,6 +10,8 @@
 
 #include "LanerEntity.h"
 
+#include "ShooterEntity.h"
+
 #include "SampleScene.h"
 
 #include <iostream>
@@ -26,9 +28,11 @@ void BossEntity::Phase1()
 {
     float bossBasicShootCooldown = 0.5f;
     float bossWallShootCooldown = 0.85f;
+    float bossFaetherShootCooldown = 5.0f;
 
     timeSinceLastBasicBossShot += GameManager::Get()->GetDeltaTime();
     timeSinceLastWallBossShot += GameManager::Get()->GetDeltaTime();
+    timeSinceLastBossFaetherShot += GameManager::Get()->GetDeltaTime();
 
     if (timeSinceLastBasicBossShot >= bossBasicShootCooldown)
     {
@@ -40,6 +44,12 @@ void BossEntity::Phase1()
     {
         WallShoot();
         timeSinceLastWallBossShot = 0.0f;
+    }
+
+    if (timeSinceLastBossFaetherShot >= bossFaetherShootCooldown)
+    {
+        FeatherShoot();
+        timeSinceLastBossFaetherShot = 0.0f;
     }
 }
 
@@ -117,7 +127,7 @@ void BossEntity::Phase3()
 
 void BossEntity::PhaseGestion()
 {
-    if (EnemyLife <= 600 && !lanerHasSpaw) lanerSpawn = true;
+    //if (EnemyLife <= 600) FaetherSpawn = true;
 
 }
 
@@ -262,5 +272,38 @@ void BossEntity::LaserShoot()
         }
 
         badbullet->SetPosition(bossPosition.x, bossPosition.y);
+    }
+}
+
+void BossEntity::FeatherShoot()
+{
+    Scene* scene = GetScene();
+
+   if (scene == nullptr)
+   {
+       return;
+   }
+   ShooterEntity* FaetherTop = nullptr;
+   ShooterEntity* FaetherDown = nullptr;
+
+  // if (FaetherSpawn) {
+       if (FaetherTopDown)
+       { 
+       FaetherTop = CreateEntity<ShooterEntity>(100, sf::Color::Red);
+      // if (FaetherTop) {
+           FaetherTop->SetPosition(1200, 144);
+           FaetherTopDown = false;
+           std::cout << "JS LA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+     //  }
+       if (FaetherTopDown = false)
+       {
+           FaetherDown = CreateEntity<ShooterEntity>(100, sf::Color::Red);
+         //  if (FaetherDown) {
+               FaetherDown->SetPosition(1200, 516);
+               FaetherDown->SetSpeed(100);
+               FaetherTopDown = true;
+               std::cout << "JS LA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+         //  }
+       }
     }
 }

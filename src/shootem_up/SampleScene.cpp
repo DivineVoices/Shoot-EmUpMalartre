@@ -11,6 +11,8 @@
 #include "PlayerEntity.h"
 #include "BossEntity.h"
 
+#include "Coin.h"
+
 #include "EnemyBullet.h"
 #include "LanerBullet.h"
 
@@ -42,6 +44,9 @@ void SampleScene::OnInitialize()
 	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
 	pLaner.back()->SetPosition(1000, 600);
 	pLaner.back()->SetTag(Tag::ENNEMIES);*/
+
+	pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
+	pCoin.back()->SetPosition(1000, 350);
 
 	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
 	pBoss.back()->SetPosition(1000, 350);
@@ -331,7 +336,17 @@ void SampleScene::OnUpdate()
 
 	if (pBoss.back()->GetLife() <= 0)
 	{
+		for (auto& coin : pCoin) {
+			if (coin) {
+				coinNumber = coin->GetCoinNumber();
+				std::cout << "Coins collected: " << coinNumber << std::endl;
+			}
+		}
 
+		if (coinNumber == 5)
+		{
+
+		}
 	}
 }
 

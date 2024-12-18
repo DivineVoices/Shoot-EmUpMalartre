@@ -8,7 +8,12 @@
 
 #include <iostream>
 
-void Coinntity::OnCollision(Entity* other)
+void CoinEntity::OnUpdate()
+{
+    GoToDirection(-10000, GetPosition().y, 60);
+}
+
+void CoinEntity::OnCollision(Entity* other)
 {
     if (other == nullptr) return;
 

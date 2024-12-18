@@ -16,6 +16,7 @@ public:
 	void CanonShoot();
 	void RoundShoot();
 	void LaserShoot();
+	void FeatherShoot();
 	BossEntity()
 	{
 		EnemyLife = 900;
@@ -25,14 +26,15 @@ public:
 private:
 	Entity* mPlayer = nullptr;
 
-	bool lanerSpawn = false;
-	bool lanerHasSpaw = false;
+	bool FaetherSpawn = false;
+	bool FaetherTopDown = true;
 
 	float timeSinceLastBasicBossShot = 0.0f;
 	float timeSinceLastWallBossShot = 0.0f;
 	float timeSinceLastBossCanonShot = 0.0f;
 	float timeSinceLastBossRoundShot = 0.0f;
 	float timeSinceLastBossLaserShot = 0.0f;
+	float timeSinceLastBossFaetherShot = 0.0f;
 
 	float timer = 0.0f;
 };
