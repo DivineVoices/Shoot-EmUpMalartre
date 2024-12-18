@@ -102,33 +102,6 @@ void SampleScene::OnInitialize()
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
-	// Ajouter toutes les entités ennemies dans pAllEnemies
-	for (auto& dummy : pDummy) {
-		pAllEnemies.push_back(dummy);
-	}
-	for (auto& enemy : pEnemy) {
-		pAllEnemies.push_back(enemy);
-	}
-	for (auto& stalker : pStalker) {
-		pAllEnemies.push_back(stalker);
-	}
-	for (auto& kamikaze : pKamikaze) {
-		pAllEnemies.push_back(kamikaze);
-	}
-	for (auto& shooter : pShooter) {
-		pAllEnemies.push_back(shooter);
-	}
-	for (auto& laner : pLaner) {
-		pAllEnemies.push_back(laner);
-	}
-	for (auto& boss : pBoss) {
-		pAllEnemies.push_back(boss);
-	}
-
-	for (auto& stalker : pStalker) {
-		stalker->mPlayer = pPlayer;
-	}
-
 	for (auto& dummy : pDummy) {
 		dummy->SetTag(2);
 	}
@@ -257,14 +230,8 @@ void SampleScene::TrySetSelectedEntity(int x, int y)
 void SampleScene::OnUpdate()
 {
 	float playerShootCooldown = 0.1f;
-	float shooterShootCooldown = 1;
-	float lanerShootCooldown = 6;
-	float bossShootCooldown = 0.5;
 
 	timeSinceLastShot += GameManager::Get()->GetDeltaTime();
-	timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
-	timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
-	timeSinceLastBossShot += GameManager::Get()->GetDeltaTime();
 
 	if(pEntitySelected != nullptr)
 	{
@@ -308,25 +275,66 @@ void SampleScene::OnUpdate()
 		}
 	}
 
-	//----------Création des projectiles des ennemies----------
+	//----------Enlever du vecteur les ennemies----------
 
 	//Shooter
-	if (timeSinceLastEnemyShot >= shooterShootCooldown)
+	for (auto it = pShooter.begin(); it != pShooter.end(); )
 	{
-		for (auto it = pShooter.begin(); it != pShooter.end(); )
-		{
-			ShooterEntity* shooter = *it;
+		ShooterEntity* shooter = *it;
 
-			if (shooter->ToDestroy()) {
-				it = pShooter.erase(it);
-				continue;
-			}
-
-			shooter->Shoot();
-
-			++it;
+		if (shooter->ToDestroy()) {
+			it = pShooter.erase(it);
+			continue;
 		}
-		timeSinceLastEnemyShot = 0.0f;
+		++it;
+		}
+
+	//Laner
+	for (auto it = pLaner.begin(); it != pLaner.end(); )
+	{
+		LanerEntity* laner = *it;
+
+		if (laner->ToDestroy()) {
+			it = pLaner.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Kamikaze
+	for (auto it = pKamikaze.begin(); it != pKamikaze.end(); )
+	{
+		KamikazeEntity* kamikaze = *it;
+
+		if (kamikaze->ToDestroy()) {
+			it = pKamikaze.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Boss
+	for (auto it = pBoss.begin(); it != pBoss.end(); )
+	{
+		BossEntity* boss = *it;
+
+		if (boss->ToDestroy()) {
+			it = pBoss.erase(it);
+			continue;
+		}
+		++it;
+	}
+
+	//Ennemies
+	for (auto it = pEnemy.begin(); it != pEnemy.end(); )
+	{
+		EnemyEntity* enemy = *it;
+
+		if (enemy->ToDestroy()) {
+			it = pEnemy.erase(it);
+			continue;
+		}
+		++it;
 	}
 
 	//Kamikase (c'est lui le missile :)
@@ -336,14 +344,6 @@ void SampleScene::OnUpdate()
 		{
 			pKamikaze[i]->SetTarget(pPlayer);
 			break;
-		}
-	}
-	//Laner
-	if (timeSinceLastLanerShot >= lanerShootCooldown)
-	{
-		for (auto& laner : pLaner)
-		{
-      laner->Shoot();
 		}
 	}
 
@@ -507,5 +507,31 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			std::cout << "Summoning next wave" << std::endl;
 		}
+	}
+	for (auto& stalker : pStalker) {
+		stalker->mPlayer = pPlayer;
+	}
+	for (auto& shooter : pShooter) {
+		shooter->mPlayer = pPlayer;
+	}
+
+	// Ajouter toutes les entités ennemies dans pAllEnemies
+	for (auto& enemy : pEnemy) {
+		pAllEnemies.push_back(enemy);
+	}
+	for (auto& stalker : pStalker) {
+		pAllEnemies.push_back(stalker);
+	}
+	for (auto& kamikaze : pKamikaze) {
+		pAllEnemies.push_back(kamikaze);
+	}
+	for (auto& shooter : pShooter) {
+		pAllEnemies.push_back(shooter);
+	}
+	for (auto& laner : pLaner) {
+		pAllEnemies.push_back(laner);
+	}
+	for (auto& boss : pBoss) {
+		pAllEnemies.push_back(boss);
 	}
 }

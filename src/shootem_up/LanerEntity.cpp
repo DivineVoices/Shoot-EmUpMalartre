@@ -10,7 +10,12 @@
 
 void LanerEntity::OnUpdate()
 {
-
+    float lanerShootCooldown = 6;
+    timeSinceLastLanerShot += GameManager::Get()->GetDeltaTime();
+    if (timeSinceLastLanerShot >= lanerShootCooldown)
+    {
+        Shoot();
+    }
 }
 
 void LanerEntity::Shoot()

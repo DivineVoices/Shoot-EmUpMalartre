@@ -11,6 +11,14 @@
 void ShooterEntity::OnUpdate()
 {
     GoToDirection(-10000, GetPosition().y, 60);
+
+    float shooterShootCooldown = 1;
+    timeSinceLastEnemyShot += GameManager::Get()->GetDeltaTime();
+
+    if (timeSinceLastEnemyShot >= shooterShootCooldown)
+    {
+        Shoot();
+    }
 }
 
 void ShooterEntity::Shoot()
@@ -29,7 +37,7 @@ void ShooterEntity::Shoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(5, 5, "../../../res/car.png", 1, 1, 1.0f);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(5, 5, "../../../res/ennemybullet.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {

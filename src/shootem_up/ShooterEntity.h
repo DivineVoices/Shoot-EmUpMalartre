@@ -12,6 +12,7 @@ public:
 	}
 	void OnUpdate() override;
 	void Shoot();
-private:
 	Entity* mPlayer = nullptr;
+private:
+	float timeSinceLastEnemyShot = 0.0f;
 };
