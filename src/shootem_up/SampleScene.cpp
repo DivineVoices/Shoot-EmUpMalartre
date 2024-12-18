@@ -313,6 +313,7 @@ void SampleScene::OnUpdate()
 
 	pPlayer->SetPosition(x, y);
 
+	//----------Arrivée des vagues d'ennemies----------
 	Timer += dt;
 	if (Timer > 4) {
 		if (currentWaveIndex < waves.size()) {
@@ -320,6 +321,17 @@ void SampleScene::OnUpdate()
 			currentWaveIndex++; 
 		}
 		Timer = 0;
+	}
+
+	//----------Ecran game over et de victoire----------
+	if (pPlayer->GetLife() <= 0)
+	{
+
+	}
+
+	if (pBoss.back()->GetLife() <= 0)
+	{
+
 	}
 }
 

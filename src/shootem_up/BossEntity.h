@@ -20,6 +20,8 @@ public:
 	{
 		EnemyLife = 900;
 	}
+
+	int GetLife() const { return EnemyLife; }
 private:
 	Entity* mPlayer = nullptr;
 

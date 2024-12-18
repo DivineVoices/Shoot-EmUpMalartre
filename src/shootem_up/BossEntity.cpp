@@ -45,7 +45,7 @@ void BossEntity::Phase1()
 
 void BossEntity::Phase2()
 {
-    Scene* scene = GetScene();
+    /*Scene* scene = GetScene();
 
     if (scene == nullptr)
     {
@@ -69,37 +69,43 @@ void BossEntity::Phase2()
         lanerHasSpaw = true;
     }
 
-    if (FinalLaner1) {
+    if (FinalLaner1 && FinalLaner2) {
         FinalLaner1->Shoot();
-    }
-
-    if (FinalLaner2) {
         FinalLaner2->Shoot();
-    }
+    }*/
 
     float bossCanonShootCooldown = 0.5f;
+    float bossRoundShootCooldown = 1.0f;
 
     timeSinceLastBossCanonShot += GameManager::Get()->GetDeltaTime();
+    timeSinceLastBossRoundShot += GameManager::Get()->GetDeltaTime();
 
     if (timeSinceLastBossCanonShot >= bossCanonShootCooldown)
     {
         CanonShoot();
         timeSinceLastBossCanonShot = 0.0f;
     }
-}
-
-void BossEntity::Phase3()
-{
-    float bossRoundLaserCooldown = 0.0f;
-    float bossRoundShootCooldown = 1.0f;
-
-    timeSinceLastBossRoundShot += GameManager::Get()->GetDeltaTime();
-    timeSinceLastBossLaserShot += GameManager::Get()->GetDeltaTime();
 
     if (timeSinceLastBossRoundShot >= bossRoundShootCooldown)
     {
         RoundShoot();
         timeSinceLastBossRoundShot = 0.0f;
+    }
+
+}
+
+void BossEntity::Phase3()
+{
+    float bossBasicShootCooldown = 0.3f;
+    float bossRoundLaserCooldown = 0.0f;
+
+    timeSinceLastBasicBossShot += GameManager::Get()->GetDeltaTime();
+    timeSinceLastBossLaserShot += GameManager::Get()->GetDeltaTime();
+
+    if (timeSinceLastBasicBossShot >= bossBasicShootCooldown)
+    {
+        BasicShoot();
+        timeSinceLastBasicBossShot = 0.0f;
     }
 
     if (timeSinceLastBossRoundShot >= bossRoundLaserCooldown)
@@ -112,6 +118,7 @@ void BossEntity::Phase3()
 void BossEntity::PhaseGestion()
 {
     if (EnemyLife <= 600 && !lanerHasSpaw) lanerSpawn = true;
+
 }
 
 void BossEntity::BasicShoot()
@@ -166,7 +173,7 @@ void BossEntity::WallShoot()
         float posInBoss = (i - bulletCount / 2) * spacing;
         bullet->SetPosition(bossPosition.x, bossPosition.y + posInBoss);
 
-        sf::Vector2f bulletTarget = sf::Vector2f(bossPosition.x + posInBoss +20, 720.0f);
+        sf::Vector2f bulletTarget = sf::Vector2f(bossPosition.x + posInBoss + 20, 720.0f);
 
         bullet->SetTarget(mPlayer);
         bullet->SetSpeed(300.0f);
