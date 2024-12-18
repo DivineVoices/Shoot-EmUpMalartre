@@ -41,38 +41,33 @@ void SampleScene::OnInitialize()
 	pEnemy.back()->SetPosition(1000, 300);
 	pEnemy.back()->SetTag(Tag::ENNEMIES);*/
 
-	pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
-	pStalker.back()->SetCollisionType(Entity::CollisionType::AABB);
-	pStalker.back()->SetTag(Tag::ENNEMIES);
+	//pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
+	//pStalker.back()->SetCollisionType(Entity::CollisionType::AABB);
+	//pStalker.back()->SetTag(Tag::ENNEMIES);
 
-	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
-	pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
-	pKamikaze.back()->SetPosition(1000, 500);
-	pKamikaze.back()->SetTarget(pPlayer);
-	pKamikaze.back()->SetTag(Tag::ENNEMIES);
+	//pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
+	//pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
+	//pKamikaze.back()->SetPosition(1000, 500);
+	//pKamikaze.back()->SetTarget(pPlayer);
+	//pKamikaze.back()->SetTag(Tag::ENNEMIES);
 
-	pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
-	pShooter.back()->SetCollisionType(Entity::CollisionType::AABB);
-	pShooter.back()->SetPosition(1000, 500);
-	pShooter.back()->SetTag(Tag::ENNEMIES);
+	//pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
+	//pShooter.back()->SetCollisionType(Entity::CollisionType::AABB);
+	//pShooter.back()->SetPosition(1000, 500);
+	//pShooter.back()->SetTag(Tag::ENNEMIES);
 
-	pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
-	pLaner.back()->SetCollisionType(Entity::CollisionType::AABB);
-	pLaner.back()->SetPosition(1000, 600);
-	pLaner.back()->SetTag(Tag::ENNEMIES);
+	//pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
+	//pLaner.back()->SetCollisionType(Entity::CollisionType::AABB);
+	//pLaner.back()->SetPosition(1000, 600);
+	//pLaner.back()->SetTag(Tag::ENNEMIES);
 
-	pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
-	pBoss.back()->SetCollisionType(Entity::CollisionType::AABB);
-	pBoss.back()->SetPosition(1000, 350);
-	pBoss.back()->SetTag(Tag::ENNEMIES);
+	//pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
+	//pBoss.back()->SetCollisionType(Entity::CollisionType::AABB);
+	//pBoss.back()->SetPosition(1000, 350);
+	//pBoss.back()->SetTag(Tag::ENNEMIES);
 
-	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
-	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
-	pPlayer->SetPosition(500, 350);
-	pPlayer->SetTag(Tag::PLAYER);
-
-	pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
-	pCoin.back()->SetPosition(1000, 350);
+	/*pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
+	pCoin.back()->SetPosition(1000, 350);*/
 
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(100, 0);
@@ -94,6 +89,11 @@ void SampleScene::OnInitialize()
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(2660, 648);
 	pDummy[5]->GoToPosition(-1400, 648, 1024);
+
+	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
+	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
+	pPlayer->SetPosition(500, 350);
+	pPlayer->SetTag(Tag::PLAYER);
 
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
@@ -120,6 +120,10 @@ void SampleScene::OnInitialize()
 
 	for (auto& stalker : pStalker) {
 		stalker->mPlayer = pPlayer;
+	}
+
+	for (auto& dummy : pDummy) {
+		dummy->SetTag(2);
 	}
 
 	x = pPlayer->GetPosition().x;
@@ -434,7 +438,8 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			if (c == 'D') {
 				// Summon Ennemi Default
-				pShooter.push_back(CreateEntity<ShooterEntity>(50, sf::Color::Red));
+				pShooter.push_back(CreateEntity<ShooterEntity>(50, 50, "../../../res/shooter.png", 1, 1, 1.0f));
+				pShooter.back()->SetCollisionType(Entity::CollisionType::AABB);
 				pShooter.back()->SetPosition(xPosition, yPosition);
 				pShooter.back()->SetTarget(pPlayer);
 				pShooter.back()->SetTag(Tag::ENNEMIES);
@@ -443,8 +448,8 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			if (c == 'K') {
 				// Summon Ennemi Kamikaze
-				pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
-				pKamikaze.back()->SetPosition(xPosition, yPosition);
+				pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, 30, "../../../res/kamikaze.png", 1, 1, 1.0f));
+				pKamikaze.back()->SetCollisionType(Entity::CollisionType::AABB);
 				pKamikaze.back()->SetTarget(pPlayer);
 				pKamikaze.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Kamikaze" << std::endl;
@@ -457,7 +462,8 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			if (c == 'L') {
 				// Summon Ennemi Lazer
-				pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
+				pLaner.push_back(CreateEntity<LanerEntity>(60, 60, "../../../res/laner.png", 1, 1, 1.0f));
+				pLaner.back()->SetCollisionType(Entity::CollisionType::AABB);
 				pLaner.back()->SetPosition(xPosition, yPosition);
 				pLaner.back()->SetTag(Tag::ENNEMIES); 
 				std::cout << "Summoned Lazer" << std::endl;
@@ -465,7 +471,8 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			if (c == 'B') {
 				// Summon Ennemi Blocking
-				pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+				pStalker.push_back(CreateEntity<StalkerEntity>(40, 40, "../../../res/stalker.png", 1, 1, 1.0f));
+				pStalker.back()->SetCollisionType(Entity::CollisionType::AABB);
 				pStalker.back()->SetPosition(xPosition, yPosition);
 				pStalker.back()->SetTag(Tag::ENNEMIES);
 				std::cout << "Summoned Blocking" << std::endl;
@@ -473,7 +480,8 @@ void SampleScene::ProcessWave(const std::string& wave) {
 			}
 			if (c == 'F') {
 				// Summon Ennemi Boss Final
-				pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+				pBoss.push_back(CreateEntity<BossEntity>(200, 200, "../../../res/boss.png", 1, 1, 1.0f));
+				pBoss.back()->SetCollisionType(Entity::CollisionType::AABB);
 				pBoss.back()->SetPosition(xPosition, 350);
 				pBoss.back()->SetTarget(pPlayer);
 				pBoss.back()->SetTag(Tag::ENNEMIES);

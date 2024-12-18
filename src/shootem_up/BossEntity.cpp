@@ -171,7 +171,8 @@ void BossEntity::WallShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, sf::Color::Red);
+        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, 15, "../../../res/ennemybullet.png", 1, 1, 1.0f);
+
 
         if (bullet == nullptr)
         {
@@ -202,7 +203,8 @@ void BossEntity::CanonShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(20, sf::Color::Red);
+        EnemyBulletEntity* badbullet = CreateEntity<EnemyBulletEntity>(20, 20, "../../../res/ennemybullet.png", 1, 1, 1.0f);
+
 
         if (badbullet == nullptr)
         {
@@ -230,7 +232,8 @@ void BossEntity::RoundShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, sf::Color::Red);
+        EnemyBulletEntity* bullet = CreateEntity<EnemyBulletEntity>(15, 15, "../../../res/ennemybullet.png", 1, 1, 1.0f);
+
 
         if (bullet == nullptr)
         {
@@ -262,7 +265,7 @@ void BossEntity::LaserShoot()
 
     for (int i = 0; i < bulletCount; ++i)
     {
-        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+        LanerBulletEntity* badbullet = CreateEntity<LanerBulletEntity>(100, 100, "../../../res/lanerbullet.png", 1, 1, 1.0f);
 
         if (badbullet == nullptr)
         {
@@ -286,14 +289,14 @@ void BossEntity::FeatherShoot()
 
     if (mPlayer->GetPosition().y < 240)
     { 
-        FaetherTop = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+        FaetherTop = CreateEntity<LanerBulletEntity>(100, 100, "../../../res/lanerbullet.png", 1, 1, 1.0f);
         FaetherTop->SetPosition(1200, 144);
         FaetherTop->SetSpeed(1000);
         FaetherTopDown = false;
     }
     else if (mPlayer->GetPosition().y > 480)
     {
-    FaetherDown = CreateEntity<LanerBulletEntity>(100, sf::Color::Red);
+    FaetherDown = CreateEntity<LanerBulletEntity>(100, 100, "../../../res/lanerbullet.png", 1, 1, 1.0f);
         FaetherDown->SetPosition(1200, 516);
         FaetherDown->SetSpeed(1000);
         FaetherTopDown = true; 

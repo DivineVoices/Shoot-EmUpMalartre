@@ -138,11 +138,13 @@ void GameManager::Update()
 			Entity* entity = *it1;
 			Entity* otherEntity = *it2;
 
-			if (entity->IsColliding(otherEntity))
-			{
-				entity->OnCollision(otherEntity);
-				otherEntity->OnCollision(entity);
+			if (!entity->IsTag(2)) {
+				if (entity->IsColliding(otherEntity))
+				{
+					entity->OnCollision(otherEntity);
+					otherEntity->OnCollision(entity);
 
+				}
 			}
 		}
 	}
@@ -191,10 +193,13 @@ void GameManager::FixedUpdate()
 				Entity* entity = *it1;
 				Entity* otherEntity = *it2;
 
-				if (entity->IsColliding(otherEntity))
-				{
-					entity->OnCollision(otherEntity);
-					otherEntity->OnCollision(entity);
+				if (!entity->IsTag(2)) {
+					if (entity->IsColliding(otherEntity))
+					{
+						entity->OnCollision(otherEntity);
+						otherEntity->OnCollision(entity);
+
+					}
 				}
 			}
 		}
