@@ -66,11 +66,6 @@ void SampleScene::OnInitialize()
 	//pBoss.back()->SetPosition(1000, 350);
 	//pBoss.back()->SetTag(Tag::ENNEMIES);
 
-	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
-	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
-	pPlayer->SetPosition(500, 350);
-	pPlayer->SetTag(Tag::PLAYER);
-
 	/*pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
 	pCoin.back()->SetPosition(1000, 350);*/
 
@@ -94,6 +89,11 @@ void SampleScene::OnInitialize()
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(2660, 648);
 	pDummy[5]->GoToPosition(-1400, 648, 1024);
+
+	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
+	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
+	pPlayer->SetPosition(500, 350);
+	pPlayer->SetTag(Tag::PLAYER);
 
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
