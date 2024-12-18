@@ -31,6 +31,28 @@ void SampleScene::OnInitialize()
 	pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
 	pCoin.back()->SetPosition(1000, 350);
 
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 0);
+	pDummy[0]->GoToPosition(-1400, 0, 128);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 0);
+	pDummy[1]->GoToPosition(-1400, 0, 128);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 240);
+	pDummy[2]->GoToPosition(-1400, 0, 16);
+	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 240);
+	pDummy[3]->GoToPosition(-1400, 0, 16);
+
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, 648);
+	pDummy[4]->GoToPosition(-1400, 648, 1024);
+	pDummy.push_back(CreateEntity<DummyEntity>(2560, 144, "../../../res/route.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(2660, 648);
+	pDummy[5]->GoToPosition(-1400, 648, 1024);
+
+
 	// Ajouter toutes les entités ennemies dans pAllEnemies
 	for (auto& dummy : pDummy) {
 		pAllEnemies.push_back(dummy);
@@ -326,6 +348,38 @@ void SampleScene::OnUpdate()
 		}
 	}
 	*/
+
+	//----------FX/UI----------
+	if (pDummy[0]->GetPosition().x <= -1390)
+	{
+		pDummy[0]->SetPosition(2660, 0);
+		pDummy[0]->GoToPosition(-1400, 0, 128);
+	}
+	if (pDummy[1]->GetPosition().x <= -1390)
+	{
+		pDummy[1]->SetPosition(2660, 0);
+		pDummy[1]->GoToPosition(-1400, 0, 128);
+	}
+	if (pDummy[2]->GetPosition().x <= -1390)
+	{
+		pDummy[2]->SetPosition(2660, 240);
+		pDummy[2]->GoToPosition(-1400, 100, 16);
+	}
+	if (pDummy[3]->GetPosition().x <= -1390)
+	{
+		pDummy[3]->SetPosition(2660, 240);
+		pDummy[3]->GoToPosition(-1400, 100, 16);
+	}
+	if (pDummy[4]->GetPosition().x <= -1390)
+	{
+		pDummy[4]->SetPosition(2660, 648);
+		pDummy[4]->GoToPosition(-1400, 648, 1024);
+	}
+	if (pDummy[5]->GetPosition().x <= -1390)
+	{
+		pDummy[5]->SetPosition(2660, 648);
+		pDummy[5]->GoToPosition(-1400, 648, 1024);
+	}
 }
 
 
