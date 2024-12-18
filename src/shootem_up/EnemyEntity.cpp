@@ -8,7 +8,7 @@
 
 void EnemyEntity::OnCollision(Entity* other)
 {
-	std::cout << "EnemyEntity::OnCollision" << std::endl;
+	//std::cout << "EnemyEntity::OnCollision" << std::endl;
 	std::cout << EnemyLife << std::endl;
 }
 

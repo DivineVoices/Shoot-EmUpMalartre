@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "SampleScene.h"
+#include <SFML/Graphics.hpp>
 
 #include "DummyEntity.h"
 #include "EnemyEntity.h"
@@ -26,7 +27,7 @@ void SampleScene::OnInitialize()
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
 
-	/*pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
+	pStalker.push_back(CreateEntity<StalkerEntity>(40, sf::Color::Red));
 	pStalker.back()->SetTag(Tag::ENNEMIES);
 
 	pKamikaze.push_back(CreateEntity<KamikazeEntity>(30, sf::Color::Red));
@@ -41,12 +42,12 @@ void SampleScene::OnInitialize()
 
 	pLaner.push_back(CreateEntity<LanerEntity>(60, sf::Color::Red));
 	pLaner.back()->SetPosition(1000, 600);
-	pLaner.back()->SetTag(Tag::ENNEMIES);*/
+	pLaner.back()->SetTag(Tag::ENNEMIES);
 
-	pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
+	/*pBoss.push_back(CreateEntity<BossEntity>(200, sf::Color::Magenta));
 	pBoss.back()->SetPosition(1000, 350);
 	pBoss.back()->SetTarget(pPlayer);
-	pBoss.back()->SetTag(Tag::ENNEMIES);
+	pBoss.back()->SetTag(Tag::ENNEMIES);*/
 
 	
 
@@ -313,6 +314,7 @@ void SampleScene::OnUpdate()
 
 	pPlayer->SetPosition(x, y);
 
+	//----------Arrivée des vagues d'ennemies----------
 	Timer += dt;
 	if (Timer > 4) {
 		if (currentWaveIndex < waves.size()) {
@@ -320,6 +322,17 @@ void SampleScene::OnUpdate()
 			currentWaveIndex++; 
 		}
 		Timer = 0;
+	}
+
+	//----------Ecran game over et de victoire----------
+	if (pPlayer->GetLife() <= 0)
+	{
+
+	}
+
+	if (pBoss.back()->GetLife() <= 0)
+	{
+
 	}
 }
 
