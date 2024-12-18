@@ -25,7 +25,7 @@ void BossEntity::OnUpdate()
 void BossEntity::Phase1()
 {
     float bossBasicShootCooldown = 0.5f;
-    float bossWallShootCooldown = 0.7f;
+    float bossWallShootCooldown = 0.85f;
 
     timeSinceLastBasicBossShot += GameManager::Get()->GetDeltaTime();
     timeSinceLastWallBossShot += GameManager::Get()->GetDeltaTime();
@@ -201,7 +201,7 @@ void BossEntity::CanonShoot()
             continue;
         }
         badbullet->SetPosition(bossPosition.x, bossPosition.y);
-        badbullet->SetSpeed(1000.0f);
+        badbullet->SetSpeed(850.0f);
         badbullet->SetTarget(mPlayer);
     }
 }
