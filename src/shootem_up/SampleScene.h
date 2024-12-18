@@ -82,8 +82,9 @@ private:
 
 	sf::Vector2f direction;
 
-	int BackSpeed = 8;
-	int PlanetSpeed = 16;
+	int BackSpeed = 2;
+	int PlanetSpeed = 32;
+	int CitySpeed2 = 64;
 	int CitySpeed = 128;
 	int RoadSpeed = 256;
 	int BackY = 0;

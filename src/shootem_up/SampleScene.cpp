@@ -69,10 +69,10 @@ void SampleScene::OnInitialize()
 	/*pCoin.push_back(CreateEntity<CoinEntity>(25, sf::Color::Yellow));
 	pCoin.back()->SetPosition(1000, 350);*/
 
-	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.push_back(CreateEntity<DummyEntity>(3840, 720, "../../../res/etoiles.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(100, BackY);
 	pDummy[0]->GoToPosition(GoalX, BackY, BackSpeed);
-	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
+	pDummy.push_back(CreateEntity<DummyEntity>(3840, 720, "../../../res/etoiles.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(2660, BackY);
 	pDummy[1]->GoToPosition(GoalX, BackY, BackSpeed);
 
@@ -90,14 +90,23 @@ void SampleScene::OnInitialize()
 	pDummy.back()->SetPosition(2660, RoadY);
 	pDummy[5]->GoToPosition(GoalX, RoadY, RoadSpeed);
 
+	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/paraback.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(100, CityY);
+	pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed2);
+	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/paraback.png", 1, 1, 1.0f));
+	pDummy.back()->SetPosition(1540, CityY);
+	pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed2);
+
 	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(100, CityY);
-	pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed);
+	pDummy[8]->GoToPosition(GoalX, CityY, CitySpeed);
 	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
 	pDummy.back()->SetPosition(1540, CityY);
-	pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed);
+	pDummy[9]->GoToPosition(GoalX, CityY, CitySpeed);
 
-	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
+
+
+	pPlayer = CreateEntity<PlayerEntity>(175, 60, "../../../res/player.png", 1, 1, 1.0f);
 	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
@@ -463,12 +472,22 @@ void SampleScene::OnUpdate()
 	if (pDummy[6]->GetPosition().x <= -890)
 	{
 		pDummy[6]->SetPosition(2000, CityY);
-		pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed);
+		pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed2);
 	}
 	if (pDummy[7]->GetPosition().x <= -890)
 	{
 		pDummy[7]->SetPosition(2000, CityY);
-		pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed);
+		pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed2);
+	}
+	if (pDummy[8]->GetPosition().x <= -890)
+	{
+		pDummy[8]->SetPosition(2000, CityY);
+		pDummy[8]->GoToPosition(GoalX, CityY, CitySpeed);
+	}
+	if (pDummy[9]->GetPosition().x <= -890)
+	{
+		pDummy[9]->SetPosition(2000, CityY);
+		pDummy[9]->GoToPosition(GoalX, CityY, CitySpeed);
 	}
 }
 

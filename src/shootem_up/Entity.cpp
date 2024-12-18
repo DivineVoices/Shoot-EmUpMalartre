@@ -366,7 +366,7 @@ void Entity::DrawCollision(sf::RenderWindow* window) const
 		circle.setFillColor(sf::Color::Transparent);
 		circle.setOutlineColor(sf::Color::Red);
 		circle.setOutlineThickness(1.0f);
-		window->draw(circle);
+		//window->draw(circle);
 	}
 	else if (mCollisionType == CollisionType::AABB)
 	{
@@ -375,6 +375,6 @@ void Entity::DrawCollision(sf::RenderWindow* window) const
 		rectangle.setFillColor(sf::Color::Transparent);
 		rectangle.setOutlineColor(sf::Color::Red);
 		rectangle.setOutlineThickness(1.0f);
-		window->draw(rectangle);
+		//window->draw(rectangle);
 	}
 }
