@@ -82,6 +82,16 @@ private:
 
 	sf::Vector2f direction;
 
+	int BackSpeed = 8;
+	int PlanetSpeed = 16;
+	int CitySpeed = 128;
+	int RoadSpeed = 256;
+	int BackY = 0;
+	int PlanetY = 100;
+	int CityY = 152;
+	int RoadY = 550;
+	int GoalX = -1400;
+
 public:
 	void OnInitialize() override;
 	void OnEvent(const sf::Event& event) override;

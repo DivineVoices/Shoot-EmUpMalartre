@@ -70,32 +70,32 @@ void SampleScene::OnInitialize()
 	pCoin.back()->SetPosition(1000, 350);*/
 
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(100, 0);
-	pDummy[0]->GoToPosition(-1400, 0, 8);
+	pDummy.back()->SetPosition(100, BackY);
+	pDummy[0]->GoToPosition(GoalX, BackY, BackSpeed);
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 1440, "../../../res/etoiles.jpg", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(2660, 0);
-	pDummy[1]->GoToPosition(-1400, 0, 8);
+	pDummy.back()->SetPosition(2660, BackY);
+	pDummy[1]->GoToPosition(GoalX, BackY, BackSpeed);
 
 	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(100, 100);
-	pDummy[2]->GoToPosition(-1400, 100, 16);
+	pDummy.back()->SetPosition(100, PlanetY);
+	pDummy[2]->GoToPosition(GoalX, PlanetY, PlanetSpeed);
 	pDummy.push_back(CreateEntity<DummyEntity>(180, 180, "../../../res/saturne.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(2660, 100);
-	pDummy[3]->GoToPosition(-1400, 100, 16);
+	pDummy.back()->SetPosition(2660, PlanetY);
+	pDummy[3]->GoToPosition(GoalX, PlanetY, PlanetSpeed);
 
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 540, "../../../res/route.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(200, 550);
-	pDummy[4]->GoToPosition(-1400, 550, 512);
+	pDummy.back()->SetPosition(200, RoadY);
+	pDummy[4]->GoToPosition(GoalX, RoadY, RoadSpeed);
 	pDummy.push_back(CreateEntity<DummyEntity>(2560, 540, "../../../res/route.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(2660, 550);
-	pDummy[5]->GoToPosition(-1400, 550, 512);
+	pDummy.back()->SetPosition(2660, RoadY);
+	pDummy[5]->GoToPosition(GoalX, RoadY, RoadSpeed);
 
 	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(100, 152);
-	pDummy[6]->GoToPosition(-1400, 152, 256);
+	pDummy.back()->SetPosition(100, CityY);
+	pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed);
 	pDummy.push_back(CreateEntity<DummyEntity>(1440, 256, "../../../res/parafront.png", 1, 1, 1.0f));
-	pDummy.back()->SetPosition(1540, 152);
-	pDummy[7]->GoToPosition(-1400, 152, 256);
+	pDummy.back()->SetPosition(1540, CityY);
+	pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed);
 
 	pPlayer = CreateEntity<PlayerEntity>(50, 50, "../../../res/player.png", 1, 1, 1.0f);
 	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
@@ -432,43 +432,43 @@ void SampleScene::OnUpdate()
 	//----------FX/UI----------
 	if (pDummy[0]->GetPosition().x <= -1390)
 	{
-		pDummy[0]->SetPosition(2660, 0);
-		pDummy[0]->GoToPosition(-1400, 0, 8);
+		pDummy[0]->SetPosition(2660, BackY);
+		pDummy[0]->GoToPosition(GoalX, BackY, BackSpeed);
 	}
 	if (pDummy[1]->GetPosition().x <= -1390)
 	{
-		pDummy[1]->SetPosition(2660, 0);
-		pDummy[1]->GoToPosition(-1400, 0, 8);
+		pDummy[1]->SetPosition(2660, BackY);
+		pDummy[1]->GoToPosition(GoalX, BackY, BackSpeed);
 	}
 	if (pDummy[2]->GetPosition().x <= -1390)
 	{
-		pDummy[2]->SetPosition(2660, 100);
-		pDummy[2]->GoToPosition(-1400, 100, 16);
+		pDummy[2]->SetPosition(2660, PlanetY);
+		pDummy[2]->GoToPosition(GoalX, PlanetY, PlanetSpeed);
 	}
 	if (pDummy[3]->GetPosition().x <= -1390)
 	{
-		pDummy[3]->SetPosition(2660, 100);
-		pDummy[3]->GoToPosition(-1400, 100, 16);
+		pDummy[3]->SetPosition(2660, PlanetY);
+		pDummy[3]->GoToPosition(GoalX, PlanetY, PlanetSpeed);
 	}
 	if (pDummy[4]->GetPosition().x <= -1390)
 	{
-		pDummy[4]->SetPosition(2660, 550);
-		pDummy[4]->GoToPosition(-1400, 550, 512);
+		pDummy[4]->SetPosition(2660, RoadY);
+		pDummy[4]->GoToPosition(GoalX, RoadY, RoadSpeed);
 	}
 	if (pDummy[5]->GetPosition().x <= -1390)
 	{
-		pDummy[5]->SetPosition(2660, 550);
-		pDummy[5]->GoToPosition(-1400, 550, 512);
+		pDummy[5]->SetPosition(2660, RoadY);
+		pDummy[5]->GoToPosition(GoalX, RoadY, RoadSpeed);
 	}
 	if (pDummy[6]->GetPosition().x <= -890)
 	{
-		pDummy[6]->SetPosition(2000, 152);
-		pDummy[6]->GoToPosition(-1400, 152, 256);
+		pDummy[6]->SetPosition(2000, CityY);
+		pDummy[6]->GoToPosition(GoalX, CityY, CitySpeed);
 	}
 	if (pDummy[7]->GetPosition().x <= -890)
 	{
-		pDummy[7]->SetPosition(2000, 152);
-		pDummy[7]->GoToPosition(-1400, 152, 256);
+		pDummy[7]->SetPosition(2000, CityY);
+		pDummy[7]->GoToPosition(GoalX, CityY, CitySpeed);
 	}
 }
 
