@@ -10,8 +10,6 @@
 
 #include "LanerEntity.h"
 
-#include "ShooterEntity.h"
-
 #include "SampleScene.h"
 
 #include <iostream>
