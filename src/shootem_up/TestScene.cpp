@@ -16,6 +16,10 @@ void TestScene::OnInitialize()
 	pEntity2->SetPosition(500, 500);
 	pEntity2->SetCollisionType(Entity::CollisionType::AABB);
 
+	pEntity3 = CreateEntity<DummyEntity>(70, 70, "../../../res/spritesheet.png", 4, 4, 1.0f);
+	pEntity3->SetPosition(700, 700);
+	pEntity3->SetCollisionType(Entity::CollisionType::AABB);
+
 	pEntitySelected = nullptr;
 }
 
@@ -26,6 +30,7 @@ void TestScene::OnEvent(const sf::Event& event)
 	{
 		TrySetSelectedEntity(pEntity1, event.mouseButton.x, event.mouseButton.y);
 		TrySetSelectedEntity(pEntity2, event.mouseButton.x, event.mouseButton.y);
+		TrySetSelectedEntity(pEntity3, event.mouseButton.x, event.mouseButton.y);
 	}
 
 	if (event.mouseButton.button == sf::Mouse::Button::Left)

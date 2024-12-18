@@ -48,6 +48,17 @@ void GameManager::CreateWindow(unsigned int width, unsigned int height, const ch
 	mWindowHeight = height;
 }
 
+void GameManager::ChangeScene()
+{
+	mpScene = nullptr;
+	for (auto it = mEntities.begin(); it != mEntities.end(); ++it)
+	{
+		delete* it;
+	}
+
+	mEntities.clear();
+}
+
 void GameManager::Run()
 {
 	if (mpWindow == nullptr) 
@@ -110,11 +121,12 @@ void GameManager::Update()
         it = mEntities.erase(it);
     }
 
-	/*mAccunu1atedDt += mDeltaTime;
-	if (mAccunu1atedDt >= FIXED_DT) {
+	//FixedUpdate
+	mAccumulatedDt += mDeltaTime;
+	while (mAccumulatedDt >= FIXED_DT) {
 		FixedUpdate();
-		mAccunu1atedDt -= FIXED_DT;
-	}*/
+		mAccumulatedDt -= FIXED_DT;
+	}
 
     //Collision
 	for (auto it1 = mEntities.begin(); it1 != mEntities.end(); ++it1)
@@ -152,12 +164,54 @@ void GameManager::Update()
 
 void GameManager::FixedUpdate()
 {
-	/*for (Entity* entity : mEntities) {
-		entity->Update();
-	}*/
+	//FixedUpdate Entity
+	{
+		for (auto it = mEntities.begin(); it != mEntities.end(); )
+		{
+			Entity* entity = *it;
 
-	
+			entity->FixedUpdate(FIXED_DT);
+			if (entity->ToDestroy() == false)
+			{
+				++it;
+				continue;
+			}
 
+			mEntitiesToDestroy.push_back(entity);
+			it = mEntities.erase(it);
+		}
+
+		//Collision
+		for (auto it1 = mEntities.begin(); it1 != mEntities.end(); ++it1)
+		{
+			auto it2 = it1;
+			++it2;
+			for (; it2 != mEntities.end(); ++it2)
+			{
+				Entity* entity = *it1;
+				Entity* otherEntity = *it2;
+
+				if (entity->IsColliding(otherEntity))
+				{
+					entity->OnCollision(otherEntity);
+					otherEntity->OnCollision(entity);
+				}
+			}
+		}
+		//Destroy
+		for (auto it = mEntitiesToDestroy.begin(); it != mEntitiesToDestroy.end(); ++it)
+		{
+			delete* it;
+		}
+		mEntitiesToDestroy.clear();
+
+		//Add
+		for (auto it = mEntitiesToAdd.begin(); it != mEntitiesToAdd.end(); ++it)
+		{
+			mEntities.push_back(*it);
+		}
+		mEntitiesToAdd.clear();
+	}
 }
 
 void GameManager::Draw()

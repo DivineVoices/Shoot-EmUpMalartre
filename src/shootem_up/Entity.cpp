@@ -264,6 +264,39 @@ void Entity::Update()
 	OnUpdate();
 }
 
+void Entity::FixedUpdate(float fixedDt)
+{
+	Utils::Normalize(mDirection);
+
+	float distance = fixedDt * mSpeed;
+	sf::Vector2f translation = distance * mDirection;
+	mSprite.move(translation);
+	mShape.move(translation);
+
+	if (mTarget.isSet)
+	{
+		mTarget.distance -= distance;
+
+		if (mTarget.distance <= 0.f)
+		{
+			SetPosition(mTarget.position.x, mTarget.position.y, 0.5f, 0.5f);
+			mDirection = sf::Vector2f(0.f, 0.f);
+			mTarget.isSet = false;
+		}
+	}
+
+	mAnimation.progress += fixedDt;
+	if (mAnimation.progress >= mAnimation.animationTime) {
+		mAnimation.progress = 0;
+		mAnimation.indexX = (mAnimation.indexX + 1) % mAnimation.col;
+	}
+
+	mSprite.setTextureRect(sf::IntRect((GetWidthTexture() / mAnimation.col) * mAnimation.indexX, (GetHeightTexture() / mAnimation.row) * mAnimation.indexY,
+		GetWidthTexture() / mAnimation.row, GetHeightTexture() / mAnimation.col));
+
+	OnFixedUpdate();
+}
+
 Scene* Entity::GetScene() const
 {
 	return GameManager::Get()->GetScene();
@@ -291,19 +324,17 @@ void Entity::SetSizeByY(int sizeY)
 void Entity::UpdateAnimation(float mDeltaTime)
 {
 	mAnimation.progress += mDeltaTime;
-
-
-	if (mAnimation.col != 0) {
-		mAnimation.indexX = (mAnimation.indexX + 1) % mAnimation.col;
+	if (mAnimation.progress >= mAnimation.animationTime) {
+		if (mAnimation.col != 0) {
+			mAnimation.indexX = (mAnimation.indexX + 1) % mAnimation.col;
+		}
+		else {
+			mAnimation.indexX = 0;
+		}
+		mAnimation.progress = 0.f;
+		mSprite.setTextureRect(sf::IntRect((GetWidthTexture() / mAnimation.col) * mAnimation.indexX, (GetHeightTexture() / mAnimation.row) * mAnimation.indexY,
+			GetWidthTexture() / mAnimation.row, GetHeightTexture() / mAnimation.col));
 	}
-	else {
-		mAnimation.indexX = 0; // or any other appropriate value
-	}
-
-	mSprite.setTextureRect(sf::IntRect((GetWidthTexture() / mAnimation.col) * mAnimation.indexX, (GetHeightTexture() / mAnimation.row) * mAnimation.indexY, GetWidthTexture() / mAnimation.row, GetHeightTexture() / mAnimation.col));
-
-	//OnUpdate();
-
 }
 
 void Entity::DrawCollision(sf::RenderWindow* window) const

@@ -28,7 +28,7 @@ class GameManager
 
 	Scene* mpScene;
 
-	float mAccunu1atedDt = 0.f;
+	float mAccumulatedDt = 0.f;
 	float mDeltaTime;
 
 	int mWindowWidth;
@@ -57,10 +57,16 @@ public:
 	template<typename T>
 	void LaunchScene();
 
+	template<typename T>
+	void LaunchAnotherScene();
+
+	void ChangeScene();
+
 	float GetDeltaTime() const { return mDeltaTime; }
 	Scene* GetScene() const { return mpScene; }
 	sf::Font& GetFont() { return mFont; };
 
+	std::list<Entity*> GetEntities() { return mEntities; }
 
 	friend Debug;
 	friend Scene;

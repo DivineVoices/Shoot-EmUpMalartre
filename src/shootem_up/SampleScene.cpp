@@ -234,7 +234,7 @@ void SampleScene::OnUpdate()
 	if (timeSinceLastShot >= playerShootCooldown) 
 	{
 		pProjectiles.push_back(CreateEntity<BulletEntity>(10, 10, "../../../res/bullet.png", 1, 1, 1.0f));
-		pProjectiles.back()->SetCollisionType(Entity::CollisionType::Circle);
+		pProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
 		pProjectiles.back()->SetPosition(pPx, pPy);
 
 		timeSinceLastShot = 0.0f;

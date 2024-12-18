@@ -132,11 +132,13 @@ protected:
     ~Entity() = default;
 
     virtual void OnUpdate() {};
+    virtual void OnFixedUpdate() {};
     virtual void OnCollision(Entity* collidedWith) {};
 	virtual void OnInitialize() {};
 	
 private:
     void Update();
+    void FixedUpdate(float fixedDt);
     void Initialize(float _w, float _h, std::string, int row, int col, float frameTime);
 
     friend class GameManager;
