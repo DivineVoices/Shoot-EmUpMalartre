@@ -122,6 +122,10 @@ void SampleScene::OnInitialize()
 		stalker->mPlayer = pPlayer;
 	}
 
+	for (auto& dummy : pDummy) {
+		dummy->SetTag(2);
+	}
+
 	x = pPlayer->GetPosition().x;
 	y = pPlayer->GetPosition().y;
 
