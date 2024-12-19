@@ -410,7 +410,7 @@ void SampleScene::OnUpdate()
 
 	//----------Arrivée des vagues d'ennemies----------
 	Timer += dt;
-	if (Timer > 1) {
+	if (Timer > 4.5f) {
 		if (currentWaveIndex < waves.size()) {
 			ProcessWave(waves[currentWaveIndex]);
 			currentWaveIndex++; 
