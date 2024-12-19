@@ -141,28 +141,22 @@ void SampleScene::OnInitialize()
 			waves.push_back(line);
 		}
 	}
-
 	inputFile.close();
 
 	AudioManager::Get()->PlayMusic("../../../res/maintheme.mp3");
 	AudioManager::Get()->SetMusicVolume(5.0f);
+	AudioManager::Get()->LoadSound("Shot", "../../../res/shot.mp3");
+	AudioManager::Get()->LoadSound("RocketLaunch", "../../../res/rocketlaunch.mp3");
+	AudioManager::Get()->LoadSound("Homing", "../../../res/homing.mp3");
+	AudioManager::Get()->LoadSound("Explode", "../../../res/explode.mp3");
+	AudioManager::Get()->SetSoundVolume("Shot", 2.5);
+	AudioManager::Get()->SetSoundVolume("RocketLaunch", 5.0);
+	AudioManager::Get()->SetSoundVolume("Homing", 30.0);
+	AudioManager::Get()->SetSoundVolume("Explode", 10.0);
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
 {
-	if (event.type == sf::Event::MouseButtonPressed) {
-		if (event.mouseButton.button == sf::Mouse::Button::Left)
-		{
-			if (pEntitySelected != nullptr)
-			{
-				pEntitySelected->GoToPosition(event.mouseButton.x, event.mouseButton.y, 100.f);
-			}
-		}
-		if (event.mouseButton.button == sf::Mouse::Button::Right)
-		{
-			TrySetSelectedEntity(event.mouseButton.x, event.mouseButton.y);
-		}
-	}
 	pPx = pPlayer->GetPosition().x;
 	pPx = pPlayer->GetPosition().x;
 	if (event.type == sf::Event::KeyPressed)
@@ -184,6 +178,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		//Missiles spéciaux
 		if (event.key.code == sf::Keyboard::E) {
 			pPy -= 25;
+			AudioManager::Get()->PlaySound("Homing");
 			for (int i = 0; i < 4; i++) {
 				pHoming.push_back(CreateEntity<HomingBulletEntity>(20, 20, "../../../res/homing.png", 1, 1, 1.0f));
 				pHoming.back()->SetCollisionType(Entity::CollisionType::AABB);
@@ -199,6 +194,7 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 
 		if (event.key.code == sf::Keyboard::R) {
+			AudioManager::Get()->PlaySound("RocketLaunch");
 			pRocket.push_back(CreateEntity<RocketBulletEntity>(20, 20, "../../../res/rocket.png", 1, 1, 1.0f));
 			pRocket.back()->SetCollisionType(Entity::CollisionType::AABB);
 			pRocket.back()->SetPosition(pPx, pPy);
@@ -271,10 +267,10 @@ void SampleScene::OnUpdate()
 	//Basique
 	if (timeSinceLastShot >= playerShootCooldown) 
 	{
+		AudioManager::Get()->PlaySound("Shot");
 		pProjectiles.push_back(CreateEntity<BulletEntity>(10, 10, "../../../res/bullet.png", 1, 1, 1.0f));
 		pProjectiles.back()->SetCollisionType(Entity::CollisionType::AABB);
 		pProjectiles.back()->SetPosition(pPx, pPy);
-
 		timeSinceLastShot = 0.0f;
 	}
 
@@ -335,6 +331,7 @@ void SampleScene::OnUpdate()
 	for (auto it = pBoss.begin(); it != pBoss.end(); )
 	{
 		BossEntity* boss = *it;
+		AudioManager::Get()->PlaySound("Death");
 
 		if (boss->ToDestroy()) {
 			it = pBoss.erase(it);
@@ -347,6 +344,7 @@ void SampleScene::OnUpdate()
 	for (auto it = pEnemy.begin(); it != pEnemy.end(); )
 	{
 		EnemyEntity* enemy = *it;
+		AudioManager::Get()->PlaySound("Death");
 
 		if (enemy->ToDestroy()) {
 			it = pEnemy.erase(it);

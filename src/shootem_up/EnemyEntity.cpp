@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "EnemyEntity.h"
+#include "AudioManager.h"	
 
 #include "SampleScene.h"
 
