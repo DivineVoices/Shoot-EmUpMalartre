@@ -424,6 +424,10 @@ void SampleScene::OnUpdate()
 		pDummy.push_back(CreateEntity<DummyEntity>(1300, 720, "../../../res/loose.png", 1, 1, 1.0f));
 		pDummy.back()->SetPosition(650, 360);
 		pDummy.back()->SetTag(2);
+
+		pDummy.push_back(CreateEntity<DummyEntity>(560, 360, "../../../res/loosetext.png", 1, 1, 1.0f));
+		pDummy.back()->SetPosition(650, 360);
+		pDummy.back()->SetTag(2);
 		gameOver = true;
 	}
 
@@ -657,7 +661,7 @@ void SampleScene::RestartGame()
 	pLanerProjectiles.clear();
 
 	pPlayer->SetPosition(500, 350);
-	pPlayer->SetLife(100);
+	pPlayer->SetLife(20);
 	gameOver = false;
 
 	currentWaveIndex = 0;

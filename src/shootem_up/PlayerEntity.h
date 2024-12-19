@@ -3,7 +3,7 @@
 
 class PlayerEntity : public Entity
 {
-	int PlayerLife = 3000;
+	int PlayerLife = 20;
 	int CoinNumber = 0;
 public:
 	void OnCollision(Entity* other) override;
