@@ -90,10 +90,10 @@ private:
 	int CitySpeed = 128;
 	int RoadSpeed = 256;
 	int BackY = 0;
-	int PlanetY = 100;
+	int PlanetY = 150;
 	int CityY = 152;
 	int RoadY = 550;
-	int GoalX = -1400;
+	int GoalX = -2500;
 
 public:
 	void OnInitialize() override;
