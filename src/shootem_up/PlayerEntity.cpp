@@ -14,6 +14,10 @@ void PlayerEntity::OnCollision(Entity* other)
         std::cout << "PlayerOnColision" << std::endl;
         std::cout << "OOOOOFFFFFFFF !!!!! Vie du joueur: " << PlayerLife << std::endl;
     }
+    if (other->IsTag(SampleScene::Tag::COIN))
+    {
+        CoinNumber +=1;
+    }
 }
 
 void PlayerEntity::OnUpdate()

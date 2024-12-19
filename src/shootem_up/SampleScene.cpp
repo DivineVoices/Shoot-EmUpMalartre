@@ -104,9 +104,7 @@ void SampleScene::OnInitialize()
 	pDummy.back()->SetPosition(1540, CityY);
 	pDummy[9]->GoToPosition(GoalX, CityY, CitySpeed);
 
-
-
-	pPlayer = CreateEntity<PlayerEntity>(175, 60, "../../../res/player.png", 1, 1, 1.0f);
+	pPlayer = CreateEntity<PlayerEntity>(87.5f, 30, "../../../res/player.png", 1, 1, 1.0f);
 	pPlayer->SetCollisionType(Entity::CollisionType::AABB);
 	pPlayer->SetPosition(500, 350);
 	pPlayer->SetTag(Tag::PLAYER);
@@ -215,6 +213,11 @@ void SampleScene::OnEvent(const sf::Event& event)
 		}
 	}
 
+	if (gameOver && event.key.code == sf::Keyboard::Space)
+	{
+		RestartGame();
+		return;
+	}
 }
 
 void SampleScene::TrySetSelectedEntity(int x, int y)
@@ -407,7 +410,7 @@ void SampleScene::OnUpdate()
 
 	//----------Arrivée des vagues d'ennemies----------
 	Timer += dt;
-	if (Timer > 5) {
+	if (Timer > 1) {
 		if (currentWaveIndex < waves.size()) {
 			ProcessWave(waves[currentWaveIndex]);
 			currentWaveIndex++; 
@@ -415,10 +418,45 @@ void SampleScene::OnUpdate()
 		Timer = 0;
 	}
 
-	//----------Ecran game over et de victoire----------
-	if (pPlayer->GetLife() <= 0)
+	//----------Ecran game over, Pause et de victoire----------
+	if (pPlayer->GetLife() <= 0 && !gameOver)
 	{
+		pDummy.push_back(CreateEntity<DummyEntity>(1300, 720, "../../../res/pause.png", 1, 1, 1.0f));
+		pDummy.back()->SetPosition(650, 360);
+		pDummy.back()->SetTag(2);
+		gameOver = true;
+	}
 
+	static bool bossSpawned = false;
+	
+	if (!bossSpawned) {
+
+		if (!pBoss.empty() && pBoss[0] != nullptr) {
+			bossSpawned = true;
+			std::cout << "Boss spawned!" << std::endl;
+		}
+	}
+
+	if (bossSpawned && pBoss.empty()) {
+		std::cout << "Boss has been destroyed or is null!" << std::endl;
+
+		if (pPlayer->GetLife() > 0 && !gameOver) {
+			pDummy.push_back(CreateEntity<DummyEntity>(1300, 720, "../../../res/victory.png", 1, 1, 1.0f));
+			pDummy.back()->SetPosition(650, 360);
+			pDummy.back()->SetTag(2);
+
+			/*pDummy.push_back(CreateEntity<DummyEntity>(560, 360, "../../../res/text.png", 1, 1, 1.0f));
+			pDummy.back()->SetPosition(650, 360);
+			pDummy.back()->SetTag(2);*/
+			if (pPlayer->GetCoinNumber() == 6)
+			{
+				pDummy.push_back(CreateEntity<DummyEntity>(280, 180, "../../../res/coin.png", 1, 1, 1.0f));
+				pDummy.back()->SetPosition(650, 560);
+				pDummy.back()->SetTag(2);
+			}
+			gameOver = true;
+			bossSpawned = false;
+		}
 	}
 
 	/*
@@ -533,8 +571,12 @@ void SampleScene::ProcessWave(const std::string& wave) {
 				continue;
 			}
 			if (c == 'C') {
-				// Summon Ennemi Chercheuse
-				std::cout << "Summoned Heat Seaking" << std::endl;
+				// Summon Pieces
+				pCoin.push_back(CreateEntity<CoinEntity>(30, 30, "../../../res/coin.png", 1, 1, 1.0f));
+				pCoin.back()->SetCollisionType(Entity::CollisionType::AABB);
+				pCoin.back()->SetPosition(xPosition, yPosition);
+				pCoin.back()->SetTag(Tag::COIN);
+				std::cout << "Summoned Coin" << std::endl;
 				continue;
 			}
 			if (c == 'L') {
@@ -594,4 +636,32 @@ void SampleScene::ProcessWave(const std::string& wave) {
 	for (auto& boss : pBoss) {
 		pAllEnemies.push_back(boss);
 	}
+}
+
+void SampleScene::RestartGame()
+{
+	for (auto& entity : pDummy) {
+		entity->Destroy();
+	}
+
+	pDummy.clear();
+
+	pEnemy.clear();
+	pShooter.clear();
+	pLaner.clear();
+	pKamikaze.clear();
+	pBoss.clear();
+	pHoming.clear();
+	pRocket.clear();
+	pEnemyProjectiles.clear();
+	pLanerProjectiles.clear();
+
+	pPlayer->SetPosition(500, 350);
+	pPlayer->SetLife(100);
+	gameOver = false;
+
+	currentWaveIndex = 0;
+	Timer = 0;
+
+	OnInitialize();
 }

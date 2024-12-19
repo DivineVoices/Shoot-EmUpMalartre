@@ -24,7 +24,6 @@ void CoinEntity::OnCollision(Entity* other)
         PlayerEntity* player = dynamic_cast<PlayerEntity*>(other);
         if (player != nullptr)
         {
-            CoinNumber += 1;
             Destroy();
         }
     }

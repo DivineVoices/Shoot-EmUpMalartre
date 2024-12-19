@@ -76,7 +76,9 @@ private:
 	size_t currentWaveIndex = 0;
 
 	int speed;
-	int coinNumber;
+	//int coinNumber;
+
+	bool gameOver = false;
 
 	float timeSinceLastShot = 0.0f;
 
@@ -98,13 +100,15 @@ public:
 	void OnEvent(const sf::Event& event) override;
 	void OnUpdate() override;
 	void ProcessWave(const std::string& wave);
+	void RestartGame();
 
 	enum Tag
 	{
 		ENNEMIES,
 		PLAYER,
 		BULLET,
-		ENEMYBULLET
+		ENEMYBULLET,
+		COIN
 	};
 
 	AABB mAreas[5];
