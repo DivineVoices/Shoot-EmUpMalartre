@@ -1,6 +1,8 @@
 #include "pch.h"
 
 #include "SampleScene.h"
+#include "AssetManager.h"
+#include "AudioManager.h"	
 
 #include "DummyEntity.h"
 #include "EnemyEntity.h"
@@ -22,7 +24,7 @@
 
 #include "Debug.h"
 
-#include "AssetManager.h"
+
 
 void SampleScene::OnInitialize()
 {
@@ -126,7 +128,7 @@ void SampleScene::OnInitialize()
 		mAreas[i] = { 0, yMin, 1280, yMax };
 		yMin -= 144;
 		yMax -= 144;
-	}
+	} 
 
 	std::ifstream inputFile("../../../res/Level1.txt");
 
@@ -142,6 +144,8 @@ void SampleScene::OnInitialize()
 
 	inputFile.close();
 
+	AudioManager::Get()->PlayMusic("../../../res/maintheme.mp3");
+	AudioManager::Get()->SetMusicVolume(5.0f);
 }
 
 void SampleScene::OnEvent(const sf::Event& event)
