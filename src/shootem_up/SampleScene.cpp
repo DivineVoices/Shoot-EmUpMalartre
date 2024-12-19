@@ -421,7 +421,7 @@ void SampleScene::OnUpdate()
 	//----------Ecran game over, Pause et de victoire----------
 	if (pPlayer->GetLife() <= 0 && !gameOver)
 	{
-		pDummy.push_back(CreateEntity<DummyEntity>(1300, 720, "../../../res/pause.png", 1, 1, 1.0f));
+		pDummy.push_back(CreateEntity<DummyEntity>(1300, 720, "../../../res/loose.png", 1, 1, 1.0f));
 		pDummy.back()->SetPosition(650, 360);
 		pDummy.back()->SetTag(2);
 		gameOver = true;
@@ -445,9 +445,9 @@ void SampleScene::OnUpdate()
 			pDummy.back()->SetPosition(650, 360);
 			pDummy.back()->SetTag(2);
 
-			/*pDummy.push_back(CreateEntity<DummyEntity>(560, 360, "../../../res/text.png", 1, 1, 1.0f));
+			pDummy.push_back(CreateEntity<DummyEntity>(560, 360, "../../../res/victorytext.png", 1, 1, 1.0f));
 			pDummy.back()->SetPosition(650, 360);
-			pDummy.back()->SetTag(2);*/
+			pDummy.back()->SetTag(2);
 			if (pPlayer->GetCoinNumber() == 6)
 			{
 				pDummy.push_back(CreateEntity<DummyEntity>(280, 180, "../../../res/coin.png", 1, 1, 1.0f));
