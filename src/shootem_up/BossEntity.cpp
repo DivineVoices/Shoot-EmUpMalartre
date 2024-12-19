@@ -24,8 +24,8 @@ void BossEntity::OnUpdate()
 
 void BossEntity::Phase1()
 {
-    float bossBasicShootCooldown = 0.5f;
-    float bossWallShootCooldown = 0.85f;
+    float bossBasicShootCooldown = 0.6f;
+    float bossWallShootCooldown = 1.0f;
     float bossFaetherShootCooldown = 5.0f;
 
     timeSinceLastBasicBossShot += GameManager::Get()->GetDeltaTime();
@@ -38,7 +38,7 @@ void BossEntity::Phase1()
         timeSinceLastBasicBossShot = 0.0f;
     }
 
-    /*if (timeSinceLastWallBossShot >= bossWallShootCooldown)
+    if (timeSinceLastWallBossShot >= bossWallShootCooldown)
     {
         WallShoot();
         timeSinceLastWallBossShot = 0.0f;
@@ -48,7 +48,7 @@ void BossEntity::Phase1()
     {
         FeatherShoot();
         timeSinceLastBossFaetherShot = 0.0f;
-    }*/
+    }
 }
 
 void BossEntity::Phase2()

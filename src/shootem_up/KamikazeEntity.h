@@ -8,7 +8,7 @@ class KamikazeEntity : public EnemyEntity
 public:
     KamikazeEntity()
     {
-        EnemyLife = 11;
+        EnemyLife = 7;
     }
     void OnUpdate() override;
     void SetTarget(Entity* target);

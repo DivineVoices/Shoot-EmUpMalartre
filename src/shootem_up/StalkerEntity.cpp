@@ -11,7 +11,7 @@ void StalkerEntity::OnUpdate()
     if (mPlayer != nullptr) 
     {
         sf::Vector2f playerPos = mPlayer->GetPosition();
-        SetPosition(playerPos.x + 80, playerPos.y);
+        SetPosition(playerPos.x + 150, playerPos.y);
     }
 
     EnemyEntity::OnUpdate();

@@ -407,7 +407,7 @@ void SampleScene::OnUpdate()
 
 	//----------Arrivée des vagues d'ennemies----------
 	Timer += dt;
-	if (Timer > 4) {
+	if (Timer > 5) {
 		if (currentWaveIndex < waves.size()) {
 			ProcessWave(waves[currentWaveIndex]);
 			currentWaveIndex++; 
@@ -504,7 +504,7 @@ void SampleScene::ProcessWave(const std::string& wave) {
 				continue;
 			}
 
-			float xPosition = 1000.0f; 
+			float xPosition = 1150.0f; 
 			float yPosition = (144.0f * index) - 72;
 
 			if (c == 'S') {
